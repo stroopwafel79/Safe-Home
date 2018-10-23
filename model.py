@@ -35,7 +35,7 @@ class Address(db.Model):
 
 	address_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
 	street_adrs = db.Column(db.String(200), nullable=False)
-
+	lat_long
 	
 	def __repr__(self):
 		"""Provide useful representation when printed"""
@@ -51,13 +51,12 @@ class Crime(db.Model):
 	crime_type_id = db.Column(db.Integer, db.ForeignKey("crimetypes.crime_type_id"))
 	address_id = db.Column(db.Integer, db.ForeignKey("addresses.address_id"))
 
-	# Not sure if this should us DateTime or string.
-	# # it will be coming to me as a string, could change it into a datetime object
-	# date_time = db.Column
+	date_time = db.Column(db.DateTime, nullable=False)
 
-	#case_num = db.Column(db.String(25), nullable=False)
-	# description = db.Column(db.String(200), nullable=True)
-	# beat = db.Column(db.String(10), nullable=False)
+	case_num = db.Column(db.String(25), nullable=False)
+	description = db.Column(db.String(200), nullable=True)
+	beat = db.Column(db.String(10), nullable=False)
+
 	address = db.relationship("Address", backref="crimes")
 	crime_type = db.relationship("CrimeType", backref="crimes")
 
@@ -106,6 +105,10 @@ if __name__ == "__main__":
 	# Add crimes and associate them with crimetypes
 	crime1 = Crime()  # instantiate the Crime object
 	crime1.crime_type = theft  # set the crime_type instance attribute to the type specified above
+	crime1.date_time = 2018-01-05 12:12:12
+	crime1.beat = 11X
+	crime1.case_num = 18-123344
+	crime1.description = "Grand theft auto"
 	crime2 = Crime()
 	crime2.crime_type = robbery
 
