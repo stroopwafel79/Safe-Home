@@ -26,8 +26,7 @@ class CrimeType(db.Model):
 	def __repr__(self):
 		"""Provide helpful representation when printed"""
 
-		return f"""<CrimeType: crime_type_id={self.crime_type_id} 
-				               crime_type={self.crime_type}>"""
+		return f"<CrimeType: crime_type_id={self.crime_type_id} crime_type={self.crime_type}>"
 
 class Address(db.Model):
 	"""Address info including street address and latitude and longditude"""
@@ -38,11 +37,10 @@ class Address(db.Model):
 	street_adrs = db.Column(db.String(200), nullable=False)
 
 	
-	def ___repr___(self):
+	def __repr__(self):
 		"""Provide useful representation when printed"""
 
-		return f"""<Address: address_id={self.address_id} 
-							 street_adrs={self.street_adrs}>"""
+		return f"<Address: address_id={self.address_id} street_adrs={self.street_adrs}>"
 
 class Crime(db.Model):
 	"""Individual crime events"""
@@ -63,12 +61,10 @@ class Crime(db.Model):
 	address = db.relationship("Address", backref="crimes")
 	crime_type = db.relationship("CrimeType", backref="crimes")
 
-	def ___repr___(self):
+	def __repr__(self):
 		"""Provide useful representation when printed"""
 
-		return f"""<Crime: crime_id={self.crime_id} 
-				           crime_type_id={self.crime_type_id} 
-				           address_id={self.address_id}>"""
+		return f"<Crime: crime_id={self.crime_id} crime_type_id={self.crime_type_id} address_id={self.address_id}>"
 
 ################################################################################
 # Helper functions
