@@ -31,5 +31,7 @@ def load_crimes():
     	for row in crimereader: 
         	crime = ', '.join(row).split(', ')
 
+        
+
 
 	

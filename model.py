@@ -35,7 +35,8 @@ class Address(db.Model):
 
 	address_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
 	street_adrs = db.Column(db.String(200), nullable=False)
-	lat_long
+	latitude = db.Column(db.Float, nullable=False)
+	longditude = db.Column(db.Float, nullable=False)
 	
 	def __repr__(self):
 		"""Provide useful representation when printed"""
