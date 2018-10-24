@@ -28,7 +28,7 @@ def load_crimes():
     ################################ 
     
     # Read crime file and import data
-    with open("seed_data/CrimeWatch_TEST(20_crimes_tab).tsv") as f:
+    with open("seed_data/CrimeWatch_TEST(20_crimes_tab)dupe_adrs.tsv") as f:
         # ignore header row
         next(f)
 
@@ -71,7 +71,13 @@ def load_crimes():
                                   lat_long=lat_long)
                 db.session.add(address)
 
-            
+            # get the address_id associated with street_adrs from addresses table
+            # for adding to crime object below
+            adrs_id = Address.query.filter_by(street_adrs=s_adrs).first()
+            # import pdb
+            # pdb.set_trace()
+
+            s_adrs_id = adrs_id.address_id
 
 
             # get a list of crime_type objects
@@ -103,7 +109,8 @@ def load_crimes():
             # address = Address(street_adrs=crime_lst[5].title(),
             #                   lat_long=lat_long,)
 
-            crime = Crime(crime_type_id=c_type_id,
+            crime = Crime(address_id=s_adrs_id,
+                          crime_type_id=c_type_id,
                           date_time=date_time, 
                           case_num=crime_lst[2],
                           description=crime_lst[3].title(),
