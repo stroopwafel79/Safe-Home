@@ -56,10 +56,28 @@ def load_crimes():
                 # call other function ###################
                 lat_long = "NOOOOOOO"
 
-            # get a list of CrimeType objects
+            # get a list of street_adrs objects
+            adrs_lst = db.session.query(Address.street_adrs).all()
+
+            # get the value of the street address from the file
+            s_adrs = crime_lst[5].title()
+
+            # Turn type_lst into a set to avoid duplication
+            # Then turn that into a list of tuples
+            # Then turn that into a list of strings
+            # Check if c_type is in the list and only add if it isn't
+            if s_adrs not in ([adrs[0] for adrs in list(set(adrs_lst))]):
+                address = Address(street_adrs=s_adrs,
+                                  lat_long=lat_long)
+                db.session.add(address)
+
+            
+
+
+            # get a list of crime_type objects
             type_lst = db.session.query(CrimeType.crime_type).all()
 
-            # get the value of the crime_type from the file
+            # get the value of the crime type from the file
             c_type = crime_lst[0].title()
 
             # Turn type_lst into a set to avoid duplication
@@ -69,13 +87,15 @@ def load_crimes():
             if c_type not in ([crm_type[0] for crm_type in  list(set(type_lst))]):
                 crime_type = CrimeType(c_type)
                 db.session.add(crime_type)
-            # # get the crime_id associated with c_type from crimetypes table
-            type_id = CrimeType.query.filter_by(crime_type=c_type).first()
-            # # # import pdb
 
-            # # # pdb.set_trace()
+            # get the crime_type_id associated with crime_type from crimetypes table
+            # for adding to crime object below
+            type_id = CrimeType.query.filter_by(crime_type=c_type).first()
             c_type_id = type_id.crime_type_id
-            print(c_type_id)
+            
+           
+
+
                 
                 
 
