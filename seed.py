@@ -83,17 +83,17 @@ def load_crimes():
             # address = Address(street_adrs=crime_lst[5].title(),
             #                   lat_long=lat_long,)
 
-            # crime = Crime(crime_type_id=c_type_id,
-            #               date_time=date_time, 
-            #               case_num=crime_lst[2],
-            #               description=crime_lst[3].title(),
-            #               beat=crime_lst[4])
+            crime = Crime(crime_type_id=c_type_id,
+                          date_time=date_time, 
+                          case_num=crime_lst[2],
+                          description=crime_lst[3].title(),
+                          beat=crime_lst[4])
 
             # crime.address = address
             # crime.crime_type = type_id.
 
             # add each object to the session
-            # db.session.add(crime)
+            db.session.add(crime)
             # db.session.add(crime_type)
             # db.session.add(address)
 
