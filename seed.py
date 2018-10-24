@@ -54,25 +54,36 @@ def load_crimes():
                 
             else:
                 # call other function ###################
-                lat_long = None
+                lat_long = "NOOOOOOO"
 
-            crime_type = CrimeType(crime_lst[0].title())
+            type_lst = db.session.query(CrimeType.crime_type).all()
 
-            address = Address(street_adrs=crime_lst[5].title(),
-                              lat_long=lat_long,)
+            # import pdb
 
-            crime = Crime(date_time=date_time, 
-                          case_num=crime_lst[2],
-                          description=crime_lst[3].title(),
-                          beat=crime_lst[4])
+            # pdb.set_trace()
 
-            crime.address = address
-            crime.crime_type = crime_type
+            c_type = crime_lst[0].title()
+
+            if c_type not in ([crm_type[0] for crm_type in  list(set(type_lst))]):
+                crime_type = CrimeType(c_type)
+                
+
+
+            # address = Address(street_adrs=crime_lst[5].title(),
+            #                   lat_long=lat_long,)
+
+            # crime = Crime(date_time=date_time, 
+                          # case_num=crime_lst[2],
+                          # description=crime_lst[3].title(),
+                          # beat=crime_lst[4])
+
+            # crime.address = address
+            # crime.crime_type = crime_type
 
             # add each object to the session
-            db.session.add(crime)
+            # db.session.add(crime)
             db.session.add(crime_type)
-            db.session.add(address)
+            # db.session.add(address)
 
         db.session.commit()
 

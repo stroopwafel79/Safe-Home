@@ -35,7 +35,7 @@ class Address(db.Model):
 
 	address_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
 	street_adrs = db.Column(db.String(200), nullable=False)
-	
+
 	########### better to store separately as floats?##########
 	lat_long = db.Column(db.String(100), nullable=False)
 	# longitude = db.Column(db.Float, nullable=False)
@@ -85,12 +85,6 @@ if __name__ == "__main__":
 	# you in a state of being able to work with the database directly.
 	import os
 	from server import app
-
-	# Upon running the file every time:
-	# First, delete the test table(start with a new slate)
-	# Second, create the test database anew
-	os.system("dropdb test")
-	os.system("createdb test")	
 
 	# Connect the Flask app to the database
 	connect_to_db(app)

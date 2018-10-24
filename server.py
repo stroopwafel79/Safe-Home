@@ -16,3 +16,9 @@ app.secret_key = "12345"
 # Normally, if you use an indefined variable in Jinja2, it fails
 # silently. Fix this so that, instead, it raises an error.
 app.jinja_env.undefined = StrictUndefined
+
+@app.route('/')
+def show_form():
+	"""Show form on homepage for entering search criteria"""
+	return render_template("homepage.html")
+
