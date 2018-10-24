@@ -56,33 +56,45 @@ def load_crimes():
                 # call other function ###################
                 lat_long = "NOOOOOOO"
 
+            # get a list of CrimeType objects
             type_lst = db.session.query(CrimeType.crime_type).all()
 
-            # import pdb
-
-            # pdb.set_trace()
-
+            # get the value of the crime_type from the file
             c_type = crime_lst[0].title()
 
+            # Turn type_lst into a set to avoid duplication
+            # Then turn that into a list of tuples
+            # Then turn that into a list of strings
+            # Check if c_type is in the list and only add if it isn't
             if c_type not in ([crm_type[0] for crm_type in  list(set(type_lst))]):
                 crime_type = CrimeType(c_type)
+                db.session.add(crime_type)
+            # # get the crime_id associated with c_type from crimetypes table
+            type_id = CrimeType.query.filter_by(crime_type=c_type).first()
+            # # # import pdb
+
+            # # # pdb.set_trace()
+            c_type_id = type_id.crime_type_id
+            print(c_type_id)
+                
                 
 
 
             # address = Address(street_adrs=crime_lst[5].title(),
             #                   lat_long=lat_long,)
 
-            # crime = Crime(date_time=date_time, 
-                          # case_num=crime_lst[2],
-                          # description=crime_lst[3].title(),
-                          # beat=crime_lst[4])
+            # crime = Crime(crime_type_id=c_type_id,
+            #               date_time=date_time, 
+            #               case_num=crime_lst[2],
+            #               description=crime_lst[3].title(),
+            #               beat=crime_lst[4])
 
             # crime.address = address
-            # crime.crime_type = crime_type
+            # crime.crime_type = type_id.
 
             # add each object to the session
             # db.session.add(crime)
-            db.session.add(crime_type)
+            # db.session.add(crime_type)
             # db.session.add(address)
 
         db.session.commit()
