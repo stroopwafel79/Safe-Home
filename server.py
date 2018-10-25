@@ -8,6 +8,7 @@ from flask import (Flask, render_template, redirect, request, flash,
 from model import CrimeType, Crime, Address, connect_to_db, connect_to_db
 from flask_debugtoolbar import DebugToolbarExtension
 from os import environ # to access environ.get("zillow_key")
+import requests
 
 app = Flask(__name__)
 
@@ -41,6 +42,16 @@ def show_crimes():
 	return render_template("address.html", 
 						   address=address,
 						   crimes_lst=crimes_lst)
+
+
+@app.route("/results/<address>")
+def show_zillow():
+	"""Show data from zillow based on input address"""
+	# key = environ.get("zillow_key")
+	
+	# api = zillow.ValuationApi()
+
+
 
 ######################################################################
 if __name__ == '__main__':
