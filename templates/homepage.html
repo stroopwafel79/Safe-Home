@@ -4,8 +4,28 @@
 
 {% block content %}
 	<form action="/results">
-		Please enter a street address in Oakland:
-		<input type="text" name="address">
-		<input type="submit">
+		Please enter an address
+		<div>
+		Street address:<input type="text" name="address">
+		</div>
+		<div>
+		City:
+		  <input type="text" name="city">
+		</div>
+		<div>
+		State:
+		  <select name="state">
+		  	<option value="california">CA</option>
+		  	<option value="florida">FL</option>
+		  	<option value="new_hampshire">NH</option>
+		  	<option value="oregon">OR</option>
+		  	<option value="washington">WA</option>
+		  	<option value="new_york">NY</option>
+		  	<option value="massachusettes">MA</option>
+		  </select>
+		 </div>
+		 <div>
+			<input type="submit">
+		 </div>
 	</form>
 {% endblock %}
