@@ -99,16 +99,6 @@ def load_crimes():
             type_id = CrimeType.query.filter_by(crime_type=c_type).first()
             c_type_id = type_id.crime_type_id
             
-           
-
-
-                
-                
-
-
-            # address = Address(street_adrs=crime_lst[5].title(),
-            #                   lat_long=lat_long,)
-
             crime = Crime(address_id=s_adrs_id,
                           crime_type_id=c_type_id,
                           date_time=date_time, 
@@ -116,14 +106,7 @@ def load_crimes():
                           description=crime_lst[3].title(),
                           beat=crime_lst[4])
 
-            # crime.address = address
-            # crime.crime_type = type_id.
-
-            # add each object to the session
             db.session.add(crime)
-            # db.session.add(crime_type)
-            # db.session.add(address)
-
         db.session.commit()
 
 ############################################################################
