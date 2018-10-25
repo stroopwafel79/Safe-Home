@@ -29,7 +29,17 @@ def show_crimes():
 	# get the value of the input address from the form
 	address = request.args.get("address")
 
-	return render_template("address.html", address=address)
+	# query db, get Address object
+	adrs_object = Address.query.filter_by(street_adrs=address.title()).first()
+	# access address_id
+	adrs_id = adrs_object.address_id
+	# query db to get list of Crime objects with address_id
+	# loop over this crimes_lst in jinja
+	crimes_lst = Crime.query.filter_by(address_id=adrs_id).all()
+
+	return render_template("address.html", 
+						   address=address,
+						   crimes_lst=crimes_lst)
 
 ######################################################################
 if __name__ == '__main__':

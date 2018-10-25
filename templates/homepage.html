@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block title %}Homepage{% endblock %}
+
+{% block content %}
+	<form action="/results">
+		Please enter a street address in Oakland:
+		<input type="text" name="address">
+		<input type="submit">
+	</form>
+{% endblock %}

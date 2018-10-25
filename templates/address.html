@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}Addresses{% endblock %}
+
+{% block content %}
+	<div>
+		<p>
+			The following crimes have been reported at this address:
+		</p>
+		<ul>
+		  {% for crime in crimes_lst %}
+		    <li>{{ crime.crime_type.crime_type }}</li>
+		  {% endfor %}
+		</ul>
+	</div>
+
+{% endblock %}
