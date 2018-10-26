@@ -9,6 +9,7 @@ from model import CrimeType, Crime, Address, connect_to_db, connect_to_db
 from flask_debugtoolbar import DebugToolbarExtension
 from os import environ # to access environ.get("zillow_key")
 import requests
+import zillow
 
 app = Flask(__name__)
 
@@ -29,27 +30,42 @@ def show_crimes():
 	"""Show a list of crimes at that address"""
 
 	# get the value of the input address from the form
-	address = request.args.get("address")
+	# address = request.args.get("address")
 
-	# query db, get Address object
-	adrs_object = Address.query.filter_by(street_adrs=address.title()).first()
-	# access address_id
-	adrs_id = adrs_object.address_id
-	# query db to get list of Crime objects with address_id
-	# loop over this crimes_lst in jinja
-	crimes_lst = Crime.query.filter_by(address_id=adrs_id).all()
+	# # query db, get Address object
+	# adrs_object = Address.query.filter_by(street_adrs=address.title()).first()
+	# # access address_id
+	# adrs_id = adrs_object.address_id
+	# # query db to get list of Crime objects with address_id
+	# # loop over this crimes_lst in jinja
+	# crimes_lst = Crime.query.filter_by(address_id=adrs_id).all()
 
-	return render_template("address.html", 
-						   address=address,
-						   crimes_lst=crimes_lst)
+	# return render_template("address.html", 
+	# 					   address=address,
+	# 					   crimes_lst=crimes_lst)
 
 
-@app.route("/results/<address>")
+@app.route("/results")
 def show_zillow():
 	"""Show data from zillow based on input address"""
-	# key = environ.get("zillow_key")
-	
-	# api = zillow.ValuationApi()
+
+	# get secret key for zillow api
+	key = environ.get("zillow_key") 
+
+	api = zillow.ValuationApi()
+
+	street_adrs = request.args.get("address")
+	address = " ".join([street_adrs, "Oakland,", "CA"])
+	zipcode = request.args.get("zip")
+
+	data = api.GetSearchResults(key, address, zipcode)
+	payload = {
+		"key": key,
+		"address": address,
+		"zipcode": zipcode
+	}
+
+	return render_template("results.html", data=data)
 
 
 
