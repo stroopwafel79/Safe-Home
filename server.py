@@ -51,16 +51,13 @@ def show_form():
 	# 					   crimes_lst=crimes_lst)
 
 
-@app.route("/results")
-def show_zillow():
-	"""Show data from zillow based on input address"""
+
+@app.route('/results')
+def get_zillow_data():
+	"""Get info from zillow via api request"""
 
 	# get secret key for zillow api
 	key = environ.get("KEY") 
-	print("\nKKKKKKKKKKKKKKK")
-	print(key)
-
-	# api = zillow.ValuationApi()
 
 	street_adrs = "652 54th Street"#request.args.get("address")
 	zipcode = "94609"#request.args.get("zip")
@@ -73,14 +70,44 @@ def show_zillow():
 		"citystatezip": citystatezip
 	}
 
-	data = requests.get(url, params=payload)
+	# make a request to the api with the payload as parameters. Returns XML.
+	data = requests.get(url, params=payload) # <class requests.models.Response>
+	# print("\nDDDDDDDDDDDDDDDDDDDD")
+	# print(type(data))
+	# pprint(data)
 
-	data_dict = bf.data(fromstring(data.text))
-	data_json = json.dumps(data_dict)
-	print("\nJJJJJJJJJJJJJJJJJJJ")
-	pprint(data_json)
+	# turn the XML recieved into a dictionary
+	data_dict = bf.data(fromstring(data.text)) # <class dict>
+	
+	# first key of data_dict
+	key1 = "{http://www.zillow.com/static/xsd/SearchResults.xsd}searchresults"
+	results = data_dict[key1]["response"]["results"]["result"][0]
+	zestimate = results["zestimate"]["amount"]["$"]
+	#home_details = results["homedetails"]["$"]
+	#map_home = results["mapthishome"]["$"]
+	links = data_dict[key1]["response"]["results"]["result"][0]["links"]
+	
 
-	return jsonify(data_dict)
+	# turn the dictionary into a string
+	# data_str = json.dumps(data_dict) # <class str>
+	# print("\n TTTTTTTTTTTTTT")
+	# print(type(data_str))
+
+	# data_json = jsonify(data_str)  # <class 'flask.wrappers.Response'>
+	# print("\nDDDDDDDDDDDDDDDDDDDDJJJJJJJJJJJJ")
+	# print(type(data_json))
+	# pprint(data_json)
+
+	# zestimate = data_json.results.
+	# print("\n zzzzzzzzzzzzzzzzz")
+	# print(zestimate)
+	
+
+	return render_template("zillow_data.html", 
+						   zestimate=zestimate,
+						   #home_details=home_details,
+						   #map_home=map_home,
+						   links=links)
 
 
 
