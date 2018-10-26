@@ -3,13 +3,19 @@
 from jinja2 import StrictUndefined
 
 from flask import (Flask, render_template, redirect, request, flash,
-				   session, url_for)
+				   session, url_for, jsonify)
 
 from model import CrimeType, Crime, Address, connect_to_db, connect_to_db
 from flask_debugtoolbar import DebugToolbarExtension
 from os import environ # to access environ.get("zillow_key")
 import requests
 import zillow
+from xmljson import BadgerFish
+from xml.etree.ElementTree import fromstring
+import json
+from pprint import pprint
+
+bf = BadgerFish(dict_type=dict)
 
 app = Flask(__name__)
 
@@ -25,9 +31,9 @@ def show_form():
 	"""Show form on homepage for entering search criteria"""
 	return render_template("homepage.html")
 
-@app.route('/results')
-def show_crimes():
-	"""Show a list of crimes at that address"""
+# @app.route('/results')
+# def show_crimes():
+# 	"""Show a list of crimes at that address"""
 
 	# get the value of the input address from the form
 	# address = request.args.get("address")
@@ -50,22 +56,31 @@ def show_zillow():
 	"""Show data from zillow based on input address"""
 
 	# get secret key for zillow api
-	key = environ.get("zillow_key") 
+	key = environ.get("KEY") 
+	print("\nKKKKKKKKKKKKKKK")
+	print(key)
 
-	api = zillow.ValuationApi()
+	# api = zillow.ValuationApi()
 
-	street_adrs = request.args.get("address")
-	address = " ".join([street_adrs, "Oakland,", "CA"])
-	zipcode = request.args.get("zip")
+	street_adrs = "652 54th Street"#request.args.get("address")
+	zipcode = "94609"#request.args.get("zip")
+	citystatezip = " ".join(["Oakland,", "CA", zipcode])
 
-	data = api.GetSearchResults(key, address, zipcode)
+	url = "https://www.zillow.com/webservice/GetSearchResults.htm"
 	payload = {
-		"key": key,
-		"address": address,
-		"zipcode": zipcode
+		"zws-id": key,
+		"address": street_adrs,
+		"citystatezip": citystatezip
 	}
 
-	return render_template("results.html", data=data)
+	data = requests.get(url, params=payload)
+
+	data_dict = bf.data(fromstring(data.text))
+	data_json = json.dumps(data_dict)
+	print("\nJJJJJJJJJJJJJJJJJJJ")
+	pprint(data_json)
+
+	return jsonify(data_dict)
 
 
 
