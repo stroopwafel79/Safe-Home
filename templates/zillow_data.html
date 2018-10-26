@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block title %}Homepage{% endblock %}
+
+{% block content %}
+	<div>Zillow's zestimate for this property is: ${{ zestimate }}</div>
+	<div>Click <a href="{{ home_details }}">here</a> for details on this home.</div>
+	<div>Click <a href="{{ map_home }}">here</a> to map this home.</div>
+{% endblock %}

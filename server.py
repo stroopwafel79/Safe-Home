@@ -85,7 +85,9 @@ def get_zillow_data():
 	zestimate = results["zestimate"]["amount"]["$"]
 	#home_details = results["homedetails"]["$"]
 	#map_home = results["mapthishome"]["$"]
-	links = data_dict[key1]["response"]["results"]["result"][0]["links"]
+	links = results["links"]
+	home_details = links["homedetails"]["$"]
+	map_home = links["mapthishome"]["$"]
 	
 
 	# turn the dictionary into a string
@@ -105,8 +107,8 @@ def get_zillow_data():
 
 	return render_template("zillow_data.html", 
 						   zestimate=zestimate,
-						   #home_details=home_details,
-						   #map_home=map_home,
+						   home_details=home_details,
+						   map_home=map_home,
 						   links=links)
 
 
