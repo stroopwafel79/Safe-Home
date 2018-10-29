@@ -33,30 +33,42 @@ def show_form():
 
 
 
-# @app.route('/results')
-# def combine_results():
-# 	"""Combine crimes and zillow data"""
-
-# 	return show_crimes()
-
 @app.route("/results")
-def show_crimes():
+def get_form_data():
+	"""Get data from the form and store it in a tuple"""
+	street_adrs = request.args.get("address").title()
+	
+	zipcode = request.args.get("zip")
+
+	# get crime data
+	crimes_lst = show_crimes(street_adrs)
+
+	# get zillow data
+
+
+
+
+
+	return render_template("results.html",
+						   street_adrs=street_adrs,
+						   crimes_lst = crimes_lst)
+
+
+def show_crimes(address):
 	"""Show a list of crimes at that address"""
 
 	# get the value of the input address from the form
-	address = request.args.get("address")
+	###### testing get_form_data address = request.args.get("address").title()
 
 	# query db, get Address object
-	adrs_object = Address.query.filter_by(street_adrs=address.title()).first()
+	adrs_object = Address.query.filter_by(street_adrs=address).first()
 	# access address_id
 	adrs_id = adrs_object.address_id
 	# query db to get list of Crime objects with address_id
 	# loop over this crimes_lst in jinja
 	crimes_lst = Crime.query.filter_by(address_id=adrs_id).all()
 
-	return render_template("address.html", 
-						   address=address,
-						   crimes_lst=crimes_lst)
+	return crimes_lst
 
 
 
@@ -67,9 +79,9 @@ def show_crimes():
 # 	# get secret key for zillow api
 # 	key = environ.get("KEY")
 	
-# 	street_adrs = request.args.get("address").title()
+# 	###### testing get_form_data  street_adrs = request.args.get("address").title()
 	
-# 	zipcode = request.args.get("zip")
+# 	###### testing get_form_data  zipcode = request.args.get("zip")
 # 	citystatezip = " ".join(["Oakland,", "CA", zipcode])
 
 # 	url = "https://www.zillow.com/webservice/GetSearchResults.htm"
@@ -96,7 +108,7 @@ def show_crimes():
 # 	map_home = links["mapthishome"]["$"]
 	
 
-# 	return render_template("zillow_data.html", 
+# 	return render_template("results.html", 
 # 						   zestimate=zestimate,
 # 						   home_details=home_details,
 # 						   map_home=map_home,

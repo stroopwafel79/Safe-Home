@@ -5,7 +5,7 @@
 {% block content %}
 	<div>
 		<p>
-			The following crimes have been reported at {{ address }}:
+			The following crimes have been reported at {{ street_adrs }}:
 		</p>
 		<ul>
 		  {% for crime in crimes_lst %}
@@ -13,11 +13,7 @@
 		  {% endfor %}
 		</ul>
 	</div>
-	<div>
-		Here is the Zillow data:
-		<p>
-			{{ data }}
-		</p>
-	</div>
+	
+
 
 {% endblock %}
