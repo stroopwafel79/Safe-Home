@@ -47,6 +47,11 @@ def get_form_data():
 
 	zillow_resp = call_zillow(street_adrs, zipcode)
 	zillow_dict = xml_to_dict(zillow_resp)
+
+	zillow_tup = get_zillow_details(zillow_dict)
+	zestimate = zillow_tup[0]
+	home_details = zillow_tup[1]
+	map_home = zillow_tup[2]
 	# get secret key for zillow api
 	###### key = environ.get("KEY")
 	
@@ -68,14 +73,14 @@ def get_form_data():
 	# turn the XML recieved into a dictionary
 	###### data_dict = bf.data(fromstring(data.text)) # <class dict>
 	
-	# first key of data_dict
-	key1 = "{http://www.zillow.com/static/xsd/SearchResults.xsd}searchresults"
-	results = zillow_dict[key1]["response"]["results"]["result"][0]
-	zestimate = results["zestimate"]["amount"]["$"]
+	# # first key of data_dict
+	# key1 = "{http://www.zillow.com/static/xsd/SearchResults.xsd}searchresults"
+	# results = zillow_dict[key1]["response"]["results"]["result"][0]
+	# zestimate = results["zestimate"]["amount"]["$"]
 	
-	links = results["links"]
-	home_details = links["homedetails"]["$"]
-	map_home = links["mapthishome"]["$"]
+	# links = results["links"]
+	# home_details = links["homedetails"]["$"]
+	# map_home = links["mapthishome"]["$"]
 	
 
 	return render_template("results.html", 
@@ -129,6 +134,20 @@ def xml_to_dict(data):
 	data_dict = bf.data(fromstring(data.text)) # <class dict>
 
 	return data_dict
+
+def get_zillow_details(zillow_dict):
+	"""Access detail zillow info from api call dictionary result"""
+
+	key1 = "{http://www.zillow.com/static/xsd/SearchResults.xsd}searchresults"
+	results = zillow_dict[key1]["response"]["results"]["result"][0]
+	zestimate = results["zestimate"]["amount"]["$"]
+	
+	links = results["links"]
+	home_details = links["homedetails"]["$"]
+	map_home = links["mapthishome"]["$"]
+
+	return (zestimate, home_details, map_home)
+
 
 
 # @app.route('/results')
