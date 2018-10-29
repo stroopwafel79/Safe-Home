@@ -44,30 +44,33 @@ def get_form_data():
 	crimes_lst = show_crimes(street_adrs)
 
 	########### get zillow data
+
+	zillow_resp = call_zillow(street_adrs, zipcode)
+	zillow_dict = xml_to_dict(zillow_resp)
 	# get secret key for zillow api
-	key = environ.get("KEY")
+	###### key = environ.get("KEY")
 	
 	###### testing get_form_data  street_adrs = request.args.get("address").title()
 	
 	###### testing get_form_data  zipcode = request.args.get("zip")
-	citystatezip = " ".join(["Oakland,", "CA", zipcode])
+	###### citystatezip = " ".join(["Oakland,", "CA", zipcode])
 
-	url = "https://www.zillow.com/webservice/GetSearchResults.htm"
-	payload = {
-		"zws-id": key,
-		"address": street_adrs,
-		"citystatezip": citystatezip
-	}
+	###### url = "https://www.zillow.com/webservice/GetSearchResults.htm"
+	###### payload = {
+		# 	"zws-id": key,
+		# 	"address": street_adrs,
+		# 	"citystatezip": citystatezip
+		# }
 
 	# make a request to the api with the payload as parameters. Returns XML.
-	data = requests.get(url, params=payload) # <class requests.models.Response>
+	###### data = requests.get(url, params=payload) # <class requests.models.Response>
 	
 	# turn the XML recieved into a dictionary
-	data_dict = bf.data(fromstring(data.text)) # <class dict>
+	###### data_dict = bf.data(fromstring(data.text)) # <class dict>
 	
 	# first key of data_dict
 	key1 = "{http://www.zillow.com/static/xsd/SearchResults.xsd}searchresults"
-	results = data_dict[key1]["response"]["results"]["result"][0]
+	results = zillow_dict[key1]["response"]["results"]["result"][0]
 	zestimate = results["zestimate"]["amount"]["$"]
 	
 	links = results["links"]
@@ -99,6 +102,33 @@ def show_crimes(address):
 
 	return crimes_lst
 
+def call_zillow(address, zipcode):
+	"""Call zillow's api"""
+
+	# get secret key for zillow api
+	key = environ.get("KEY")
+
+	# since only dealing with Oakland crime data, hardcode city and state
+	# need to join it all to meet zillow api call requirements
+	citystatezip = " ".join(["Oakland,", "CA", zipcode])
+
+	url = "https://www.zillow.com/webservice/GetSearchResults.htm"
+	payload = {
+		"zws-id": key,
+		"address": address,
+		"citystatezip": citystatezip
+	}
+
+	# make a request to the api with the payload as parameters. Returns XML.
+	response = requests.get(url, params=payload) # <class requests.models.Response>
+
+	return response
+
+def xml_to_dict(data):
+	"""Turns an api response from XML to a dictionary"""
+	data_dict = bf.data(fromstring(data.text)) # <class dict>
+
+	return data_dict
 
 
 # @app.route('/results')
