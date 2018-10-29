@@ -43,13 +43,42 @@ def get_form_data():
 	# get crime data
 	crimes_lst = show_crimes(street_adrs)
 
-	# get zillow data
+	########### get zillow data
+	# get secret key for zillow api
+	key = environ.get("KEY")
+	
+	###### testing get_form_data  street_adrs = request.args.get("address").title()
+	
+	###### testing get_form_data  zipcode = request.args.get("zip")
+	citystatezip = " ".join(["Oakland,", "CA", zipcode])
 
+	url = "https://www.zillow.com/webservice/GetSearchResults.htm"
+	payload = {
+		"zws-id": key,
+		"address": street_adrs,
+		"citystatezip": citystatezip
+	}
 
+	# make a request to the api with the payload as parameters. Returns XML.
+	data = requests.get(url, params=payload) # <class requests.models.Response>
+	
+	# turn the XML recieved into a dictionary
+	data_dict = bf.data(fromstring(data.text)) # <class dict>
+	
+	# first key of data_dict
+	key1 = "{http://www.zillow.com/static/xsd/SearchResults.xsd}searchresults"
+	results = data_dict[key1]["response"]["results"]["result"][0]
+	zestimate = results["zestimate"]["amount"]["$"]
+	
+	links = results["links"]
+	home_details = links["homedetails"]["$"]
+	map_home = links["mapthishome"]["$"]
+	
 
-
-
-	return render_template("results.html",
+	return render_template("results.html", 
+						   zestimate=zestimate,
+						   home_details=home_details,
+						   map_home=map_home,
 						   street_adrs=street_adrs,
 						   crimes_lst = crimes_lst)
 
@@ -74,45 +103,45 @@ def show_crimes(address):
 
 # @app.route('/results')
 # def get_zillow_data():
-# 	"""Get info from zillow via api request"""
+	"""Get info from zillow via api request"""
 
-# 	# get secret key for zillow api
-# 	key = environ.get("KEY")
+	# # get secret key for zillow api
+	# key = environ.get("KEY")
 	
-# 	###### testing get_form_data  street_adrs = request.args.get("address").title()
+	# ###### testing get_form_data  street_adrs = request.args.get("address").title()
 	
-# 	###### testing get_form_data  zipcode = request.args.get("zip")
-# 	citystatezip = " ".join(["Oakland,", "CA", zipcode])
+	# ###### testing get_form_data  zipcode = request.args.get("zip")
+	# citystatezip = " ".join(["Oakland,", "CA", zipcode])
 
-# 	url = "https://www.zillow.com/webservice/GetSearchResults.htm"
-# 	payload = {
-# 		"zws-id": key,
-# 		"address": street_adrs,
-# 		"citystatezip": citystatezip
-# 	}
+	# url = "https://www.zillow.com/webservice/GetSearchResults.htm"
+	# payload = {
+	# 	"zws-id": key,
+	# 	"address": street_adrs,
+	# 	"citystatezip": citystatezip
+	# }
 
-# 	# make a request to the api with the payload as parameters. Returns XML.
-# 	data = requests.get(url, params=payload) # <class requests.models.Response>
-	
-
-# 	# turn the XML recieved into a dictionary
-# 	data_dict = bf.data(fromstring(data.text)) # <class dict>
-	
-# 	# first key of data_dict
-# 	key1 = "{http://www.zillow.com/static/xsd/SearchResults.xsd}searchresults"
-# 	results = data_dict[key1]["response"]["results"]["result"][0]
-# 	zestimate = results["zestimate"]["amount"]["$"]
-	
-# 	links = results["links"]
-# 	home_details = links["homedetails"]["$"]
-# 	map_home = links["mapthishome"]["$"]
+	# # make a request to the api with the payload as parameters. Returns XML.
+	# data = requests.get(url, params=payload) # <class requests.models.Response>
 	
 
-# 	return render_template("results.html", 
-# 						   zestimate=zestimate,
-# 						   home_details=home_details,
-# 						   map_home=map_home,
-# 						   links=links)
+	# # turn the XML recieved into a dictionary
+	# data_dict = bf.data(fromstring(data.text)) # <class dict>
+	
+	# # first key of data_dict
+	# key1 = "{http://www.zillow.com/static/xsd/SearchResults.xsd}searchresults"
+	# results = data_dict[key1]["response"]["results"]["result"][0]
+	# zestimate = results["zestimate"]["amount"]["$"]
+	
+	# links = results["links"]
+	# home_details = links["homedetails"]["$"]
+	# map_home = links["mapthishome"]["$"]
+	
+
+	# return render_template("results.html", 
+	# 					   zestimate=zestimate,
+	# 					   home_details=home_details,
+	# 					   map_home=map_home,
+	# 					   links=links)
 
 
 
