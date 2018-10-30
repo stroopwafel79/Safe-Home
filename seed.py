@@ -28,7 +28,7 @@ def load_crimes():
     ################################ 
     
     # Read crime file and import data
-    with open("seed_data/CrimeWatch_TEST(20_crimes_tab)dupe_adrs.tsv") as f:
+    with open("seed_data/lat_long_test.tsv") as f:
         # ignore header row
         next(f)
 
@@ -51,6 +51,12 @@ def load_crimes():
             # searching for the above pattern
             if pattern.search(crime_lst[-1]):
                 lat_long = pattern.search(crime_lst[-1]).group(0)
+                ll_split = lat_long.split(",")
+                latitude = float(ll_split[0])
+                longitude = float(ll_split[1])
+            else:
+                latitude = 0.0
+                longitude = 0.0
                 
         
 
@@ -66,7 +72,8 @@ def load_crimes():
             # Check if c_type is in the list and only add if it isn't
             if s_adrs not in ([adrs[0] for adrs in list(set(adrs_lst))]) and lat_long:
                 address = Address(street_adrs=s_adrs,
-                                  lat_long=lat_long)
+                                  latitude=latitude,
+                                  longitude=longitude)
                 db.session.add(address)
 
             # get the address_id associated with street_adrs from addresses table
