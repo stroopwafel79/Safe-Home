@@ -55,8 +55,7 @@ def load_crimes():
                 latitude = float(ll_split[0])
                 longitude = float(ll_split[1])
             else:
-                latitude = 0.0
-                longitude = 0.0
+                continue
                 
         
 
