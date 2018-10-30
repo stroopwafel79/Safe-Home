@@ -47,14 +47,12 @@ def load_crimes():
             date_time = datetime.strptime(crime_lst[1], "%m/%d/%Y %I:%M:%S %p")
 
         
-            # check if lat/long included. If not call function to look
-            # it up based on the address
+            # check if lat/long included. Get the lat/long via
+            # searching for the above pattern
             if pattern.search(crime_lst[-1]):
                 lat_long = pattern.search(crime_lst[-1]).group(0)
                 
-            else:
-                # call other function ###################
-                lat_long = "NOOOOOOO"
+        
 
             # get a list of street_adrs objects
             adrs_lst = db.session.query(Address.street_adrs).all()
@@ -66,7 +64,7 @@ def load_crimes():
             # Then turn that into a list of tuples
             # Then turn that into a list of strings
             # Check if c_type is in the list and only add if it isn't
-            if s_adrs not in ([adrs[0] for adrs in list(set(adrs_lst))]):
+            if s_adrs not in ([adrs[0] for adrs in list(set(adrs_lst))]) and lat_long:
                 address = Address(street_adrs=s_adrs,
                                   lat_long=lat_long)
                 db.session.add(address)

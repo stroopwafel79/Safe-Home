@@ -63,3 +63,11 @@ def get_zillow_details(zillow_dict):
 	map_home = links["mapthishome"]["$"]
 
 	return (zestimate, home_details, map_home)
+
+def get_gkey():
+	"""Get the Google Maps API secret key"""
+
+	gkey = environ.get("GKEY")
+	return gkey
+
+

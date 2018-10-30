@@ -7,7 +7,7 @@ from flask import (Flask, render_template, redirect, request, flash,
 from model import connect_to_db
 from flask_debugtoolbar import DebugToolbarExtension
 from module import (show_crimes, call_zillow, xml_to_dict,
-					get_zillow_details)
+					get_zillow_details, get_gkey)
 
 
 app = Flask(__name__)
@@ -50,7 +50,16 @@ def get_form_data():
 						   home_details=home_details,
 						   map_home=map_home,
 						   street_adrs=street_adrs,
-						   crimes_lst = crimes_lst)
+						   crimes_lst=crimes_lst)
+
+@app.route("/map")
+def get_gmap():
+	"""Get google map"""
+
+	# get google map secret key
+	gkey = get_gkey();
+	return render_template("map.html",
+						   gkey=gkey)
 
 ######################################################################
 if __name__ == '__main__':
