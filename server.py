@@ -1,5 +1,4 @@
 """Flask server to run my app on"""
-
 from jinja2 import StrictUndefined
 
 from flask import (Flask, render_template, redirect, request, flash,
@@ -7,7 +6,17 @@ from flask import (Flask, render_template, redirect, request, flash,
 from model import connect_to_db
 from flask_debugtoolbar import DebugToolbarExtension
 from module import (show_crimes, call_zillow, xml_to_dict,
-					get_zillow_details, get_gkey)
+					get_zillow_details, get_gkey,
+					get_crime_latlong)
+from pprint import pprint
+
+from flask_sqlalchemy import SQLAlchemy 
+
+# This is the connection to the PostgreSQL database; we're getting
+# this through the Flask-SQLAlchemy helper library. On this, we can find
+# the "session" object, where we do most of our interactions (committing, etc.)
+
+db = SQLAlchemy()
 
 
 app = Flask(__name__)
@@ -29,6 +38,9 @@ def show_form():
 @app.route("/results")
 def get_form_data():
 	"""Get data from the form and store it in a tuple"""
+	print("\nLLLLLLLLLLLLL")
+	pprint(get_crime_latlong())
+
 	street_adrs = request.args.get("address").title()
 	
 	zipcode = request.args.get("zip")
@@ -40,10 +52,13 @@ def get_form_data():
 	zillow_resp = call_zillow(street_adrs, zipcode)
 	zillow_dict = xml_to_dict(zillow_resp)
 
-	zillow_tup = get_zillow_details(zillow_dict)
-	zestimate = zillow_tup[0]
-	home_details = zillow_tup[1]
-	map_home = zillow_tup[2]
+	zillow_data = get_zillow_details(zillow_dict)
+	zestimate = zillow_data[0]
+	home_details = zillow_data[1]
+	map_home = zillow_data[2]
+
+	
+
 
 	return render_template("results.html", 
 						   zestimate=zestimate,
@@ -52,14 +67,15 @@ def get_form_data():
 						   street_adrs=street_adrs,
 						   crimes_lst=crimes_lst)
 
-@app.route("/map")
-def get_gmap():
-	"""Get google map"""
+# @app.route("/map")
+# def get_gmap():
+# 	"""Get google map"""
 
-	# get google map secret key
-	gkey = get_gkey();
-	return render_template("map.html",
-						   gkey=gkey)
+# 	# get google map secret key
+# 	gkey = get_gkey();
+# 	return render_template("map.html",
+# 						   gkey=gkey)
+
 
 ######################################################################
 if __name__ == '__main__':
@@ -73,5 +89,6 @@ if __name__ == '__main__':
 
 	# Use the DebugToolbar
 	DebugToolbarExtension(app)
+
 
 	app.run(port=5000, host='0.0.0.0')

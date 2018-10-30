@@ -8,6 +8,9 @@ from xmljson import BadgerFish
 from xml.etree.ElementTree import fromstring
 bf = BadgerFish(dict_type=dict)
 
+from flask_sqlalchemy import SQLAlchemy
+db = SQLAlchemy() 
+
 
 def show_crimes(address):
 	"""Show a list of crimes at that address"""
@@ -69,5 +72,27 @@ def get_gkey():
 
 	gkey = environ.get("GKEY")
 	return gkey
+
+def get_crimes():
+	"""Query database for all crimes. Result is a list of Crime objects"""
+	return Crime.query.all()
+
+def get_crime_latlong():
+	"""Get the latitude and longitude coordinates of all reported crimes"""
+
+	# will be a list of dictionaries that google maps wants
+	locations = []
+	# get a list of Crime objects
+	crimes_lst = get_crimes()
+	for crime in crimes_lst:
+		lat = crime.address.latitude
+		lng = crime.address.longitude
+
+		# create list of dictionaries
+		loc_dict = {"lat": lat, "lng": lng}
+		locations.append(loc_dict)
+
+	return locations
+
 
 
