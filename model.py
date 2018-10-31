@@ -40,8 +40,7 @@ class Address(db.Model):
 	
 	def __repr__(self):
 		"""Provide useful representation when printed"""
-		return f"<Address: address_id={self.address_id} street_adrs={self.street_adrs}>"
-
+		return f"<Address: lat={self.latitude} lng={self.longitude} street_adrs={self.street_adrs}>"
 
 class Crime(db.Model):
 	"""Individual crime events"""
@@ -91,35 +90,5 @@ if __name__ == "__main__":
 
 	# Make tables
 	db.create_all()
-
-	# # Add crimetypes
-	# theft = CrimeType("Theft")
-	# robbery = CrimeType("Robbery")
-
-	# # Add crimes and associate them with crimetypes
-	# crime1 = Crime()  # instantiate the Crime object
-	# crime1.crime_type = theft  # set the crime_type instance attribute to the type specified above
-	# crime1.date_time = 2018-01-05 12:12:12
-	# crime1.beat = 11X
-	# crime1.case_num = 18-123344
-	# crime1.description = "Grand theft auto"
-	# crime2 = Crime()
-	# crime2.crime_type = robbery
-
-
-	# # Add addresses
-	# address1 = Address(street_adrs="123 Dover street")
-	# crime1.address = address1
-	# address2 = Address(street_adrs="1801 Shattuck Ave.")
-	# crime2.address = address2
-
-	# db.session.add(theft)
-	# db.session.add(robbery)
-	# db.session.add(crime1)
-	# db.session.add(crime2)
-	# db.session.add(address1)
-	# db.session.add(address2)
-	# db.session.commit()
-
 
 

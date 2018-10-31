@@ -77,34 +77,71 @@ def get_gkey():
 	gkey = environ.get("GKEY")
 	return gkey
 
-def get_crimes():
-	"""Query database for all crimes. Result is a list of Crime objects"""
-	return Crime.query.all()
+# def get_crimes():
+# 	"""Query database for all crimes. Result is a list of Crime objects"""
+# 	return Crime.query.all()
 
-def get_crime_latlong():
-	"""Get the latitude and longitude coordinates of all reported crimes"""
+# def get_crime_latlong():
+# 	"""Get the latitude and longitude coordinates of all reported crimes"""
+
+# 	# will be a list of dictionaries that google maps wants
+# 	locations = []
+# 	# get a list of Crime objects
+# 	crimes_lst = get_crimes()
+# 	for crime in crimes_lst:
+# 		lat = crime.address.latitude
+# 		lng = crime.address.longitude
+# 		# crime_type = crime.crime_type.crime_type
+# 		# case_num = crime.case_num
+
+# 		# create list of dictionaries
+# 		loc_dict = {
+# 					"lat": lat, 
+# 				    "lng": lng 
+# 				    # "crime_type": crime_type,  
+# 				    # "case_num": case_num 
+# 				    }
+
+# 		locations.append(loc_dict)
+
+# 	return locations
+
+def get_latlong_range(input_lat, input_lng):
+	"""Based on input lat and long, get a range of lat/longs to populate crimes
+	only on viewable google maps window""" 
+
+	# Based on lat/lng of input address, calculate the min and max
+	# lat/lng for gmap view window
+	max_lat = input_lat + 0.004
+	min_lat = input_lat - 0.004
+	max_lng = input_lng + 0.012
+	min_lng = input_lng - 0.012
+
+	# list of ohjects Address objects with lat/lng within specified range
+	latlng_range = Address.query.filter(Address.latitude.between(min_lat, max_lat), 
+											   Address.longitude.between(min_lng, max_lng)).all()
 
 	# will be a list of dictionaries that google maps wants
 	locations = []
-	# get a list of Crime objects
-	crimes_lst = get_crimes()
-	for crime in crimes_lst:
-		lat = crime.address.latitude
-		lng = crime.address.longitude
-		# crime_type = crime.crime_type.crime_type
-		# case_num = crime.case_num
+
+	for item in latlng_range:
+		lat = item.latitude
+		lng = item.longitude
 
 		# create list of dictionaries
 		loc_dict = {
 					"lat": lat, 
 				    "lng": lng 
-				    # "crime_type": crime_type,  
-				    # "case_num": case_num 
 				    }
 
 		locations.append(loc_dict)
 
 	return locations
 
+
+	# max_lat = 37.839535 + 0.004	
+	# min_lat = 37.839535 - 0.004
+	# max_lng = -122.2684415 + 0.006
+	# min_lng = -122.2684415 - 0.006
 
 

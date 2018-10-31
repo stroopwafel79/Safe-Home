@@ -7,7 +7,7 @@ from model import connect_to_db
 from flask_debugtoolbar import DebugToolbarExtension
 from module import (show_crimes, call_zillow, xml_to_dict,
 					get_zillow_details, get_gkey,
-					get_crime_latlong)
+					get_latlong_range)
 from pprint import pprint
 
 from flask_sqlalchemy import SQLAlchemy 
@@ -69,15 +69,14 @@ def show_form():
 # 						   longitude=longitude
 # 						   )
 
-@app.route("/results")
+@app.route("/map")
 def get_gmap():
-	"""Get google map"""
+	"""Get google map with centerpoint as input address and crimes populated in view window"""
 
 	# get street address and zipcode from input on homepage
 	street_adrs = request.args.get("address").title()
 	zipcode = request.args.get("zip")
 
-	# get Zillow data
 	# get zillow data
 	zillow_resp = call_zillow(street_adrs, zipcode) # (api call in python)
 	zillow_dict = xml_to_dict(zillow_resp)
@@ -87,13 +86,16 @@ def get_gmap():
 	map_home = zillow_data[2]
 	input_lat = zillow_data[-2]
 	input_lng = zillow_data[-1]
+	locations=get_latlong_range(input_lat, input_lng)
+	print("\n LLLLLLOOOOOOOOCCCCCCCCSSSSSSS")
+	pprint(locations)
 
-	# get google map secret key(api call in JS)
+	# get google map secret key for API call in JavaScript
 	gkey = get_gkey();
 	return render_template(
 						   "map.html",
 						   gkey=gkey,
-						   locations=get_crime_latlong(),
+						   locations=locations,
 						   input_lat=input_lat,
 						   input_lng=input_lng
 						   )
