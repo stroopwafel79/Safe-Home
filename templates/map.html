@@ -24,14 +24,18 @@
     <script>
       "use strict";
       //TODO Hardcoded for now, will be lat/long of input later
-      let inputAsCenter = {lat: 37.8032971, lng: -122.2798147}
+      let inputAsCenter = {lat: {{ input_lat }}, lng: {{ input_lng }}}
       
       function initMap() {
       	const locations = {{ locations|tojson }};
         let map = new google.maps.Map(document.getElementById('map'), {
           zoom: 15,
-          center: locations[0]
+          center: inputAsCenter
         });
+
+        let input_marker = new google.maps.Marker({position: inputAsCenter, 
+        										   map: map,
+        										   label: "Zillow"});
 
         // Create an array of alphabetical characters used to label the markers.
         const labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';

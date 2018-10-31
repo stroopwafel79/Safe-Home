@@ -4,7 +4,7 @@
 from model import CrimeType, Crime, Address
 from os import environ # to access environ.get("zillow_key")
 import requests
-from flask import jsonify
+from pprint import pprint
 from xmljson import BadgerFish
 from xml.etree.ElementTree import fromstring
 bf = BadgerFish(dict_type=dict)
@@ -61,12 +61,15 @@ def get_zillow_details(zillow_dict):
 	key1 = "{http://www.zillow.com/static/xsd/SearchResults.xsd}searchresults"
 	results = zillow_dict[key1]["response"]["results"]["result"][0]
 	zestimate = results["zestimate"]["amount"]["$"]
+	latitude = results["address"]["latitude"]["$"]
+	longitude = results["address"]["longitude"]["$"]
+
 	
 	links = results["links"]
 	home_details = links["homedetails"]["$"]
 	map_home = links["mapthishome"]["$"]
 
-	return (zestimate, home_details, map_home)
+	return (zestimate, home_details, map_home, latitude, longitude)
 
 def get_gkey():
 	"""Get the Google Maps API secret key"""

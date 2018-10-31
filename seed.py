@@ -28,7 +28,7 @@ def load_crimes():
     ################################ 
     
     # Read crime file and import data
-    with open("seed_data/lat_long_test.tsv") as f:
+    with open("seed_data/CrimeWatch_Maps_Past_90-Days (10_30_18).tsv") as f:
         # ignore header row
         next(f)
 
@@ -43,9 +43,10 @@ def load_crimes():
         for row in crimereader: 
             crime_lst = '\t '.join(row).split('\t ')
 
+            # TODO testing if datetime can be string instead
             # Turn date and time in string form to a datetime object
-            date_time = datetime.strptime(crime_lst[1], "%m/%d/%Y %I:%M:%S %p")
-
+            # date_time = datetime.strptime(crime_lst[1], "%m/%d/%Y %I:%M:%S %p")
+            date_time = crime_lst[1]
         
             # check if lat/long included. Get the lat/long via
             # searching for the above pattern

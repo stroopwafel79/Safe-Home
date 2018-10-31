@@ -38,42 +38,65 @@ def show_form():
 # @app.route("/results")
 # def get_form_data():
 # 	"""Get data from the form and store it in a tuple"""
-# 	print("\nLLLLLLLLLLLLL")
-# 	pprint(get_crime_latlong())
-# 	print(type(get_crime_latlong()))
+# 	# print("\nLLLLLLLLLLLLL")
+# 	# pprint(get_crime_latlong())
+# 	# print(type(get_crime_latlong()))
 
 # 	street_adrs = request.args.get("address").title()
 	
 # 	zipcode = request.args.get("zip")
 
-# 	# get crime data
-# 	crimes_lst = show_crimes(street_adrs)
+# 	# # get crime data
+# 	# crimes_lst = show_crimes(street_adrs)
 
 # 	# get zillow data
 # 	zillow_resp = call_zillow(street_adrs, zipcode)
 # 	zillow_dict = xml_to_dict(zillow_resp)
-
 # 	zillow_data = get_zillow_details(zillow_dict)
 # 	zestimate = zillow_data[0]
 # 	home_details = zillow_data[1]
 # 	map_home = zillow_data[2]
+# 	latitude = zillow_data[-2]
+# 	longitude = zillow_data[-1]
 
 # 	return render_template("results.html", 
 # 						   zestimate=zestimate,
 # 						   home_details=home_details,
 # 						   map_home=map_home,
 # 						   street_adrs=street_adrs,
-# 						   crimes_lst=crimes_lst)
+# 						   #crimes_lst=crimes_lst,
+# 						   latitude=latitude,
+# 						   longitude=longitude
+# 						   )
 
 @app.route("/results")
 def get_gmap():
 	"""Get google map"""
 
-	# get google map secret key
+	# get street address and zipcode from input on homepage
+	street_adrs = request.args.get("address").title()
+	zipcode = request.args.get("zip")
+
+	# get Zillow data
+	# get zillow data
+	zillow_resp = call_zillow(street_adrs, zipcode) # (api call in python)
+	zillow_dict = xml_to_dict(zillow_resp)
+	zillow_data = get_zillow_details(zillow_dict)
+	zestimate = zillow_data[0]
+	home_details = zillow_data[1]
+	map_home = zillow_data[2]
+	input_lat = zillow_data[-2]
+	input_lng = zillow_data[-1]
+
+	# get google map secret key(api call in JS)
 	gkey = get_gkey();
-	return render_template("map.html",
+	return render_template(
+						   "map.html",
 						   gkey=gkey,
-						   locations=get_crime_latlong())
+						   locations=get_crime_latlong(),
+						   input_lat=input_lat,
+						   input_lng=input_lng
+						   )
 
 
 ######################################################################
