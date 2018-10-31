@@ -22,13 +22,36 @@
 {% block content %}
  <div id="map"></div>
     <script>
-      var map;
+      "use strict";
+      //TODO Hardcoded for now, will be lat/long of input later
+      let inputAsCenter = {lat: 37.8032971, lng: -122.2798147}
+      
       function initMap() {
-        map = new google.maps.Map(document.getElementById('map'), {
-          center: {lat: -34.397, lng: 150.644},
-          zoom: 8
+      	const locations = {{ locations|tojson }};
+        let map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 15,
+          center: locations[0]
         });
+
+        // Create an array of alphabetical characters used to label the markers.
+        const labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+        // Add some markers to the map.
+        // Note: The code uses the JavaScript Array.prototype.map() method to
+        // create an array of markers based on a given "locations" array.
+        // The map() method here has nothing to do with the Google Maps API.
+        let markers = locations.map(function(location, i) {
+          return new google.maps.Marker({
+            position: location,
+            label: labels[i % labels.length],
+            map: map
+            //TODO icon: set as crimetype icons later#######################################
+          });
+        });
+
       }
+ 		
+ 	  	
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key={{ gkey }}&callback=initMap"
     async defer></script>

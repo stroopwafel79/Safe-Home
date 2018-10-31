@@ -35,46 +35,45 @@ def show_form():
 	return render_template("homepage.html")
 
 
+# @app.route("/results")
+# def get_form_data():
+# 	"""Get data from the form and store it in a tuple"""
+# 	print("\nLLLLLLLLLLLLL")
+# 	pprint(get_crime_latlong())
+# 	print(type(get_crime_latlong()))
+
+# 	street_adrs = request.args.get("address").title()
+	
+# 	zipcode = request.args.get("zip")
+
+# 	# get crime data
+# 	crimes_lst = show_crimes(street_adrs)
+
+# 	# get zillow data
+# 	zillow_resp = call_zillow(street_adrs, zipcode)
+# 	zillow_dict = xml_to_dict(zillow_resp)
+
+# 	zillow_data = get_zillow_details(zillow_dict)
+# 	zestimate = zillow_data[0]
+# 	home_details = zillow_data[1]
+# 	map_home = zillow_data[2]
+
+# 	return render_template("results.html", 
+# 						   zestimate=zestimate,
+# 						   home_details=home_details,
+# 						   map_home=map_home,
+# 						   street_adrs=street_adrs,
+# 						   crimes_lst=crimes_lst)
+
 @app.route("/results")
-def get_form_data():
-	"""Get data from the form and store it in a tuple"""
-	print("\nLLLLLLLLLLLLL")
-	pprint(get_crime_latlong())
+def get_gmap():
+	"""Get google map"""
 
-	street_adrs = request.args.get("address").title()
-	
-	zipcode = request.args.get("zip")
-
-	# get crime data
-	crimes_lst = show_crimes(street_adrs)
-
-	# get zillow data
-	zillow_resp = call_zillow(street_adrs, zipcode)
-	zillow_dict = xml_to_dict(zillow_resp)
-
-	zillow_data = get_zillow_details(zillow_dict)
-	zestimate = zillow_data[0]
-	home_details = zillow_data[1]
-	map_home = zillow_data[2]
-
-	
-
-
-	return render_template("results.html", 
-						   zestimate=zestimate,
-						   home_details=home_details,
-						   map_home=map_home,
-						   street_adrs=street_adrs,
-						   crimes_lst=crimes_lst)
-
-# @app.route("/map")
-# def get_gmap():
-# 	"""Get google map"""
-
-# 	# get google map secret key
-# 	gkey = get_gkey();
-# 	return render_template("map.html",
-# 						   gkey=gkey)
+	# get google map secret key
+	gkey = get_gkey();
+	return render_template("map.html",
+						   gkey=gkey,
+						   locations=get_crime_latlong())
 
 
 ######################################################################

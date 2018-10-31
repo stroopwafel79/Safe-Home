@@ -4,6 +4,7 @@
 from model import CrimeType, Crime, Address
 from os import environ # to access environ.get("zillow_key")
 import requests
+from flask import jsonify
 from xmljson import BadgerFish
 from xml.etree.ElementTree import fromstring
 bf = BadgerFish(dict_type=dict)
@@ -87,9 +88,17 @@ def get_crime_latlong():
 	for crime in crimes_lst:
 		lat = crime.address.latitude
 		lng = crime.address.longitude
+		# crime_type = crime.crime_type.crime_type
+		# case_num = crime.case_num
 
 		# create list of dictionaries
-		loc_dict = {"lat": lat, "lng": lng}
+		loc_dict = {
+					"lat": lat, 
+				    "lng": lng 
+				    # "crime_type": crime_type,  
+				    # "case_num": case_num 
+				    }
+
 		locations.append(loc_dict)
 
 	return locations
