@@ -106,7 +106,7 @@ def get_gkey():
 
 # 	return locations
 
-def get_latlong_range(input_lat, input_lng):
+def get_crimedata_by_latlong_range(input_lat, input_lng):
 	"""Based on input lat and long, get a range of lat/longs to populate crimes
 	only on viewable google maps window""" 
 
@@ -118,30 +118,103 @@ def get_latlong_range(input_lat, input_lng):
 	min_lng = input_lng - 0.012
 
 	# list of ohjects Address objects with lat/lng within specified range
-	latlng_range = Address.query.filter(Address.latitude.between(min_lat, max_lat), 
-											   Address.longitude.between(min_lng, max_lng)).all()
+	# latlng_range = Address.query.filter(Address.latitude.between(min_lat, max_lat), 
+	# 										   Address.longitude.between(min_lng, max_lng)).all()
+	
+	# crime data at addresses within range specified by input address
+	# # 
+	# crime_data_range_query = db.session.query(Crime.address.latitude, 
+	# 									Crime.address.longitude,
+	# 									CrimeType.crime_type, 
+	# 								    Crime.date_time, 
+	# 							        Crime.case_num).join(Crime).filter(Crime.address.latitude.between(min_lat, max_lat), 
+	# 								  	 Crime.address.longitude.between(min_lng, max_lng)).all()
 
-	# will be a list of dictionaries that google maps wants
-	locations = []
+	# 	SELECT crimetypes.crime_type, crimes.date_time, crimes.case_num, crimes.description
+	# 	FROM crimetypes
+	# 	JOIN crimes ON crimetypes.crime_type_id = crimes.crime_type_id 
+	# 	JOIN addresses ON crimes.address_id = addresses.address_id
+	# 	WHERE addresses.latitude = loc['lat'] AND addresses.longitude = loc['lng']
 
-	for item in latlng_range:
-		lat = item.latitude
-		lng = item.longitude
 
-		# create list of dictionaries
-		loc_dict = {
-					"lat": lat, 
-				    "lng": lng 
-				    }
 
-		locations.append(loc_dict)
 
-	return locations
+
+
+
+	# cromes = Address.query.options(db.joinedload('crimes')).filter(Address.latitude.between(min_lat, max_lat), Address.longitude.between(min_lng, max_lng)).all()
+
+
+
+	# crime_data_range_query = db.session.query(Address.latitude, 
+	# 									Address.longitude,
+	# 									CrimeType.crime_type, 
+	# 								    Crime.date_time, 
+	# 							        Crime.case_num).join(Crime).join(Address)
+	# 									.filter(Address.latitude.between(min_lat, max_lat), 
+	# 									Address.longitude.between(min_lng, max_lng)).all()
+
+	# crime_data_range_query = db.session.query(CrimeType.crime_type, 
+	# 								    Crime.date_time, 
+	# 							        Crime.case_num).join(Crime).join(Address)
+	# 									.filter(Address.latitude.between(min_lat, max_lat), 
+	# 									Address.longitude.between(min_lng, max_lng)).all()
+
+	crime_addresses = Address.query.options(db.joinedload('crimes').joinedload('crime_type')).filter(Address.latitude.between(min_lat, max_lat), Address.longitude.between(min_lng, max_lng)).all()
+	# test cases
+	# max_lat = 37.83918 + 0.004
+	# min_lat = 37.83918 - 0.004
+
+	# max_lng = -122.267245 - 0.006
+	# min_lng = -122.267245 + 0.006
+
+	#crime = Crime.query.options(db.joinedload('address')).filter(Crime.address.latitude.between(min_lat, max_lat), Crime.address.longitude.between(min_lng, max_lng)).all()
+	# # will be a list of dictionaries that google maps wants
+	crimedata_in_range = []
+
+	for address in crime_addresses:
+		for crime in address.crimes:
+			lat = crime.address.latitude
+			lng = crime.address.longitude
+			ctype = crime.crime_type.crime_type
+			case_num = crime.case_num
+			desc = crime.description
+			date_time = crime.date_time.isoformat()
+			beat = crime.beat
+
+			crime_dict = {
+						  "lat": lat, 
+				    	  "lng": lng,
+				    	  "crime_type": ctype,
+				    	  "case_num": case_num,
+				    	  "description": desc,
+				    	  "date_time": date_time,
+				    	  "police_beat": beat
+						}
+
+			crimedata_in_range.append(crime_dict)
+
+	return crimedata_in_range
 
 
 	# max_lat = 37.839535 + 0.004	
 	# min_lat = 37.839535 - 0.004
 	# max_lng = -122.2684415 + 0.006
 	# min_lng = -122.2684415 - 0.006
+
+	# get crime data per location within the range
+	# loop over locations list and query db for crime data
+	# for loc in locations:
+	# 	# query db for crime_type, datetime, case_num where
+	# # 	# lat/lng == location
+	# crime_data = db.session.query(CrimeType.crime_type, Crime.date_time, Crime.case_num)
+	# .join(Crime).join(Address).filter(Address.latitude == 37.83918, Address.longitude == -122.267245).all()
+		
+	#[('Assault', datetime.datetime(2018, 8, 17, 7, 30), '18-041355'), ('Motor Vehicle Theft', datetime.datetime(2018, 9, 19, 5, 30), '18-048754')]# # SQL version of above query
+		# SELECT crimetypes.crime_type, crimes.date_time, crimes.case_num, crimes.description
+		# FROM crimetypes
+		# JOIN crimes ON crimetypes.crime_type_id = crimes.crime_type_id 
+		# JOIN addresses ON crimes.address_id = addresses.address_id
+		# WHERE addresses.latitude = loc['lat'] AND addresses.longitude = loc['lng']
 
 

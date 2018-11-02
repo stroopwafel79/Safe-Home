@@ -51,7 +51,7 @@ class Crime(db.Model):
 	crime_type_id = db.Column(db.Integer, db.ForeignKey("crimetypes.crime_type_id"))
 	address_id = db.Column(db.Integer, db.ForeignKey("addresses.address_id"))
 
-	date_time = db.Column(db.String(50), nullable=False)
+	date_time = db.Column(db.DateTime, nullable=False)
 
 	case_num = db.Column(db.String(25), nullable=False)
 	description = db.Column(db.String(200), nullable=True)

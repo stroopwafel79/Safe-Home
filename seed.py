@@ -45,8 +45,8 @@ def load_crimes():
 
             # TODO testing if datetime can be string instead
             # Turn date and time in string form to a datetime object
-            # date_time = datetime.strptime(crime_lst[1], "%m/%d/%Y %I:%M:%S %p")
-            date_time = crime_lst[1]
+            date_time = datetime.strptime(crime_lst[1], "%m/%d/%Y %I:%M:%S %p")
+            #date_time = crime_lst[1]
         
             # check if lat/long included. Get the lat/long via
             # searching for the above pattern
