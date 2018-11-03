@@ -87,25 +87,9 @@ def get_gmap():
 	input_lat = zillow_data[-2]
 	input_lng = zillow_data[-1]
 	crime_data=get_crimedata_by_latlong_range(input_lat, input_lng)
-	print("\nCCCCCCCCCCCCCCCCC")
-	pprint(crime_data)
+	
 	# get google map secret key for API call in JavaScript
 	gkey = get_gkey();
-
-	# get crime data per location within the range
-	# loop over locations list and query db for crime data
-	# for loc in locations:
-	# 	# query db for crime_type, datetime, case_num where
-	# # 	# lat/lng == location
-	#crime_data = db.session.query(CrimeType.crime_type, Crime.date_time, Crime.case_num).join(Crime).join(Address).filter(Address.latitude == 37.83918, Address.longitude == -122.267245).all()
-		
-	#[('Assault', datetime.datetime(2018, 8, 17, 7, 30), '18-041355'), ('Motor Vehicle Theft', datetime.datetime(2018, 9, 19, 5, 30), '18-048754')]# # SQL version of above query
-		# SELECT crimetypes.crime_type, crimes.date_time, crimes.case_num, crimes.description
-		# FROM crimetypes
-		# JOIN crimes ON crimetypes.crime_type_id = crimes.crime_type_id 
-		# JOIN addresses ON crimes.address_id = addresses.address_id
-		# WHERE addresses.latitude = loc['lat'] AND addresses.longitude = loc['lng']
-
  
 	return render_template(
 						   "map.html",
