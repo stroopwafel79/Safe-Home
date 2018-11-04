@@ -78,6 +78,40 @@ def get_gkey():
 	return gkey
 
 
+def get_latlong_range(input_lat, input_lng):
+	"""Based on input lat and long, get a range of lat/longs to populate crimes
+	only on viewable google maps window""" 
+
+	# Based on lat/lng of input address, calculate the min and max
+	# lat/lng for gmap view window
+	max_lat = input_lat + 0.004
+	min_lat = input_lat - 0.004
+	max_lng = input_lng + 0.012
+	min_lng = input_lng - 0.012
+
+	# list of ohjects Address objects with lat/lng within specified range
+	latlng_range = Address.query.filter(Address.latitude.between(min_lat, max_lat), 
+											   Address.longitude.between(min_lng, max_lng)).all()
+
+	# # will be a list of dictionaries that google maps wants
+	crimedata_by_range = []
+
+	for item in crime_data_range_query:
+		lat = item.latitude
+		lng = item.longitude
+		crime_type = 
+
+		# create dict of lat and long for each address
+		loc_dict = {
+					"lat": lat, 
+				    "lng": lng 
+				    }
+
+		locations.append(loc_dict)
+
+	return locations
+
+
 def get_crimedata_by_latlong_range(input_lat, input_lng):
 	"""Based on input lat and long, get a range of lat/longs to populate crimes
 	only on viewable google maps window""" 
@@ -120,4 +154,5 @@ def get_crimedata_by_latlong_range(input_lat, input_lng):
 			crimedata_in_range.append(crime_dict)
 
 	return crimedata_in_range
+
 

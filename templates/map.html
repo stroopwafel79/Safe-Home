@@ -27,7 +27,7 @@
       
       // initMap is called in the API call (see end of src below)
       function initMap() {
-      	const locations = {{ locations|tojson }};
+      	const crime_data = {{ crime_data|tojson }};
         let map = new google.maps.Map(document.getElementById('map'), {
           zoom: 16,
           center: inputAsCenter
@@ -37,21 +37,19 @@
         										   map: map,
         										   label: "Zillow"});
 
-        // Create an array of alphabetical characters used to label the markers.
-        const labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        
 
         // Add some markers to the map.
         // Note: The code uses the JavaScript Array.prototype.map() method to
         // create an array of markers based on a given "locations" array.
         // The map() method here has nothing to do with the Google Maps API.
-        // let markers = locations.map(function(location, i) {
-        //   return new google.maps.Marker({
-        //     position: location,
-        //     label: labels[i % labels.length],
-        //     map: map
-            //TODO icon: set as crimetype icons later#######################################
-          // });
-        // });
+        let markers = crime_data.map(function(crime) {
+          return new google.maps.Marker({
+            position: ({lat: crime['lat']}, lng: crime['lng']})|tojson,
+            label: "A",
+            map: map//TODO icon: set as crimetype icons later#######################################
+          });
+        });
 
       }
  		
