@@ -98,8 +98,7 @@ def get_latlong_range(input_lat, input_lng):
 
 	for item in crime_data_range_query:
 		lat = item.latitude
-		lng = item.longitude
-		crime_type = 
+		lng = item.longitude 
 
 		# create dict of lat and long for each address
 		loc_dict = {

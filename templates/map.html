@@ -45,12 +45,12 @@
         // The map() method here has nothing to do with the Google Maps API.
         let markers = crime_data.map(function(crime) {
           return new google.maps.Marker({
-            position: ({lat: crime['lat']}, lng: crime['lng']})|tojson,
+            position: {lat: crime['lat'], lng: crime['lng']},
             label: "A",
             map: map//TODO icon: set as crimetype icons later#######################################
           });
         });
-
+        console.log(markers);
       }
  		
  	  	
