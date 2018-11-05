@@ -27,15 +27,35 @@
       
       // initMap is called in the API call (see end of src below)
       function initMap() {
-      	const crime_data = {{ crime_data|tojson }};
+      	const crimeData = {{ crime_data|tojson }};
         let map = new google.maps.Map(document.getElementById('map'), {
           zoom: 16,
           center: inputAsCenter
         });
 
-        let input_marker = new google.maps.Marker({position: inputAsCenter, 
+        // Create a marker for the input address
+        // TODO attach Zillow info to this (Or just have another window)
+        let inputMarker = new google.maps.Marker({position: inputAsCenter, 
         										   map: map,
-        										   label: "Zillow"});
+        										   label: 'Z'});
+
+        let crimeInfoWindowContent = '<div id="crimeInfo">' +
+        '<ul style="list-style-type:none">' +
+        '<li>Type of Crime: Robbery</li>' +
+        '<li>Date and Time of Occurance: 12/12/18 07:30:00</li>' +
+        '<li>Case Number: 18-12345</li>' +
+        '<li>Description of Crime: Strong Arm Robbery</li>' +
+        '<li>Agency: Oakland Police Department</li>' +
+        '</ul>' +
+        '</div>';
+
+        let infowindow = new google.maps.InfoWindow({
+          content: crimeInfoWindowContent
+        });
+
+        inputMarker.addListener('click', function() {
+            infowindow.open(map, inputMarker);
+          });
 
         
 
@@ -43,10 +63,10 @@
         // Note: The code uses the JavaScript Array.prototype.map() method to
         // create an array of markers based on a given "locations" array.
         // The map() method here has nothing to do with the Google Maps API.
-        let markers = crime_data.map(function(crime) {
+        let markers = crimeData.map(function(crime) {
           return new google.maps.Marker({
             position: {lat: crime['lat'], lng: crime['lng']},
-            label: "A",
+            label: 'C',
             map: map//TODO icon: set as crimetype icons later#######################################
           });
         });
