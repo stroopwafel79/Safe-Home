@@ -83,7 +83,7 @@ def get_gmap():
 	zillow_data = get_zillow_details(zillow_dict)
 	zestimate = zillow_data[0]
 	home_details = zillow_data[1]
-	map_home = zillow_data[2]
+	for_sale = zillow_data[2]
 	input_lat = zillow_data[-2]
 	input_lng = zillow_data[-1]
 	crime_data=get_crimedata_by_latlong_range(input_lat, input_lng)
@@ -98,7 +98,10 @@ def get_gmap():
 						   input_lat=input_lat,
 						   input_lng=input_lng
 						   )
-
+	# return render_template(
+	# 						"results.html",
+	# 						for_sale=for_sale,
+	# 						home_details=home_details)
 
 ######################################################################
 if __name__ == '__main__':

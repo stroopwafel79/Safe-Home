@@ -3,23 +3,8 @@
 {% block title %}Results{% endblock %}
 
 {% block content %}
-	<div>
-		<p>
-			The following crimes have been reported at {{ street_adrs }}:
-		</p>
-		<ul>
-		  {% for crime in crimes_lst %}
-		    <li>{{ crime.crime_type.crime_type }}</li>
-		  {% endfor %}
-		</ul>
-	</div>
-	<div>Zillow's zestimate for this property is: ${{ zestimate }}</div>
-	<div>Latitude: {{ latitude }}</div>
-	<div>Longitude: {{ longitude }}</div>
+
 	<div>Click <a href="{{ home_details }}">here</a> for details on this home.</div>
-	<div>Click <a href="{{ map_home }}">here</a> to map this home.</div>
-	<form action="/map">
-		Would you like a map of this address:
-		<input type="submit" value="Map">
-	</form>
+	<div>{{ for_sale }}</div>
+	
 {% endblock %}
