@@ -79,14 +79,15 @@ def get_gmap():
 
 	# get zillow data
 	zillow_resp = call_zillow(street_adrs, zipcode) # (api call in python)
-	zillow_dict = xml_to_dict(zillow_resp)
-	zillow_data = get_zillow_details(zillow_dict)
-	zestimate = zillow_data[0]
-	home_details = zillow_data[1]
-	for_sale = zillow_data[2]
-	input_lat = zillow_data[-2]
-	input_lng = zillow_data[-1]
-	crime_data=get_crimedata_by_latlong_range(input_lat, input_lng)
+	full_zillow_dict = xml_to_dict(zillow_resp)
+	zillow_details_dict = get_zillow_details(full_zillow_dict)
+	# zestimate = zillow_data[0]
+	# home_details = zillow_data[1]
+	# for_sale = zillow_data[2]
+	# comparables = zillow_data[3]
+	input_lat = zillow_details_dict["lat"]
+	input_lng = zillow_details_dict["lng"]
+	
 	
 	# get google map secret key for API call in JavaScript
 	gkey = get_gkey();
@@ -96,12 +97,14 @@ def get_gmap():
 						   gkey=gkey,
 						   crime_data=get_crimedata_by_latlong_range(input_lat, input_lng),
 						   input_lat=input_lat,
-						   input_lng=input_lng
+						   input_lng=input_lng,
+						   zillow_details_dict=zillow_details_dict
 						   )
 	# return render_template(
 	# 						"results.html",
 	# 						for_sale=for_sale,
-	# 						home_details=home_details)
+	# 						home_details=home_details,
+	# 						comparables=comparables)
 
 ######################################################################
 if __name__ == '__main__':

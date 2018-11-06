@@ -67,10 +67,19 @@ def get_zillow_details(zillow_dict):
 	
 	links = results["links"]
 	home_details = links["homedetails"]["$"]
+	comparables = links["comparables"]["$"]
 	# map_home = links["mapthishome"]["$"]
 	for_sale = results["localRealEstate"]["region"]["links"]["forSale"]["$"]
 
-	return (zestimate, home_details, for_sale, latitude, longitude)
+	return {
+			"zestimate": zestimate,
+			"home_details_link": home_details,
+			"for_sale_link": for_sale,
+			"comparables_link": comparables,
+			"lat": latitude,
+			"lng": longitude
+			}
+
 
 def get_gkey():
 	"""Get the Google Maps API secret key"""
