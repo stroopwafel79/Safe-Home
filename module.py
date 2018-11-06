@@ -60,7 +60,7 @@ def xml_to_dict(data):
 def get_zillow_details(zillow_dict):
 	"""Access detail zillow info from api call dictionary result"""
 	key1 = "{http://www.zillow.com/static/xsd/SearchResults.xsd}searchresults"
-	results = zillow_dict[key1]["response"]["results"]["result"]#[0]
+	results = zillow_dict[key1]["response"]["results"]["result"][0]
 	zestimate = results["zestimate"]["amount"]["$"]
 	latitude = results["address"]["latitude"]["$"]
 	longitude = results["address"]["longitude"]["$"]
@@ -103,56 +103,30 @@ def get_gkey():
 	gkey = environ.get("GKEY")
 	return gkey
 
-
-# def get_latlong_range(input_lat, input_lng):
-# 	"""Based on input lat and long, get a range of lat/longs to populate crimes
-# 	only on viewable google maps window""" 
-
-# 	# Based on lat/lng of input address, calculate the min and max
-# 	# lat/lng for gmap view window
-# 	max_lat = input_lat + 0.004
-# 	min_lat = input_lat - 0.004
-# 	max_lng = input_lng + 0.012
-# 	min_lng = input_lng - 0.012
-
-# 	# list of ohjects Address objects with lat/lng within specified range
-# 	latlng_range = Address.query.filter(Address.latitude.between(min_lat, max_lat), 
-# 											   Address.longitude.between(min_lng, max_lng)).all()
-
-# 	# # will be a list of dictionaries that google maps wants
-# 	crimedata_by_range = []
-
-# 	for item in crime_data_range_query:
-# 		lat = item.latitude
-# 		lng = item.longitude 
-
-# 		# create dict of lat and long for each address
-# 		loc_dict = {
-# 					"lat": lat, 
-# 				    "lng": lng 
-# 				    }
-
-# 		locations.append(loc_dict)
-
-# 	return locations
-
+def get_latlong_range(input_lat, input_lng):
+	""" Get a range of latitudes and longitudes based on the lat and long of the 
+		address entered in the homepage.
+	"""
+	return {
+			"max_lat": input_lat + 0.004,
+			"min_lat": input_lat - 0.004,
+			"max_lng": input_lng + 0.012,
+			"min_lng": input_lng - 0.012
+		   }
 
 def get_crimedata_by_latlong_range(input_lat, input_lng):
 	"""Based on input lat and long, get a range of lat/longs to populate crimes
 	only on viewable google maps window""" 
 
-	# Based on lat/lng of input address, calculate the min and max
-	# lat/lng for gmap view window
-	max_lat = input_lat + 0.004
-	min_lat = input_lat - 0.004
-	max_lng = input_lng + 0.012
-	min_lng = input_lng - 0.012
+	latlong_range = get_latlong_range(input_lat, input_lng) # returns a dictionary
 
 	# get list of address objects within the range and associate with crimes
 	crime_addresses = Address.query.options(
 								 db.joinedload('crimes').joinedload('crime_type')
-								 ).filter(Address.latitude.between(min_lat, max_lat), 
-								 		  Address.longitude.between(min_lng, max_lng)).all()
+								 ).filter(Address.latitude.between(latlong_range["min_lat"], 
+								 								   latlong_range["max_lat"]), 
+								 		  Address.longitude.between(latlong_range["min_lng"], 
+								 		  							latlong_range["max_lng"])).all()
 	
 	crimedata_in_range = []
 
@@ -185,18 +159,41 @@ def get_homedata_by_latlong_range(input_lat, input_lng):
 	"""Based on input lat and long, get a range of lat/longs to populate 
 	homes for sale in Google map""" 
 
-	# Based on lat/lng of input address, calculate the min and max
-	# lat/lng for gmap view window
-	max_lat = input_lat + 0.004
-	min_lat = input_lat - 0.004
-	max_lng = input_lng + 0.012
-	min_lng = input_lng - 0.012
+	latlong_range = get_latlong_range(input_lat, input_lng) # returns a dictionary
 
 
-	home_for_sale_data = HomesForSale.query.filter(HomesForSale.latitude.between(min_lat, max_lat), 
-								 		           HomesForSale.longitude.between(min_lng, max_lng)).all()
+	home_for_sale_data = HomesForSale.query.filter(HomesForSale.latitude.between(latlong_range["min_lat"], 
+								 								                 latlong_range["max_lat"]), 
+								 		           HomesForSale.longitude.between(latlong_range["min_lng"], 
+								 		  							              latlong_range["max_lng"])).all()
+	
 
 	homedata_in_range = [] # list of dictionaries for each home
 
 	for home in home_for_sale_data:
+		home_dict = { 
+					  "latitude": home.latitude,
+					  "longitude": home.longitude,
+					  "mls_num": home.mls_num,
+					  "street_adrs": home.street_adrs,
+					  "city": home.city,
+					  "state": home.state,
+					  "zipcode": home.zipcode,
+					  "price": home.price,
+					  "property_type": home.property_type,
+					  "neighborhood": home.neighborhood,
+					  "year_built": home.year_built,
+					  "sq_ft": home.sq_ft,
+					  "price_per_sqft": home.price_per_sqft,
+					  "lot_size": home.lot_size,
+					  "num_bed": home.num_bed,
+					  "num_bath": home.num_bath,
+					  "days_on_market": home.days_on_market,
+					  "hoa_per_month": home.hoa_per_month 
+					}
+
+		homedata_in_range.append(home_dict)
+	pprint(homedata_in_range)
+	return homedata_in_range
 		
+
