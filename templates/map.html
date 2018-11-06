@@ -29,6 +29,7 @@
       function initMap() {
       	const crimeData = {{ crime_data|tojson }};
         const zillowData = {{ zillow_details_dict|tojson }};
+        const homeForSaleData = {{ homes_for_sale_data|tojson }};
         let map = new google.maps.Map(document.getElementById('map'), {
           zoom: 16,
           center: inputAsCenter 
@@ -65,12 +66,12 @@
 
         
 
-        // Add some markers to the map.
+        // Add Crime markers to the map.
         // Note: The code uses the JavaScript Array.prototype.map() method to
         // create an array of markers based on a given "crimeData" array.
         // The map() method here has nothing to do with the Google Maps API.
-        let markers = crimeData.map(function(crime) {
-            let m = new google.maps.Marker({
+        let crimeMarkers = crimeData.map(function(crime) {
+            let cMarker = new google.maps.Marker({
               position: {lat: crime['lat'], lng: crime['lng']},
               label: 'C',
               map: map,
@@ -91,11 +92,50 @@
             let infowindow = new google.maps.InfoWindow({
               content: crimeInfoWindowContent
             });
-            m.addListener('click', function() {
-             infowindow.open(map, m);
+            cMarker.addListener('click', function() {
+             infowindow.open(map, cMarker);
+          }); 
+        });
+
+        // Add Homes for Sale markers to the map.
+        // Note: The code uses the JavaScript Array.prototype.map() method to
+        // create an array of markers based on a given "crimeData" array.
+        // The map() method here has nothing to do with the Google Maps API.
+        let homeMarkers = homeForSaleData.map(function(home) {
+            let hMarker = new google.maps.Marker({
+              position: {lat: home['latitude'], lng: home['longitude']},
+              label: 'H',
+              map: map,
+            //TODO icon: set as home icons later#######################################
+            });
+            
+            let homeInfoWindowContent = `<div id="homeInfo">
+            <ul style="list-style-type:none">
+              <li><b>Address:</b> ${home.street_adrs} ${home.city}, ${home.state}</li>
+              <li><b>Neighborhood:</b> ${home.neighborhood}</li>
+              <li><b>Price:</b> $${home.price}</li>
+              <li><b>Days on the Market:</b> ${home.days_on_market}</li>
+              <li><b>Type of Property:</b> ${home.property_type}</li>
+              <li><b>Year Built:</b> ${home.year_built}</li>
+              <li><b>Square Footage:</b> ${home.sq_ft}</li>
+              <li><b>Price per Square Foot:</b> $${home.price_per_sqft}</li>
+              <li><b>Number of Bedrooms:</b> ${home.num_bed}</li>
+              <li><b>Number of Bathrooms:</b> ${home.num_bath}</li>
+              <li><b>Lot Size(ft):</b> ${home.lot_size}</li>
+              <li><b>HOA Dues per Month:</b> $${home.hoa_per_month}</li>
+              <li><b>MLS number:</b> ${home.mls_num} </li>
+            </ul>
+            </div>`;
+
+            let infowindow = new google.maps.InfoWindow({
+              content: homeInfoWindowContent
+            });
+            hMarker.addListener('click', function() {
+             infowindow.open(map, hMarker);
           }); 
         });
         
+
       }
  		
  	  	

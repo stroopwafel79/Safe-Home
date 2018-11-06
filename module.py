@@ -1,7 +1,7 @@
 """Module containing functions to assist in getting
    crime and zillow data"""
 
-from model import CrimeType, Crime, Address
+from model import CrimeType, Crime, Address, HomesForSale
 from os import environ # to access environ.get("zillow_key")
 import requests
 from pprint import pprint
@@ -132,23 +132,16 @@ def get_crimedata_by_latlong_range(input_lat, input_lng):
 
 	for address in crime_addresses:
 		for crime in address.crimes:
-			lat = crime.address.latitude
-			lng = crime.address.longitude
-			ctype = crime.crime_type.crime_type
-			case_num = crime.case_num
-			desc = crime.description
-			date_time = crime.date_time.isoformat()
-			beat = crime.beat
 
 			crime_dict = {
-						  "lat": lat, 
-				    	  "lng": lng,
-				    	  "crime_type": ctype,
-				    	  "case_num": case_num,
-				    	  "description": desc,
-				    	  "date_time": date_time,
-				    	  "police_beat": beat
-						}
+						  "lat": crime.address.latitude, 
+				    	  "lng": crime.address.longitude,
+				    	  "crime_type": crime.crime_type.crime_type,
+				    	  "case_num": crime.case_num,
+				    	  "description": crime.description,
+				    	  "date_time": crime.date_time.isoformat(),
+				    	  "police_beat": crime.beat
+						 }
 
 			crimedata_in_range.append(crime_dict)
 
@@ -161,7 +154,7 @@ def get_homedata_by_latlong_range(input_lat, input_lng):
 
 	latlong_range = get_latlong_range(input_lat, input_lng) # returns a dictionary
 
-
+	# query db for all home for sale details that are in the latitude longitude range
 	home_for_sale_data = HomesForSale.query.filter(HomesForSale.latitude.between(latlong_range["min_lat"], 
 								 								                 latlong_range["max_lat"]), 
 								 		           HomesForSale.longitude.between(latlong_range["min_lng"], 
@@ -193,7 +186,7 @@ def get_homedata_by_latlong_range(input_lat, input_lng):
 					}
 
 		homedata_in_range.append(home_dict)
-	pprint(homedata_in_range)
+	
 	return homedata_in_range
 		
 
