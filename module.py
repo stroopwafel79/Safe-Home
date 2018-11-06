@@ -181,3 +181,22 @@ def get_crimedata_by_latlong_range(input_lat, input_lng):
 	return crimedata_in_range
 
 
+def get_homedata_by_latlong_range(input_lat, input_lng):
+	"""Based on input lat and long, get a range of lat/longs to populate 
+	homes for sale in Google map""" 
+
+	# Based on lat/lng of input address, calculate the min and max
+	# lat/lng for gmap view window
+	max_lat = input_lat + 0.004
+	min_lat = input_lat - 0.004
+	max_lng = input_lng + 0.012
+	min_lng = input_lng - 0.012
+
+
+	home_for_sale_data = HomesForSale.query.filter(HomesForSale.latitude.between(min_lat, max_lat), 
+								 		           HomesForSale.longitude.between(min_lng, max_lng)).all()
+
+	homedata_in_range = [] # list of dictionaries for each home
+
+	for home in home_for_sale_data:
+		

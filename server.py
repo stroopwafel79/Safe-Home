@@ -80,8 +80,6 @@ def get_gmap():
 	# get zillow data
 	zillow_resp = call_zillow(street_adrs, zipcode) # (api call in python)
 	full_zillow_dict = xml_to_dict(zillow_resp)
-	print("\nZZZZZZZZZZZZZZZZZZZZZZ")
-	pprint(full_zillow_dict)
 	zillow_details_dict = get_zillow_details(full_zillow_dict)
 	input_lat = zillow_details_dict["lat"]
 	input_lng = zillow_details_dict["lng"]
@@ -98,21 +96,6 @@ def get_gmap():
 						   input_lng=input_lng,
 						   zillow_details_dict=zillow_details_dict
 	 					   )
-	# return render_template(
-	# 						"results.html",
-	# 						#for_sale=zillow_details_dict["for_sale"],
-	# 						input_lat=input_lat,
-	# 						input_lng=input_lng,
-	# 						home_details=zillow_details_dict["home_details_link"],
-	# 						comparables=zillow_details_dict["comparables_link"],
-	# 						num_baths=zillow_details_dict["num_baths"],
-	# 						num_beds=zillow_details_dict["num_beds"],
-	# 						sq_ft=zillow_details_dict["sq_ft"],
-	# 						last_sold_date=zillow_details_dict["last_sold_date"],
-	# 						zestimate=zillow_details_dict["zestimate"],
-	# 						year_built=zillow_details_dict["year_built"],
-	# 						rent_zestimate=zillow_details_dict["rent_zestimate"],
-	# 						last_sold_price=zillow_details_dict["last_sold_price"])
 
 ######################################################################
 if __name__ == '__main__':
