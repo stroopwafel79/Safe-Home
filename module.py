@@ -38,11 +38,12 @@ def call_zillow(address, zipcode):
 	# need to join it all to meet zillow api call requirements
 	citystatezip = " ".join(["Oakland,", "CA", zipcode])
 
-	url = "https://www.zillow.com/webservice/GetSearchResults.htm"
+	url = "https://www.zillow.com/webservice/GetDeepSearchResults.htm"
 	payload = {
 		"zws-id": key,
 		"address": address,
-		"citystatezip": citystatezip
+		"citystatezip": citystatezip,
+		"rentzestimate": True
 	}
 
 	# make a request to the api with the payload as parameters. Returns XML.
@@ -68,16 +69,31 @@ def get_zillow_details(zillow_dict):
 	links = results["links"]
 	home_details = links["homedetails"]["$"]
 	comparables = links["comparables"]["$"]
-	# map_home = links["mapthishome"]["$"]
-	for_sale = results["localRealEstate"]["region"]["links"]["forSale"]["$"]
+	
+	### for_sale may only exist in GetSearchResults and not GetDeepSearchResults
+	#for_sale = results["localRealEstate"]["region"]["links"]["forSale"]["$"]
+	num_baths = results["bathrooms"]["$"]
+	num_beds = results["bedrooms"]["$"]
+	sq_ft = results["finishedSqFt"]["$"]
+	last_sold_date = results["lastSoldDate"]["$"]
+	last_sold_price = results["lastSoldPrice"]["$"]
+	year_built = results["yearBuilt"]["$"]
+	rent_zestimate = results["rentzestimate"]["amount"]["$"]
 
 	return {
 			"zestimate": zestimate,
 			"home_details_link": home_details,
-			"for_sale_link": for_sale,
+			#"for_sale_link": for_sale,
 			"comparables_link": comparables,
 			"lat": latitude,
-			"lng": longitude
+			"lng": longitude,
+			"num_baths": num_baths,
+			"num_beds": num_beds, 
+			"sq_ft": sq_ft,
+			"last_sold_date": last_sold_date,
+			"last_sold_price": last_sold_price,
+			"year_built": year_built,
+			"rent_zestimate": rent_zestimate
 			}
 
 
