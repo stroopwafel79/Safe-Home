@@ -60,7 +60,7 @@ def xml_to_dict(data):
 def get_zillow_details(zillow_dict):
 	"""Access detail zillow info from api call dictionary result"""
 	key1 = "{http://www.zillow.com/static/xsd/SearchResults.xsd}searchresults"
-	results = zillow_dict[key1]["response"]["results"]["result"][0]
+	results = zillow_dict[key1]["response"]["results"]["result"]#[0]
 	zestimate = results["zestimate"]["amount"]["$"]
 	latitude = results["address"]["latitude"]["$"]
 	longitude = results["address"]["longitude"]["$"]
@@ -104,37 +104,37 @@ def get_gkey():
 	return gkey
 
 
-def get_latlong_range(input_lat, input_lng):
-	"""Based on input lat and long, get a range of lat/longs to populate crimes
-	only on viewable google maps window""" 
+# def get_latlong_range(input_lat, input_lng):
+# 	"""Based on input lat and long, get a range of lat/longs to populate crimes
+# 	only on viewable google maps window""" 
 
-	# Based on lat/lng of input address, calculate the min and max
-	# lat/lng for gmap view window
-	max_lat = input_lat + 0.004
-	min_lat = input_lat - 0.004
-	max_lng = input_lng + 0.012
-	min_lng = input_lng - 0.012
+# 	# Based on lat/lng of input address, calculate the min and max
+# 	# lat/lng for gmap view window
+# 	max_lat = input_lat + 0.004
+# 	min_lat = input_lat - 0.004
+# 	max_lng = input_lng + 0.012
+# 	min_lng = input_lng - 0.012
 
-	# list of ohjects Address objects with lat/lng within specified range
-	latlng_range = Address.query.filter(Address.latitude.between(min_lat, max_lat), 
-											   Address.longitude.between(min_lng, max_lng)).all()
+# 	# list of ohjects Address objects with lat/lng within specified range
+# 	latlng_range = Address.query.filter(Address.latitude.between(min_lat, max_lat), 
+# 											   Address.longitude.between(min_lng, max_lng)).all()
 
-	# # will be a list of dictionaries that google maps wants
-	crimedata_by_range = []
+# 	# # will be a list of dictionaries that google maps wants
+# 	crimedata_by_range = []
 
-	for item in crime_data_range_query:
-		lat = item.latitude
-		lng = item.longitude 
+# 	for item in crime_data_range_query:
+# 		lat = item.latitude
+# 		lng = item.longitude 
 
-		# create dict of lat and long for each address
-		loc_dict = {
-					"lat": lat, 
-				    "lng": lng 
-				    }
+# 		# create dict of lat and long for each address
+# 		loc_dict = {
+# 					"lat": lat, 
+# 				    "lng": lng 
+# 				    }
 
-		locations.append(loc_dict)
+# 		locations.append(loc_dict)
 
-	return locations
+# 	return locations
 
 
 def get_crimedata_by_latlong_range(input_lat, input_lng):

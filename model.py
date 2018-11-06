@@ -64,6 +64,38 @@ class Crime(db.Model):
 		"""Provide useful representation when printed"""
 		return f"<Crime: crime_id={self.crime_id} crime_type_id={self.crime_type_id} address_id={self.address_id}>"
 
+### class created to spoof actual sales data. Will make it relational if I have time
+class HomesForSale(db.Model):
+	"""Homes for Sale"""
+	__tablename__ = "sales"
+
+	mls_num = db.Column(db.String(100), primary_key=True)
+	street_adrs = db.Column(db.String(200), nullable=False)
+	city = db.Column(db.String(200), nullable=False)
+	state = db.Column(db.String(100), nullable=False)
+	zipcode = db.Column(db.String(30), nullable=False)
+	price = db.Column(db.String(100), nullable=False)
+	#zestimate = db.Column(db.Integer, nullable=False)
+	property_type = db.Column(db.String(200), nullable=False)
+	neighborhood = db.Column(db.String(200), nullable=False)
+	year_built = db.Column(db.String(15), nullable=False)
+	sq_ft = db.Column(db.String(100), nullable=False)
+	price_per_sqft = db.Column(db.String(100), nullable=False)
+	lot_size = db.Column(db.String(100), nullable=False)
+	num_bed = db.Column(db.String(10), nullable=True)
+	num_bath = db.Column(db.String(10), nullable=False)
+	days_on_market = db.Column(db.String(100), nullable=False)
+	hoa_per_month = db.Column(db.String(50), nullable=True)
+	# last_sold_date = db.Column(db.Date, nullable=False)
+	# last_sold_price = db.Column(db.Date, nullable=False)
+	latitude = db.Column(db.Float, nullable=False)
+	longitude = db.Column(db.Float, nullable=False)
+
+	def __repr__(self):
+		"""Provide useful representation when printed"""
+		return f"<ForSale: address={self.street_adrs}, price={self.price}>"
+
+
 ################################################################################
 # Helper functions
 

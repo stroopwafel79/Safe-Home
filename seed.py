@@ -5,7 +5,7 @@ from sqlalchemy import func
 from datetime import datetime
 from csv import reader
 
-from model import Crime, Address, CrimeType
+from model import Crime, Address, CrimeType, HomesForSale
 from model import connect_to_db, db
 from server import app
 from csv import reader
@@ -114,6 +114,51 @@ def load_crimes():
             db.session.add(crime)
         db.session.commit()
 
+
+def load_homes():
+    """Load homes for sale in Oakland"""
+
+    # Read crime file and import data
+    with open("seed_data/redfin_11-6-18.csv") as f:
+        # ignore header row
+        next(f)
+
+        homereader = reader(f, delimiter=',') 
+        for row in homereader: 
+            home_lst = ', '.join(row).split(', ') # each row is a list of strings
+
+            if home_lst[16] == '':
+                hoa = None
+            else:
+                hoa = home_lst[16]
+
+            # if home_lst[8] == '':
+            #     bed = None
+            # else:
+            #     bed = int(home_lst[8]) 
+
+            homes = HomesForSale(mls_num=home_lst[-5],
+                                 street_adrs=home_lst[3],
+                                 city=home_lst[4],
+                                 state=home_lst[5],
+                                 zipcode=home_lst[6],
+                                 price=home_lst[7],
+                                 property_type=home_lst[2],
+                                 neighborhood=home_lst[10],
+                                 year_built=home_lst[13],
+                                 sq_ft=home_lst[11],
+                                 price_per_sqft=home_lst[15],
+                                 lot_size=home_lst[12],
+                                 num_bed=home_lst[8],
+                                 num_bath=home_lst[9],
+                                 days_on_market=home_lst[14],
+                                 hoa_per_month=hoa,
+                                 latitude=float(home_lst[-2]),
+                                 longitude=float(home_lst[-1]))
+
+            db.session.add(homes)
+        db.session.commit() 
+
 ############################################################################
 if __name__ == '__main__':
     import os
@@ -129,8 +174,10 @@ if __name__ == '__main__':
     # create tables in case they haven't been created
     db.create_all()
 
-    # Import data from the crimes csv
+    # Import data from the crimes tsv
     load_crimes()
+    # Import data from the homes for sale csv
+    load_homes()
 
 
     
