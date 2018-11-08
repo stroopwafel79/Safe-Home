@@ -53,28 +53,27 @@
         position: {lat: crime['lat'], lng: crime['lng']},
         label: 'C',
         map: map
-
       });
-    //TODO icon: set as crimetype icons later#######################################
-    });
+        //TODO icon: set as crimetype icons later#######################################
     
-    let crimeInfoWindowContent = `<div id="crimeInfo">
-    <ul style="list-style-type:none">
-    <li><b>Type of Crime:</b> ${crime.crime_type}</li>
-    <li>Date and Time of Occurance: ${crime.date_time}</li>
-    <li>Case Number: ${crime.case_num}</li>
-    <li>Description of Crime: ${crime.description}</li>
-    <li>Police Beat: ${crime.police_beat}</li>
-    <li>Agency: Oakland Police Department</li>
-    </ul>
-    </div>`;
+      let crimeInfoWindowContent = `<div id="crimeInfo">
+      <ul style="list-style-type:none">
+      <li><b>Type of Crime:</b> ${crime.crime_type}</li>
+      <li>Date and Time of Occurance: ${crime.date_time}</li>
+      <li>Case Number: ${crime.case_num}</li>
+      <li>Description of Crime: ${crime.description}</li>
+      <li>Police Beat: ${crime.police_beat}</li>
+      <li>Agency: Oakland Police Department</li>
+      </ul>
+      </div>`;
 
-    let crimeInfowindow = new google.maps.InfoWindow({
-      content: crimeInfoWindowContent
-    });
+      let crimeInfowindow = new google.maps.InfoWindow({
+        content: crimeInfoWindowContent
+      });
 
-    cMarker.addListener('click', function() {
-     crimeInfowindow.open(map, cMarker);
+      cMarker.addListener('click', function() {
+       crimeInfowindow.open(map, cMarker);
+      });
     }); 
 
     // Add Homes for Sale markers to the map.
@@ -88,33 +87,33 @@
         map: map,
       //TODO icon: set as home icons later#######################################
       });
-    });
+    
+      let homeInfoWindowContent = `<div id="homeInfo">
+      <ul style="list-style-type:none">
+        <li><b>Address:</b> ${home.street_adrs} ${home.city}, ${home.state}</li>
+        <li><b>Neighborhood:</b> ${home.neighborhood}</li>
+        <li><b>Price:</b> $${home.price}</li>
+        <li><b>Days on the Market:</b> ${home.days_on_market}</li>
+        <li><b>Type of Property:</b> ${home.property_type}</li>
+        <li><b>Year Built:</b> ${home.year_built}</li>
+        <li><b>Square Footage:</b> ${home.sq_ft}</li>
+        <li><b>Price per Square Foot:</b> $${home.price_per_sqft}</li>
+        <li><b>Number of Bedrooms:</b> ${home.num_bed}</li>
+        <li><b>Number of Bathrooms:</b> ${home.num_bath}</li>
+        <li><b>Lot Size(ft):</b> ${home.lot_size}</li>
+        <li><b>HOA Dues per Month:</b> $${home.hoa_per_month}</li>
+        <li><b>MLS number:</b> ${home.mls_num} </li>
+      </ul>
+      </div>`;
 
-    let homeInfoWindowContent = `<div id="homeInfo">
-    <ul style="list-style-type:none">
-      <li><b>Address:</b> ${home.street_adrs} ${home.city}, ${home.state}</li>
-      <li><b>Neighborhood:</b> ${home.neighborhood}</li>
-      <li><b>Price:</b> $${home.price}</li>
-      <li><b>Days on the Market:</b> ${home.days_on_market}</li>
-      <li><b>Type of Property:</b> ${home.property_type}</li>
-      <li><b>Year Built:</b> ${home.year_built}</li>
-      <li><b>Square Footage:</b> ${home.sq_ft}</li>
-      <li><b>Price per Square Foot:</b> $${home.price_per_sqft}</li>
-      <li><b>Number of Bedrooms:</b> ${home.num_bed}</li>
-      <li><b>Number of Bathrooms:</b> ${home.num_bath}</li>
-      <li><b>Lot Size(ft):</b> ${home.lot_size}</li>
-      <li><b>HOA Dues per Month:</b> $${home.hoa_per_month}</li>
-      <li><b>MLS number:</b> ${home.mls_num} </li>
-    </ul>
-    </div>`;
+      let homeInfowindow = new google.maps.InfoWindow({
+        content: homeInfoWindowContent
+      });
 
-    let homeInfowindow = new google.maps.InfoWindow({
-      content: homeInfoWindowContent
-    });
-
-    hMarker.addListener('click', function() {
-     homeInfowindow.open(map, hMarker);
-    }); 
+      hMarker.addListener('click', function() {
+       homeInfowindow.open(map, hMarker);
+      });
+    });  
     
   }
 
