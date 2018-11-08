@@ -18,131 +18,48 @@
       }
     </style>
 {% endblock %}
-  <div id="floating-panel">
-      <input id="address" type="textbox">
-      <input id="submit" type="button" value="Submit">
-  </div>
+
 
 {% block content %}
- <div id="map"></div> <!-- reserves a spot for the map -->
+
+  <div id="floating-panel">
+      <input id="address" type="textbox" title="Address to Geocode">
+      <input type="button" value="submit" onclick="codeAddress()">
+  </div>
+
+  <div id="map"></div> <!-- reserves a spot for the map -->
     <script>
       "use strict";
-      let inputAsCenter = {lat: {{ input_lat }}, lng: {{ input_lng }}}
-      
-      // initMap is called in the API call (see end of src below)
-      function initMap() {
-      	const crimeData = {{ crime_data|tojson }};
-        const zillowData = {{ zillow_details_dict|tojson }};
-        const homeForSaleData = {{ homes_for_sale_data|tojson }};
-        let map = new google.maps.Map(document.getElementById('map'), {
-          zoom: 16,
-          center: inputAsCenter 
+
+  let geocoder;
+  let map;
+  function initMap() {
+    geocoder = new google.maps.Geocoder();
+    const latlng = new google.maps.LatLng(37.806647, -122.272683);
+    const mapOptions = {
+      zoom: 14,
+      center: latlng
+    }
+    map = new google.maps.Map(document.getElementById('map'), mapOptions);
+  }
+
+  function codeAddress() {
+    const address = document.getElementById('address').value;
+    geocoder.geocode( { 'address': address}, function(results, status) {
+      console.log(results[0]);
+      if (status == 'OK') {
+        map.setCenter(results[0].geometry.location);
+        const marker = new google.maps.Marker({
+            map: map,
+            position: results[0].geometry.location
         });
-
-        // Create a marker for the input address
-        // TODO attach Zillow info to this (Or just have another window)
-        let inputMarker = new google.maps.Marker({position: inputAsCenter, 
-        										   map: map,
-        										   label: 'Z'});
-        const zillowContent = `<div id="zillowInfo">
-            <ul style="list-style-type:none">
-            <li><b>Zestimate:</b> $${zillowData.zestimate}</li>
-            <li><b>Rent Zestimate:</b> $${zillowData.rent_zestimate} per month</li>
-            <li><b>Year Built:</b> ${zillowData.year_built}</li>
-            <li><b>Square Footage:</b> ${zillowData.sq_ft}</li>
-            <li><b>Number of Baths:</b> ${zillowData.num_baths}</li>
-            <li><b>Number of Bedrooms:</b> ${zillowData.num_beds}</li>
-            <li><b>Last Sold Date:</b> ${zillowData.last_sold_date}</li>
-            <li><b>Last Sold Price:</b> $${zillowData.last_sold_price}</li>
-            <li>Home Details: ${zillowData.home_details_link}</li>
-            <li>For Sale: ${zillowData.for_sale_link}</li>
-            <li>Comparables: ${zillowData.comparables_link}</li>
-            </ul>
-            </div>`;
-
-        let zillowInfoWindow = new google.maps.InfoWindow({
-          content: zillowContent
-        });
-
-        inputMarker.addListener('click', function() {
-            zillowInfoWindow.open(map, inputMarker);
-          });
-
-        
-
-        // Add Crime markers to the map.
-        // Note: The code uses the JavaScript Array.prototype.map() method to
-        // create an array of markers based on a given "crimeData" array.
-        // The map() method here has nothing to do with the Google Maps API.
-        let crimeMarkers = crimeData.map(function(crime) {
-            let cMarker = new google.maps.Marker({
-              position: {lat: crime['lat'], lng: crime['lng']},
-              label: 'C',
-              map: map,
-            //TODO icon: set as crimetype icons later#######################################
-            });
-            
-            let crimeInfoWindowContent = `<div id="crimeInfo">
-            <ul style="list-style-type:none">
-            <li><b>Type of Crime:</b> ${crime.crime_type}</li>
-            <li>Date and Time of Occurance: ${crime.date_time}</li>
-            <li>Case Number: ${crime.case_num}</li>
-            <li>Description of Crime: ${crime.description}</li>
-            <li>Police Beat: ${crime.police_beat}</li>
-            <li>Agency: Oakland Police Department</li>
-            </ul>
-            </div>`;
-
-            let infowindow = new google.maps.InfoWindow({
-              content: crimeInfoWindowContent
-            });
-            cMarker.addListener('click', function() {
-             infowindow.open(map, cMarker);
-          }); 
-        });
-
-        // Add Homes for Sale markers to the map.
-        // Note: The code uses the JavaScript Array.prototype.map() method to
-        // create an array of markers based on a given "crimeData" array.
-        // The map() method here has nothing to do with the Google Maps API.
-        let homeMarkers = homeForSaleData.map(function(home) {
-            let hMarker = new google.maps.Marker({
-              position: {lat: home['latitude'], lng: home['longitude']},
-              label: 'H',
-              map: map,
-            //TODO icon: set as home icons later#######################################
-            });
-            
-            let homeInfoWindowContent = `<div id="homeInfo">
-            <ul style="list-style-type:none">
-              <li><b>Address:</b> ${home.street_adrs} ${home.city}, ${home.state}</li>
-              <li><b>Neighborhood:</b> ${home.neighborhood}</li>
-              <li><b>Price:</b> $${home.price}</li>
-              <li><b>Days on the Market:</b> ${home.days_on_market}</li>
-              <li><b>Type of Property:</b> ${home.property_type}</li>
-              <li><b>Year Built:</b> ${home.year_built}</li>
-              <li><b>Square Footage:</b> ${home.sq_ft}</li>
-              <li><b>Price per Square Foot:</b> $${home.price_per_sqft}</li>
-              <li><b>Number of Bedrooms:</b> ${home.num_bed}</li>
-              <li><b>Number of Bathrooms:</b> ${home.num_bath}</li>
-              <li><b>Lot Size(ft):</b> ${home.lot_size}</li>
-              <li><b>HOA Dues per Month:</b> $${home.hoa_per_month}</li>
-              <li><b>MLS number:</b> ${home.mls_num} </li>
-            </ul>
-            </div>`;
-
-            let infowindow = new google.maps.InfoWindow({
-              content: homeInfoWindowContent
-            });
-            hMarker.addListener('click', function() {
-             infowindow.open(map, hMarker);
-          }); 
-        });
-        
-
+      } else {
+        alert('Geocode was not successful for the following reason: ' + status);
       }
+    });
+  }
+
  		
- 	  	
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key={{ gkey }}&callback=initMap"
     async defer></script>

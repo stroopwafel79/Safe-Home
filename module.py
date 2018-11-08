@@ -13,90 +13,6 @@ from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy() 
 
 
-def show_crimes(address):
-	"""Show a list of crimes at that address"""
-
-	# get the value of the input address from the form
-	
-	# query db, get Address object
-	adrs_object = Address.query.filter_by(street_adrs=address).first()
-	# access address_id
-	adrs_id = adrs_object.address_id
-	# query db to get list of Crime objects with address_id
-	# loop over this crimes_lst in jinja
-	crimes_lst = Crime.query.filter_by(address_id=adrs_id).all()
-	return crimes_lst
-
-
-def call_zillow(address, zipcode):
-	"""Call zillow's api"""
-
-	# get secret key for zillow api
-	key = environ.get("KEY")
-
-	# since only dealing with Oakland crime data, hardcode city and state
-	# need to join it all to meet zillow api call requirements
-	citystatezip = " ".join(["Oakland,", "CA", zipcode])
-
-	url = "https://www.zillow.com/webservice/GetDeepSearchResults.htm"
-	payload = {
-		"zws-id": key,
-		"address": address,
-		"citystatezip": citystatezip,
-		"rentzestimate": True
-	}
-
-	# make a request to the api with the payload as parameters. Returns XML.
-	response = requests.get(url, params=payload) # <class requests.models.Response>
-	return response
-
-
-def xml_to_dict(data):
-	"""Turns an api response from XML to a dictionary"""
-	data_dict = bf.data(fromstring(data.text)) # <class dict>
-	return data_dict
-
-
-def get_zillow_details(zillow_dict):
-	"""Access detail zillow info from api call dictionary result"""
-	key1 = "{http://www.zillow.com/static/xsd/SearchResults.xsd}searchresults"
-	results = zillow_dict[key1]["response"]["results"]["result"][0]
-	zestimate = results["zestimate"]["amount"]["$"]
-	latitude = results["address"]["latitude"]["$"]
-	longitude = results["address"]["longitude"]["$"]
-
-	
-	links = results["links"]
-	home_details = links["homedetails"]["$"]
-	comparables = links["comparables"]["$"]
-	
-	### for_sale may only exist in GetSearchResults and not GetDeepSearchResults
-	#for_sale = results["localRealEstate"]["region"]["links"]["forSale"]["$"]
-	num_baths = results["bathrooms"]["$"]
-	num_beds = results["bedrooms"]["$"]
-	sq_ft = results["finishedSqFt"]["$"]
-	last_sold_date = results["lastSoldDate"]["$"]
-	last_sold_price = results["lastSoldPrice"]["$"]
-	year_built = results["yearBuilt"]["$"]
-	rent_zestimate = results["rentzestimate"]["amount"]["$"]
-
-	return {
-			"zestimate": zestimate,
-			"home_details_link": home_details,
-			#"for_sale_link": for_sale,
-			"comparables_link": comparables,
-			"lat": latitude,
-			"lng": longitude,
-			"num_baths": num_baths,
-			"num_beds": num_beds, 
-			"sq_ft": sq_ft,
-			"last_sold_date": last_sold_date,
-			"last_sold_price": last_sold_price,
-			"year_built": year_built,
-			"rent_zestimate": rent_zestimate
-			}
-
-
 def get_gkey():
 	"""Get the Google Maps API secret key"""
 
@@ -159,8 +75,6 @@ def get_homedata_by_latlong_range(input_lat, input_lng):
 								 								                 latlong_range["max_lat"]), 
 								 		           HomesForSale.longitude.between(latlong_range["min_lng"], 
 								 		  							              latlong_range["max_lng"])).all()
-	
-
 	homedata_in_range = [] # list of dictionaries for each home
 
 	for home in home_for_sale_data:
