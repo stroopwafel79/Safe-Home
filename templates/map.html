@@ -35,16 +35,23 @@
   let map;
   function initMap() {
     geocoder = new google.maps.Geocoder();
-    const latlng = new google.maps.LatLng(37.806647, -122.272683);
     const mapOptions = {
       zoom: 14,
-      center: latlng
+      center: {lat: 37.806647, lng: -122.272683} // set center as downtown Oakland
     }
-    map = new google.maps.Map(document.getElementById('map'), mapOptions);
+    map = new google.maps.Map(document.getElementById('map'), mapOptions); // instatiate a new map object
   }
 
   function codeAddress() {
+    // get the value of the input addresss
     const address = document.getElementById('address').value;
+
+    // call the geocode method on the instantiated geocoder object, which
+    // take in the address from above and a function which takes in 
+    // 2 args: the results of the geocode method and the status.
+    // If status is OK, the center of the map is changed to the input address
+    // and a marker is added at that position too.
+    // If status not OK, an alert pops up
     geocoder.geocode( { 'address': address}, function(results, status) {
       console.log(results[0]);
       if (status == 'OK') {
