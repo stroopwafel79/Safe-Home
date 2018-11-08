@@ -21,22 +21,68 @@
 
 
 {% block content %}
+<div id="buttons">
+  
+  <input type="checkbox" name="filter" id="vandalism" class='chk-btn'>
+  <label for='vandalism'>Vandalism</label>
+  
+  <input type="checkbox" name="filter" id="assualt" class='chk-btn'>
+  <label for='assualt'>Assault</label>
+  
+  <input type="checkbox" name="filter" id="theft_larceny" class='chk-btn'>
+  <label for='theft larceny'>Theft/Larceny</label>
 
-  <div id="floating-panel">
-      <input id="address" type="textbox" title="Address to Geocode">
-      <input type="button" value="submit" onclick="codeAddress()">
-  </div>
+  <input type="checkbox" name="filter" id="robbery" class='chk-btn'>
+  <label for='robbery'>Robbery</label>
+
+  <input type="checkbox" name="filter" id="disturbing_the_peace" class='chk-btn'>
+  <label for='disturbing the peace'>Disturbing the Peace</label>
+
+  <input type="checkbox" name="filter" id="motor_vehicle_theft" class='chk-btn'>
+  <label for='motor vehicle theft'>Motor Vehicle Theft</label>
+
+  <input type="checkbox" name="filter" id="burglary" class='chk-btn'>
+  <label for='burglary'>Burglary</label>
+
+  <input type="checkbox" name="filter" id="weapons" class='chk-btn'>
+  <label for='weapons'>Weapons</label>
+
+  <input type="checkbox" name="filter" id="sex_crimes" class='chk-btn'>
+  <label for='sex crimes'>Sex Crimes</label>
+
+  <input type="checkbox" name="filter" id="drugs_alcohol_violations" class='chk-btn'>
+  <label for='drugs and alcohol violations'>Drugs/Alcohol Violations</label>
+
+  <input type="checkbox" name="filter" id="arson" class='chk-btn'>
+  <label for='arson'>Arson</label>
+    
+  <input type="checkbox" name="filter" id="homicide" class='chk-btn'>
+  <label for='homicide'>Homicide</label>
+
+  <input type="checkbox" name="filter" id="fraud" class='chk-btn'>
+  <label for='fraud'>Fraud</label>
+
+  <input type="checkbox" name="filter" id="dui" class='chk-btn'>
+  <label for='dui'>DUI</label>
+  <br>
+</div>
+  <!-- <form action="/">
+    <div id="floating-panel">
+        <input id="address" type="textbox" title="Address to Geocode">
+        <input type="button" value="submit" onclick="codeAddress()">
+    </div>
+  </form> -->
 
   <div id="map"></div> <!-- reserves a spot for the map -->
     <script>
       "use strict";
 
-  let geocoder;
+  // let geocoder;
   let map;
   function initMap() {
-    geocoder = new google.maps.Geocoder();
+  //   geocoder = new google.maps.Geocoder();
     const mapOptions = {
-      zoom: 14,
+      zoom: 15,
       center: {lat: 37.806647, lng: -122.272683} // set center as downtown Oakland
     }
     map = new google.maps.Map(document.getElementById('map'), mapOptions); // instatiate a new map object
@@ -118,29 +164,32 @@
   }
 
 
-  function codeAddress() {
-    // get the value of the input addresss
-    const address = document.getElementById('address').value;
+  // function codeAddress() {
+  //   // get the value of the input addresss
+  //   const address = document.getElementById('address').value;
 
-    // call the geocode method on the instantiated geocoder object, which
-    // take in the address from above and a function which takes in 
-    // 2 args: the results of the geocode method and the status.
-    // If status is OK, the center of the map is changed to the input address
-    // and a marker is added at that position too.
-    // If status not OK, an alert pops up
-    geocoder.geocode( { 'address': address}, function(results, status) {
-      console.log(results[0]);
-      if (status == 'OK') {
-        map.setCenter(results[0].geometry.location);
-        const marker = new google.maps.Marker({
-            map: map,
-            position: results[0].geometry.location
-        });
-      } else {
-        alert('Geocode was not successful for the following reason: ' + status);
-      }
-    });
-  }
+  //   // call the geocode method on the instantiated geocoder object, which
+  //   // take in the address from above and a function which takes in 
+  //   // 2 args: the results of the geocode method and the status.
+  //   // If status is OK, the center of the map is changed to the input address
+  //   // and a marker is added at that position too.
+  //   // If status not OK, an alert pops up
+  //   geocoder.geocode( { 'address': address}, function(results, status) {
+  //     console.log(results[0]);
+  //     if (status == 'OK') {
+  //       map.setCenter(results[0].geometry.location);
+  //       const marker = new google.maps.Marker({
+  //           map: map,
+  //           position: results[0].geometry.location
+  //       });
+  //     } else {
+  //       alert('Geocode was not successful for the following reason: ' + status);
+  //     }
+  //   });
+  // }
+
+    const filters = {}
+
 
  		
     </script>

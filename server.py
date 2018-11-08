@@ -8,6 +8,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 from module import (get_gkey, get_crimedata_by_latlong_range,
 					get_homedata_by_latlong_range)
 from pprint import pprint
+import geocoder
 
 from flask_sqlalchemy import SQLAlchemy 
 
@@ -29,13 +30,32 @@ app.jinja_env.undefined = StrictUndefined
 
 
 @app.route("/")
+def show_homepage():
+	""" Show the homepage"""
+
+	return render_template("homepage.html")
+
+@app.route("/map")
 def get_gmap():
 	""" 
 		Get google map with centerpoint as input address 
 		and crimes populated in view window
 	"""
-	#### I think the url will contain this info after the gmap call
-	
+	# get the address from homepage input
+	street_adrs = request.args.get("address")
+	city = request.args.get("city")
+	state = request.args.get("state")
+	zipcode = request.args.get("zip")
+	address = " ".join([street_adrs, city, state, zipcode])
+
+	print("\nAAAAAAAAAA")
+	print(address)
+	# create a geocoder object with input address as argument
+	##### can I set Oakland, CA here?
+	g = geocoder.google(address)
+	print("\n GGGGGGGGGGGG")
+	pprint(g)
+
 	# get google map secret key for API call in JavaScript
 	gkey = get_gkey();
 
