@@ -38,14 +38,17 @@ def get_gmap():
 	
 	# get google map secret key for API call in JavaScript
 	gkey = get_gkey();
+
+	# These are hardcoded for now until I figure out how to get them from google's 
+	# geocoder in map.html
+	input_lat = 37.839535
+	input_lng = -122.2684415
  
 	return render_template(
 						   "map.html",
 						   gkey=gkey,
-						   # crime_data=get_crimedata_by_latlong_range(input_lat, input_lng),
-						   # input_lat=input_lat,
-						   # input_lng=input_lng,
-						   # homes_for_sale_data=get_homedata_by_latlong_range(input_lat, input_lng)
+						   crime_data=get_crimedata_by_latlong_range(input_lat, input_lng),
+						   homes_for_sale_data=get_homedata_by_latlong_range(input_lat, input_lng)
 	 					   )
 
 ######################################################################
