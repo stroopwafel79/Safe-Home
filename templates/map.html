@@ -18,9 +18,13 @@
       }
     </style>
 {% endblock %}
+  <div id="floating-panel">
+      <input id="address" type="textbox">
+      <input id="submit" type="button" value="Submit">
+  </div>
 
 {% block content %}
- <div id="map"></div>
+ <div id="map"></div> <!-- reserves a spot for the map -->
     <script>
       "use strict";
       let inputAsCenter = {lat: {{ input_lat }}, lng: {{ input_lng }}}

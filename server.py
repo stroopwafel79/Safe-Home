@@ -7,8 +7,7 @@ from model import connect_to_db
 from flask_debugtoolbar import DebugToolbarExtension
 from module import (show_crimes, call_zillow, xml_to_dict,
 					get_zillow_details, get_gkey,
-					get_crimedata_by_latlong_range,
-					get_homedata_by_latlong_range)
+					get_crimedata_by_latlong_range)
 from pprint import pprint
 
 from flask_sqlalchemy import SQLAlchemy 
