@@ -81,20 +81,30 @@
   // let geocoder;
   let map;
   function initMap() {
-  //   geocoder = new google.maps.Geocoder();
-    const mapOptions = {
-      zoom: 15,
-      center: {lat: 37.806647, lng: -122.272683} // set center as downtown Oakland
-    }
-    map = new google.maps.Map(document.getElementById('map'), mapOptions); // instatiate a new map object
 
     const crimeData = {{ crime_data|tojson }};
     const homeForSaleData = {{ homes_for_sale_data|tojson }};
+    const mapCenter = {lat: {{ input_lat }}, lng: {{ input_lng }}};
+    
+    // instantiate a new map object with the input address
+    // as the center of the map.
+    map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 15,
+      center: mapCenter
+    }); 
+ 
+    // Add a marker for the center point of the map
+    let inputMarker = new google.maps.Marker({
+      position: mapCenter,
+      label: 'Test',
+      map: map
+    });
+  
 
     //Add Crime markers to the map.
-        // Note: The code uses the JavaScript Array.prototype.map() method to
-        // create an array of markers based on a given "crimeData" array.
-        // The map() method here has nothing to do with the Google Maps API.
+    // Note: The code uses the JavaScript Array.prototype.map() method to
+    // create an array of markers based on a given "crimeData" array.
+    // The map() method here has nothing to do with the Google Maps API.
     let crimeMarkers = crimeData.map(function(crime) {
       let cMarker = new google.maps.Marker({
         position: {lat: crime['lat'], lng: crime['lng']},

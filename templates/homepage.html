@@ -4,32 +4,12 @@
 
 {% block content %}
 	<form action="/map">
-		Please enter an address
+		Please enter an address in Oakland
 		<div>
 		  Street address:<input type="text" name="address">
 		</div>
 		<div>
-		  City:
-		  <input type="text" name="city">
+		   <input type="submit">
 		</div>
-		<div>
-		  State:
-		  <select name="state">
-		  	<option value="california">CA</option>
-		  	<option value="florida">FL</option>
-		  	<option value="new_hampshire">NH</option>
-		  	<option value="oregon">OR</option>
-		  	<option value="washington">WA</option>
-		  	<option value="new_york">NY</option>
-		  	<option value="massachusettes">MA</option>
-		  </select>
-		 </div>
-		 <div>
-		 	Zipcode:
-			<input type="text" name="zip">
-		 </div>
-		 <div>
-		 	<input type="submit">
-		 </div>
 	</form>
 {% endblock %}

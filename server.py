@@ -8,7 +8,7 @@ from flask_debugtoolbar import DebugToolbarExtension
 from module import (get_gkey, get_crimedata_by_latlong_range,
 					get_homedata_by_latlong_range)
 from pprint import pprint
-import geocoder
+import googlemaps
 
 from flask_sqlalchemy import SQLAlchemy 
 
@@ -43,30 +43,25 @@ def get_gmap():
 	"""
 	# get the address from homepage input
 	street_adrs = request.args.get("address")
-	city = request.args.get("city")
-	state = request.args.get("state")
-	zipcode = request.args.get("zip")
-	address = " ".join([street_adrs, city, state, zipcode])
+	address = " ".join([street_adrs, "Oakland, CA"])
 
-	print("\nAAAAAAAAAA")
-	print(address)
-	# create a geocoder object with input address as argument
-	##### can I set Oakland, CA here?
-	g = geocoder.google(address)
-	print("\n GGGGGGGGGGGG")
-	pprint(g)
 
-	# get google map secret key for API call in JavaScript
-	gkey = get_gkey();
 
-	# These are hardcoded for now until I figure out how to get them from google's 
-	# geocoder in map.html
-	input_lat = 37.839535
-	input_lng = -122.2684415
- 
+	# create a google maps object
+	gmaps = googlemaps.Client(key=get_gkey())
+
+	# Geocoding an address
+	geocode_result = gmaps.geocode(address)
+	
+	# get lat/lng (as float) of input address from geocode results
+	input_lat = geocode_result[0]["geometry"]["location"]["lat"]
+	input_lng = geocode_result[0]["geometry"]["location"]["lng"]
+	
 	return render_template(
 						   "map.html",
-						   gkey=gkey,
+						   gkey=get_gkey(),
+						   input_lat=input_lat,
+						   input_lng=input_lng,
 						   crime_data=get_crimedata_by_latlong_range(input_lat, input_lng),
 						   homes_for_sale_data=get_homedata_by_latlong_range(input_lat, input_lng)
 	 					   )
