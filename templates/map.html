@@ -8,7 +8,7 @@
       /* Always set the map height explicitly to define the size of the div
        * element that contains the map. */
       #map {
-        height: 100%;
+        height: 85%;
       }
       /* Optional: Makes the sample page fill the window. */
       html, body {
@@ -23,46 +23,46 @@
 {% block content %}
 <div id="buttons">
   
-  <input type="checkbox" name="filter" id="vandalism" class='chk-btn'>
+  <input type="checkbox" name="filter" id="vandalism" class='chk-btn' checked>
   <label for='vandalism'>Vandalism</label>
   
-  <input type="checkbox" name="filter" id="assault" class='chk-btn'>
+  <input type="checkbox" name="filter" id="assault" class='chk-btn' checked>
   <label for='assault'>Assault</label>
   
-  <input type="checkbox" name="filter" id="theft_larceny" class='chk-btn'>
+  <input type="checkbox" name="filter" id="theft_larceny" class='chk-btn' checked>
   <label for='theft larceny'>Theft/Larceny</label>
 
-  <input type="checkbox" name="filter" id="robbery" class='chk-btn'>
+  <input type="checkbox" name="filter" id="robbery" class='chk-btn' checked>
   <label for='robbery'>Robbery</label>
 
-  <input type="checkbox" name="filter" id="disturbing_the_peace" class='chk-btn'>
+  <input type="checkbox" name="filter" id="disturbing_the_peace" class='chk-btn' checked>
   <label for='disturbing the peace'>Disturbing the Peace</label>
 
-  <input type="checkbox" name="filter" id="motor_vehicle_theft" class='chk-btn'>
+  <input type="checkbox" name="filter" id="motor_vehicle_theft" class='chk-btn' checked>
   <label for='motor vehicle theft'>Motor Vehicle Theft</label>
 
-  <input type="checkbox" name="filter" id="burglary" class='chk-btn'>
+  <input type="checkbox" name="filter" id="burglary" class='chk-btn' checked>
   <label for='burglary'>Burglary</label>
 
-  <input type="checkbox" name="filter" id="weapons" class='chk-btn'>
+  <input type="checkbox" name="filter" id="weapons" class='chk-btn' checked>
   <label for='weapons'>Weapons</label>
 
-  <input type="checkbox" name="filter" id="sex_crimes" class='chk-btn'>
+  <input type="checkbox" name="filter" id="sex_crimes" class='chk-btn' checked>
   <label for='sex crimes'>Sex Crimes</label>
 
-  <input type="checkbox" name="filter" id="drugs_alcohol_violations" class='chk-btn'>
+  <input type="checkbox" name="filter" id="drugs_alcohol_violations" class='chk-btn' checked>
   <label for='drugs and alcohol violations'>Drugs/Alcohol Violations</label>
 
-  <input type="checkbox" name="filter" id="arson" class='chk-btn'>
+  <input type="checkbox" name="filter" id="arson" class='chk-btn' checked>
   <label for='arson'>Arson</label>
     
-  <input type="checkbox" name="filter" id="homicide" class='chk-btn'>
+  <input type="checkbox" name="filter" id="homicide" class='chk-btn' checked>
   <label for='homicide'>Homicide</label>
 
-  <input type="checkbox" name="filter" id="fraud" class='chk-btn'>
+  <input type="checkbox" name="filter" id="fraud" class='chk-btn' checked>
   <label for='fraud'>Fraud</label>
 
-  <input type="checkbox" name="filter" id="dui" class='chk-btn'>
+  <input type="checkbox" name="filter" id="dui" class='chk-btn' checked>
   <label for='dui'>DUI</label>
   <br>
 </div>
@@ -78,7 +78,13 @@
     <script>
       "use strict";
 
-  // let geocoder;
+  let cMarkers = [] // used for filtering markers
+  // filters default to false so all crimes are shown
+  let crimeFilters = {vandalism:false, assault:false, theft_larceny:false, robbery:false, 
+                     disturbing_the_peace:false, motor_vehicle_theft:false, burglary:false, 
+                     weapons:false, sex_crimes:false, drugs_alcohol_violations:false, 
+                     arson:false, homicide:false, fraud:false, dui:false}
+
   let map;
   function initMap() {
 
@@ -89,7 +95,7 @@
     // instantiate a new map object with the input address
     // as the center of the map.
     map = new google.maps.Map(document.getElementById('map'), {
-      zoom: 15,
+      zoom: 16,
       center: mapCenter
     }); 
  
@@ -123,6 +129,8 @@
       <li>Agency: Oakland Police Department</li>
       </ul>
       </div>`;
+
+      // check here if filter is false
 
       let crimeInfowindow = new google.maps.InfoWindow({
         content: crimeInfoWindowContent
@@ -199,10 +207,7 @@
   //   });
   // }
 
-    const crimeFilters = {vandalism:false, assault:false, theft_larceny:false, robbery:false, 
-                     disturbing_the_peace:false, motor_vehicle_theft:false, burglary:false, 
-                     weapons:false, sex_crimes:false, drugs_alcohol_violations:false, 
-                     arson:false, homicide:false, fraud:false, dui:false}
+    
 
 
  		
