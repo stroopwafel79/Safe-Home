@@ -77,7 +77,7 @@
   <div id="map"></div> <!-- reserves a spot for the map -->
     <script>
       "use strict";
-
+  let map;
   let cMarkers = [] // used for filtering markers
   // filters default to false so all crimes are shown
   let crimeFilters = {vandalism:false, assault:false, theft_larceny:false, robbery:false, 
@@ -85,7 +85,22 @@
                      weapons:false, sex_crimes:false, drugs_alcohol_violations:false, 
                      arson:false, homicide:false, fraud:false, dui:false}
 
-  let map;
+
+  // returns HTML nodes (JQuery will return an array)
+  let filterButton = document.getElementsByClassName('chk-btn');
+
+  function filterCrimes(e) {
+    console.log('out')
+    if (!filterButton.value){
+      console.log('A crime has been filtered');
+    }
+  }
+
+  for (let i=0; i < filterButton.length; i++) {
+      filterButton[i].addEventListener('change', filterCrimes);
+  }
+  // filterButton.addEventListener('change', filterCrimes);
+
   function initMap() {
 
     const crimeData = {{ crime_data|tojson }};
@@ -115,7 +130,8 @@
       let cMarker = new google.maps.Marker({
         position: {lat: crime['lat'], lng: crime['lng']},
         label: 'C',
-        map: map
+        map: map,
+        cagegory: crime['crime_type']
       });
         //TODO icon: set as crimetype icons later#######################################
     
