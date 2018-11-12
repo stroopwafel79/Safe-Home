@@ -24,10 +24,10 @@
 {% block content %}
 <div id="buttons">
   
-  <input type="checkbox" name="filter" id="vandalism" class='chk-btn' checked>
+  <input type="checkbox" name="filter" id="Vandalism" class='chk-btn' checked>
   <label for='vandalism'>Vandalism</label>
   
-  <input type="checkbox" name="filter" id="assault" class='chk-btn' checked>
+  <input type="checkbox" name="filter" id="Assault" class='chk-btn' checked>
   <label for='assault'>Assault</label>
   
   <input type="checkbox" name="filter" id="theft_larceny" class='chk-btn' checked>
@@ -79,9 +79,11 @@
     <script>
       "use strict";
   let map;
-  let cMarkers = [] // used for filtering markers
+  const crimeData = {{ crime_data|tojson }};
+  const homeForSaleData = {{ homes_for_sale_data|tojson }};
+  let cMarkers = []; // used for filtering markers
   // filters default to false so all crimes are shown
-  let crimeFilters = {vandalism:false, assault:false, theft_larceny:false, robbery:false, 
+  let crimeFilters = {Vandalism:false, Assault:false, theft_larceny:false, robbery:false, 
                      disturbing_the_peace:false, motor_vehicle_theft:false, burglary:false, 
                      weapons:false, sex_crimes:false, drugs_alcohol_violations:false, 
                      arson:false, homicide:false, fraud:false, dui:false}
@@ -89,42 +91,34 @@
 
   // toggles the value in the crimeFilters array.
   // if value is false, it's changed to true and vice versa
-  let map_filter = function(id_val) {
-   if (crimeFilters[id_val]) {
+  // add all the crimeFilters that are true to crime markers
+  let filterCrimes = function(id_val) {
+    if (crimeFilters[id_val]) {
       crimeFilters[id_val] = false
-   } else {
+    } else {
       crimeFilters[id_val] = true
-      console.log(crimeFilters[id_val]);
-   }
+      cMarkers.push(id_val);
+      
+    }
+    console.log(cMarkers);
+    filterCrimeData(crimeData, cMarkers);
   }
- 
+
+  
+
+  
   // adds an event listener to the checkboxes looking for a change
   // calls map_filter function. 
   $('input[name=filter]').change(function (e) {
-   map_filter(this.id);
+   filterCrimes(this.id);
   })
 
-  // returns HTML nodes (JQuery will return an array)
-  // let filterButton = document.getElementsByClassName('chk-btn');
 
-  // function filterCrimes(e) {
-    
-  //   if the checkbox is unchecked
-  //     get the id of the crime_type
-
-  //   //}
-  // }
-
-  // // loop over HTML nodes from above and add event listener 
-  // // to all checkboxes to detect a change
-  // // if a change is detected, filterCrimes is called.
-  // for (let i=0; i < filterButton.length; i++) {
-  //     filterButton[i].addEventListener('change', filterCrimes);
-  // }
-  
-
-  const crimeData = {{ crime_data|tojson }};
-  const homeForSaleData = {{ homes_for_sale_data|tojson }};
+  function filterCrimeData (crimeData, cMarkers) {
+    const results = crimeData.filter(crime => !cMarkers.includes(crime.crime_type));
+    console.log(results);
+    loadCrimeMarkers(results);
+  }
 
   function initMap() {
 
@@ -144,11 +138,11 @@
       map: map
     });
 
-    loadCrimeMarkers();
+    loadCrimeMarkers(crimeData);
     loadHomeMarkers();
   }
 
-  function loadCrimeMarkers() {
+  function loadCrimeMarkers(crimeData) {
   //Add Crime markers to the map.
   // Note: The code uses the JavaScript Array.prototype.map() method to
   // create an array of markers based on a given "crimeData" array.
@@ -159,9 +153,11 @@
         label: 'C',
         map: map,
         cagegory: crime['crime_type']
-      });
-        //TODO icon: set as crimetype icons later#######################################
-      
+      }); 
+     
+    
+      //TODO icon: set as crimetype icons later#######################################
+    
       let crimeInfoWindowContent = `<div id="crimeInfo">
       <ul style="list-style-type:none">
       <li><b>Type of Crime:</b> ${crime.crime_type}</li>
@@ -173,7 +169,7 @@
       </ul>
       </div>`;
 
-      // check here if filter is false
+    // check here if filter is false
 
       let crimeInfowindow = new google.maps.InfoWindow({
         content: crimeInfoWindowContent
@@ -182,6 +178,7 @@
       cMarker.addListener('click', function() {
        crimeInfowindow.open(map, cMarker);
       });
+      
     }); 
   }
 
