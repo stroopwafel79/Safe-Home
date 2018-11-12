@@ -1,5 +1,13 @@
 env/
-*.pyc
-.DS_Store
 secrets.sh
-
+*.pyc
+__pycache__/
+seed_data/.ipynb_checkpoints/
+seed_data/HB_project_testing.ipynb
+templates/curl tests
+templates/test.html
+templates/test.js
+.DS_Store
+seed_data/.DS_Store
+static/.DS_Store
+templates/.DS_Store

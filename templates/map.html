@@ -17,6 +17,7 @@
         padding: 0;
       }
     </style>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 {% endblock %}
 
 
@@ -86,25 +87,47 @@
                      arson:false, homicide:false, fraud:false, dui:false}
 
 
+  // toggles the value in the crimeFilters array.
+  // if value is false, it's changed to true and vice versa
+  let map_filter = function(id_val) {
+   if (crimeFilters[id_val]) {
+      crimeFilters[id_val] = false
+   } else {
+      crimeFilters[id_val] = true
+      console.log(crimeFilters[id_val]);
+   }
+  }
+ 
+  // adds an event listener to the checkboxes looking for a change
+  // calls map_filter function. 
+  $('input[name=filter]').change(function (e) {
+   map_filter(this.id);
+  })
+
   // returns HTML nodes (JQuery will return an array)
-  let filterButton = document.getElementsByClassName('chk-btn');
+  // let filterButton = document.getElementsByClassName('chk-btn');
 
-  function filterCrimes(e) {
-    console.log('out')
-    if (!filterButton.value){
-      console.log('A crime has been filtered');
-    }
-  }
+  // function filterCrimes(e) {
+    
+  //   if the checkbox is unchecked
+  //     get the id of the crime_type
 
-  for (let i=0; i < filterButton.length; i++) {
-      filterButton[i].addEventListener('change', filterCrimes);
-  }
-  // filterButton.addEventListener('change', filterCrimes);
+  //   //}
+  // }
+
+  // // loop over HTML nodes from above and add event listener 
+  // // to all checkboxes to detect a change
+  // // if a change is detected, filterCrimes is called.
+  // for (let i=0; i < filterButton.length; i++) {
+  //     filterButton[i].addEventListener('change', filterCrimes);
+  // }
+  
+
+  const crimeData = {{ crime_data|tojson }};
+  const homeForSaleData = {{ homes_for_sale_data|tojson }};
 
   function initMap() {
 
-    const crimeData = {{ crime_data|tojson }};
-    const homeForSaleData = {{ homes_for_sale_data|tojson }};
     const mapCenter = {lat: {{ input_lat }}, lng: {{ input_lng }}};
     
     // instantiate a new map object with the input address
@@ -120,12 +143,16 @@
       label: 'Test',
       map: map
     });
-  
 
-    //Add Crime markers to the map.
-    // Note: The code uses the JavaScript Array.prototype.map() method to
-    // create an array of markers based on a given "crimeData" array.
-    // The map() method here has nothing to do with the Google Maps API.
+    loadCrimeMarkers();
+    loadHomeMarkers();
+  }
+
+  function loadCrimeMarkers() {
+  //Add Crime markers to the map.
+  // Note: The code uses the JavaScript Array.prototype.map() method to
+  // create an array of markers based on a given "crimeData" array.
+  // The map() method here has nothing to do with the Google Maps API.
     let crimeMarkers = crimeData.map(function(crime) {
       let cMarker = new google.maps.Marker({
         position: {lat: crime['lat'], lng: crime['lng']},
@@ -134,7 +161,7 @@
         cagegory: crime['crime_type']
       });
         //TODO icon: set as crimetype icons later#######################################
-    
+      
       let crimeInfoWindowContent = `<div id="crimeInfo">
       <ul style="list-style-type:none">
       <li><b>Type of Crime:</b> ${crime.crime_type}</li>
@@ -156,7 +183,9 @@
        crimeInfowindow.open(map, cMarker);
       });
     }); 
+  }
 
+  function loadHomeMarkers() {
     // Add Homes for Sale markers to the map.
     // Note: The code uses the JavaScript Array.prototype.map() method to
     // create an array of markers based on a given "crimeData" array.
