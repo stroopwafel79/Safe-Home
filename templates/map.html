@@ -147,7 +147,7 @@
   ////////THIS IS WORKING but not loadcrimes()
   // Filter the crimeData array to include an array of markers to EXCLUDE.
   function filterCrimeData (crimeData, cMarkers) {
-    const results = crimeData.filter(crime => cMarkers.includes(crime.crime_type));
+    const results = crimeData.filter(crime => !cMarkers.includes(crime.crime_type));
     console.log(results);
     clearFilteredMarkers(results);
 
@@ -158,10 +158,8 @@
   }
 
   function clearFilteredMarkers(crimeData) {
-    for (let i = 0; i < crimeData.length; i++) {
-      crimeData[i].setMap(null);
-      // console.log(crimeData[i]);
-    }
+    deleteMarkers();
+    addMarkers(crimeData, "c");
   }
   
 
@@ -188,7 +186,6 @@
     
   }
 
-
   function addMarkers(data, label) {
 
     for (let i=0; i < data.length; i++) {
@@ -198,7 +195,6 @@
         label: label,
         map: map
       });
-      console.log(marker);
       markers.push(marker);
 
       let infoWindowContent;
