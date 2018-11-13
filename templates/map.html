@@ -30,40 +30,40 @@
   <input type="checkbox" name="filter" id="Assault" class='chk-btn' checked>
   <label for='assault'>Assault</label>
   
-  <input type="checkbox" name="filter" id="theft_larceny" class='chk-btn' checked>
+  <input type="checkbox" name="filter" id="Theft/Larceny" class='chk-btn' checked>
   <label for='theft larceny'>Theft/Larceny</label>
 
-  <input type="checkbox" name="filter" id="robbery" class='chk-btn' checked>
+  <input type="checkbox" name="filter" id="Robbery" class='chk-btn' checked>
   <label for='robbery'>Robbery</label>
 
-  <input type="checkbox" name="filter" id="disturbing_the_peace" class='chk-btn' checked>
+  <input type="checkbox" name="filter" id="Disturbing The Peace" class='chk-btn' checked>
   <label for='disturbing the peace'>Disturbing the Peace</label>
 
-  <input type="checkbox" name="filter" id="motor_vehicle_theft" class='chk-btn' checked>
+  <input type="checkbox" name="filter" id="Motor Vehicle Theft" class='chk-btn' checked>
   <label for='motor vehicle theft'>Motor Vehicle Theft</label>
 
-  <input type="checkbox" name="filter" id="burglary" class='chk-btn' checked>
+  <input type="checkbox" name="filter" id="Burglary" class='chk-btn' checked>
   <label for='burglary'>Burglary</label>
 
-  <input type="checkbox" name="filter" id="weapons" class='chk-btn' checked>
+  <input type="checkbox" name="filter" id="Weapons" class='chk-btn' checked>
   <label for='weapons'>Weapons</label>
 
-  <input type="checkbox" name="filter" id="sex_crimes" class='chk-btn' checked>
+  <input type="checkbox" name="filter" id="Sex Crimes" class='chk-btn' checked>
   <label for='sex crimes'>Sex Crimes</label>
 
-  <input type="checkbox" name="filter" id="drugs_alcohol_violations" class='chk-btn' checked>
+  <input type="checkbox" name="filter" id="Drugs/Alcohol Violations" class='chk-btn' checked>
   <label for='drugs and alcohol violations'>Drugs/Alcohol Violations</label>
 
-  <input type="checkbox" name="filter" id="arson" class='chk-btn' checked>
+  <input type="checkbox" name="filter" id="Arson" class='chk-btn' checked>
   <label for='arson'>Arson</label>
     
-  <input type="checkbox" name="filter" id="homicide" class='chk-btn' checked>
+  <input type="checkbox" name="filter" id="Homicide" class='chk-btn' checked>
   <label for='homicide'>Homicide</label>
 
-  <input type="checkbox" name="filter" id="fraud" class='chk-btn' checked>
+  <input type="checkbox" name="filter" id="Fraud" class='chk-btn' checked>
   <label for='fraud'>Fraud</label>
 
-  <input type="checkbox" name="filter" id="dui" class='chk-btn' checked>
+  <input type="checkbox" name="filter" id="Dui" class='chk-btn' checked>
   <label for='dui'>DUI</label>
   <br>
 </div>
@@ -82,13 +82,44 @@
   const crimeData = {{ crime_data|tojson }};
   const homeForSaleData = {{ homes_for_sale_data|tojson }};
   let cMarkers = []; // used for filtering markers
+  let markers = []; // used for populating markers on the map
+
   // filters default to false so all crimes are shown
   let crimeFilters = {Vandalism:false, Assault:false, theft_larceny:false, robbery:false, 
                      disturbing_the_peace:false, motor_vehicle_theft:false, burglary:false, 
                      weapons:false, sex_crimes:false, drugs_alcohol_violations:false, 
                      arson:false, homicide:false, fraud:false, dui:false}
 
+  // let crimeInfoWindowContent = `<div id="crimeInfo">
+  //     <ul style="list-style-type:none">
+  //     <li><b>Type of Crime:</b> ${crime.crime_type}</li>
+  //     <li>Date and Time of Occurance: ${crime.date_time}</li>
+  //     <li>Case Number: ${crime.case_num}</li>
+  //     <li>Description of Crime: ${crime.description}</li>
+  //     <li>Police Beat: ${crime.police_beat}</li>
+  //     <li>Agency: Oakland Police Department</li>
+  //     </ul>
+  //     </div>`;
 
+  // let homeInfoWindowContent = `<div id="homeInfo">
+  //     <ul style="list-style-type:none">
+  //       <li><b>Address:</b> ${home.street_adrs} ${home.city}, ${home.state}</li>
+  //       <li><b>Neighborhood:</b> ${home.neighborhood}</li>
+  //       <li><b>Price:</b> $${home.price}</li>
+  //       <li><b>Days on the Market:</b> ${home.days_on_market}</li>
+  //       <li><b>Type of Property:</b> ${home.property_type}</li>
+  //       <li><b>Year Built:</b> ${home.year_built}</li>
+  //       <li><b>Square Footage:</b> ${home.sq_ft}</li>
+  //       <li><b>Price per Square Foot:</b> $${home.price_per_sqft}</li>
+  //       <li><b>Number of Bedrooms:</b> ${home.num_bed}</li>
+  //       <li><b>Number of Bathrooms:</b> ${home.num_bath}</li>
+  //       <li><b>Lot Size(ft):</b> ${home.lot_size}</li>
+  //       <li><b>HOA Dues per Month:</b> $${home.hoa_per_month}</li>
+  //       <li><b>MLS number:</b> ${home.mls_num} </li>
+  //     </ul>
+  //     </div>`;
+
+  //////////THIS IS WORKING                  
   // toggles the value in the crimeFilters array.
   // if value is false, it's changed to true and vice versa
   // add all the crimeFilters that are true to crime markers
@@ -106,19 +137,33 @@
 
   
 
-  
+  ///////THIS IS WORKING
   // adds an event listener to the checkboxes looking for a change
   // calls map_filter function. 
   $('input[name=filter]').change(function (e) {
    filterCrimes(this.id);
   })
 
-
+  ////////THIS IS WORKING but not loadcrimes()
+  // Filter the crimeData array to include an array of markers to EXCLUDE.
   function filterCrimeData (crimeData, cMarkers) {
-    const results = crimeData.filter(crime => !cMarkers.includes(crime.crime_type));
+    const results = crimeData.filter(crime => cMarkers.includes(crime.crime_type));
     console.log(results);
-    loadCrimeMarkers(results);
+    clearFilteredMarkers(results);
+
+    /// NOT WORKING!!!!
+    // change this to set results to the markers I don't want 
+    // loop through these and call .setMap(null) on those markers.
+    
   }
+
+  function clearFilteredMarkers(crimeData) {
+    for (let i = 0; i < crimeData.length; i++) {
+      crimeData[i].setMap(null);
+      // console.log(crimeData[i]);
+    }
+  }
+  
 
   function initMap() {
 
@@ -138,120 +183,173 @@
       map: map
     });
 
-    loadCrimeMarkers(crimeData);
-    loadHomeMarkers();
+    addMarkers(crimeData, "C");
+    addMarkers(homeForSaleData, "H");
+    
   }
 
-  function loadCrimeMarkers(crimeData) {
-  //Add Crime markers to the map.
-  // Note: The code uses the JavaScript Array.prototype.map() method to
-  // create an array of markers based on a given "crimeData" array.
-  // The map() method here has nothing to do with the Google Maps API.
-    let crimeMarkers = crimeData.map(function(crime) {
-      let cMarker = new google.maps.Marker({
-        position: {lat: crime['lat'], lng: crime['lng']},
-        label: 'C',
-        map: map,
-        cagegory: crime['crime_type']
-      }); 
-     
+
+  function addMarkers(data, label) {
+
+    for (let i=0; i < data.length; i++) {
+      console.log(data[i].crime_type);
+      let marker = new google.maps.Marker({
+        position: {lat: data[i]['lat'], lng: data[i]['lng']},
+        label: label,
+        map: map
+      });
+      console.log(marker);
+      markers.push(marker);
+
+      let infoWindowContent;
+
+      if (data[0].case_num) {
+        infoWindowContent = `<div id="crimeInfo">
+          <ul style="list-style-type:none">
+          <li><b>Type of Crime:</b> ${data[i].crime_type}</li>
+          <li>Date and Time of Occurance: ${data[i].date_time}</li>
+          <li>Case Number: ${data[i].case_num}</li>
+          <li>Description of Crime: ${data[i].description}</li>
+          <li>Police Beat: ${data[i].police_beat}</li>
+          <li>Agency: Oakland Police Department</li>
+          </ul>
+          </div>`;
+      } else {
+        infoWindowContent = `<div id="homeInfo">
+          <ul style="list-style-type:none">
+            <li><b>Address:</b> ${data[i].street_adrs} ${data[i].city}, ${data[i].state}</li>
+            <li><b>Neighborhood:</b> ${data[i].neighborhood}</li>
+            <li><b>Price:</b> $${data[i].price}</li>
+            <li><b>Days on the Market:</b> ${data[i].days_on_market}</li>
+            <li><b>Type of Property:</b> ${data[i].property_type}</li>
+            <li><b>Year Built:</b> ${data[i].year_built}</li>
+            <li><b>Square Footage:</b> ${data[i].sq_ft}</li>
+            <li><b>Price per Square Foot:</b> $${data[i].price_per_sqft}</li>
+            <li><b>Number of Bedrooms:</b> ${data[i].num_bed}</li>
+            <li><b>Number of Bathrooms:</b> ${data[i].num_bath}</li>
+            <li><b>Lot Size(ft):</b> ${data[i].lot_size}</li>
+            <li><b>HOA Dues per Month:</b> $${data[i].hoa_per_month}</li>
+            <li><b>MLS number:</b> ${data[i].mls_num} </li>
+          </ul>
+          </div>`;
+      }
+      let infowindow = new google.maps.InfoWindow({
+        content: infoWindowContent
+      });
+
+      marker.addListener('click', function() {
+       infowindow.open(map, marker);
+      });
+    }
+    setMapOnAll(map);
+  }
+
+    // Sets the map on all markers in the array.
+  function setMapOnAll(map) {
+    for (var i = 0; i < markers.length; i++) {
+      markers[i].setMap(map);
+    }
+  }
+
+  // Removes the markers from the map, but keeps them in the array.
+  function clearMarkers() {
+    setMapOnAll(null);
+  }
+
+  // Shows any markers currently in the array.
+  function showMarkers() {
+    setMapOnAll(map);
+  }
+
+  // Deletes all markers in the array by removing references to them.
+  function deleteMarkers() {
+    clearMarkers();
+    markers = [];
+  }
+
+  // function loadCrimeMarkers(crimeData) {
+  // //Add Crime markers to the map.
+  // // Note: The code uses the JavaScript Array.prototype.map() method to
+  // // create an array of markers based on a given "crimeData" array.
+  // // The map() method here has nothing to do with the Google Maps API.
+  
+  // // crimeMarkers is an array of markers
+  //   let crimeMarkers = crimeData.map(function(crime) { 
+  //     let cMarker = new google.maps.Marker({
+  //       position: {lat: crime['lat'], lng: crime['lng']},
+  //       label: 'C',
+  //       map: map,
+  //     }); 
     
-      //TODO icon: set as crimetype icons later#######################################
+      
+  //   //setMapOnAll(map);
+  //     //TODO icon: set as crimetype icons later#######################################
     
-      let crimeInfoWindowContent = `<div id="crimeInfo">
-      <ul style="list-style-type:none">
-      <li><b>Type of Crime:</b> ${crime.crime_type}</li>
-      <li>Date and Time of Occurance: ${crime.date_time}</li>
-      <li>Case Number: ${crime.case_num}</li>
-      <li>Description of Crime: ${crime.description}</li>
-      <li>Police Beat: ${crime.police_beat}</li>
-      <li>Agency: Oakland Police Department</li>
-      </ul>
-      </div>`;
+  //     let crimeInfoWindowContent = `<div id="crimeInfo">
+  //     <ul style="list-style-type:none">
+  //     <li><b>Type of Crime:</b> ${crime.crime_type}</li>
+  //     <li>Date and Time of Occurance: ${crime.date_time}</li>
+  //     <li>Case Number: ${crime.case_num}</li>
+  //     <li>Description of Crime: ${crime.description}</li>
+  //     <li>Police Beat: ${crime.police_beat}</li>
+  //     <li>Agency: Oakland Police Department</li>
+  //     </ul>
+  //     </div>`;
 
     // check here if filter is false
 
-      let crimeInfowindow = new google.maps.InfoWindow({
-        content: crimeInfoWindowContent
-      });
+      // let crimeInfowindow = new google.maps.InfoWindow({
+      //   content: crimeInfoWindowContent
+      // });
 
-      cMarker.addListener('click', function() {
-       crimeInfowindow.open(map, cMarker);
-      });
+      // cMarker.addListener('click', function() {
+      //  crimeInfowindow.open(map, cMarker);
+      // });
       
-    }); 
-  }
+   // }); 
+  //}
 
-  function loadHomeMarkers() {
-    // Add Homes for Sale markers to the map.
-    // Note: The code uses the JavaScript Array.prototype.map() method to
-    // create an array of markers based on a given "crimeData" array.
-    // The map() method here has nothing to do with the Google Maps API.
-    let homeMarkers = homeForSaleData.map(function(home) {
-      let hMarker = new google.maps.Marker({
-        position: {lat: home['latitude'], lng: home['longitude']},
-        label: 'H',
-        map: map,
-      //TODO icon: set as home icons later#######################################
-      });
+  // function loadHomeMarkers() {
+  //   // Add Homes for Sale markers to the map.
+  //   // Note: The code uses the JavaScript Array.prototype.map() method to
+  //   // create an array of markers based on a given "crimeData" array.
+  //   // The map() method here has nothing to do with the Google Maps API.
+  //   let homeMarkers = homeForSaleData.map(function(home) {
+  //     let hMarker = new google.maps.Marker({
+  //       position: {lat: home['latitude'], lng: home['longitude']},
+  //       label: 'H',
+  //       map: map,
+  //     //TODO icon: set as home icons later#######################################
+  //     });
     
-      let homeInfoWindowContent = `<div id="homeInfo">
-      <ul style="list-style-type:none">
-        <li><b>Address:</b> ${home.street_adrs} ${home.city}, ${home.state}</li>
-        <li><b>Neighborhood:</b> ${home.neighborhood}</li>
-        <li><b>Price:</b> $${home.price}</li>
-        <li><b>Days on the Market:</b> ${home.days_on_market}</li>
-        <li><b>Type of Property:</b> ${home.property_type}</li>
-        <li><b>Year Built:</b> ${home.year_built}</li>
-        <li><b>Square Footage:</b> ${home.sq_ft}</li>
-        <li><b>Price per Square Foot:</b> $${home.price_per_sqft}</li>
-        <li><b>Number of Bedrooms:</b> ${home.num_bed}</li>
-        <li><b>Number of Bathrooms:</b> ${home.num_bath}</li>
-        <li><b>Lot Size(ft):</b> ${home.lot_size}</li>
-        <li><b>HOA Dues per Month:</b> $${home.hoa_per_month}</li>
-        <li><b>MLS number:</b> ${home.mls_num} </li>
-      </ul>
-      </div>`;
+  //     let homeInfoWindowContent = `<div id="homeInfo">
+  //     <ul style="list-style-type:none">
+  //       <li><b>Address:</b> ${home.street_adrs} ${home.city}, ${home.state}</li>
+  //       <li><b>Neighborhood:</b> ${home.neighborhood}</li>
+  //       <li><b>Price:</b> $${home.price}</li>
+  //       <li><b>Days on the Market:</b> ${home.days_on_market}</li>
+  //       <li><b>Type of Property:</b> ${home.property_type}</li>
+  //       <li><b>Year Built:</b> ${home.year_built}</li>
+  //       <li><b>Square Footage:</b> ${home.sq_ft}</li>
+  //       <li><b>Price per Square Foot:</b> $${home.price_per_sqft}</li>
+  //       <li><b>Number of Bedrooms:</b> ${home.num_bed}</li>
+  //       <li><b>Number of Bathrooms:</b> ${home.num_bath}</li>
+  //       <li><b>Lot Size(ft):</b> ${home.lot_size}</li>
+  //       <li><b>HOA Dues per Month:</b> $${home.hoa_per_month}</li>
+  //       <li><b>MLS number:</b> ${home.mls_num} </li>
+  //     </ul>
+  //     </div>`;
 
-      let homeInfowindow = new google.maps.InfoWindow({
-        content: homeInfoWindowContent
-      });
+  //     let homeInfowindow = new google.maps.InfoWindow({
+  //       content: homeInfoWindowContent
+  //     });
 
-      hMarker.addListener('click', function() {
-       homeInfowindow.open(map, hMarker);
-      });
-    });  
+  //     hMarker.addListener('click', function() {
+  //      homeInfowindow.open(map, hMarker);
+  //     });
+  //   });  
     
-  }
-
-
-  // function codeAddress() {
-  //   // get the value of the input addresss
-  //   const address = document.getElementById('address').value;
-
-  //   // call the geocode method on the instantiated geocoder object, which
-  //   // take in the address from above and a function which takes in 
-  //   // 2 args: the results of the geocode method and the status.
-  //   // If status is OK, the center of the map is changed to the input address
-  //   // and a marker is added at that position too.
-  //   // If status not OK, an alert pops up
-  //   geocoder.geocode( { 'address': address}, function(results, status) {
-  //     console.log(results[0]);
-  //     if (status == 'OK') {
-  //       map.setCenter(results[0].geometry.location);
-  //       const marker = new google.maps.Marker({
-  //           map: map,
-  //           position: results[0].geometry.location
-  //       });
-  //     } else {
-  //       alert('Geocode was not successful for the following reason: ' + status);
-  //     }
-  //   });
   // }
-
-    
-
-
  		
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key={{ gkey }}&callback=initMap"

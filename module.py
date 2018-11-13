@@ -79,8 +79,8 @@ def get_homedata_by_latlong_range(input_lat, input_lng):
 
 	for home in home_for_sale_data:
 		home_dict = { 
-					  "latitude": home.latitude,
-					  "longitude": home.longitude,
+					  "lat": home.latitude,
+					  "lng": home.longitude,
 					  "mls_num": home.mls_num,
 					  "street_adrs": home.street_adrs,
 					  "city": home.city,
