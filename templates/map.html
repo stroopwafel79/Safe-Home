@@ -146,9 +146,10 @@
       function filterPrices(data) {
         for (let house of data) {
           if (house.price <= $('#min_price').val()) {
-            if (house.price >= $('#max_price').val()) {
-              hMarkers.push(house);
-            }
+            hMarkers.push(house.price);
+          }
+          if (house.price >= $('#max_price').val()) {
+            hMarkers.push(house.price);
           }
         }
         filterData(homeForSaleData, hMarkers);
@@ -172,11 +173,6 @@
       function addfilteredMarkers() {
         deleteMarkers();
         if (filteredCrimes.length !=0 && filteredHomes.length != 0) {
-          console.log("both");
-          console.log("fc", filteredCrimes);
-          console.log("fh", filteredHomes);
-          console.log("cd", crimeData);
-          console.log("hfsd", homeForSaleData);
           addMarkers(filteredCrimes, "c");
           addMarkers(filteredHomes, "h");
         } 
@@ -185,7 +181,6 @@
           addMarkers(homeForSaleData, "h");
         } 
         else {
-          console.log("home");
           addMarkers(crimeData, "c");
           addMarkers(filteredHomes, "h");
         }
