@@ -92,203 +92,214 @@
   <div id="map"></div> <!-- reserves a spot for the map -->
     <script>
       "use strict";
-  let map;
-  const crimeData = {{ crime_data|tojson }};
-  const homeForSaleData = {{ homes_for_sale_data|tojson }};
-  let cMarkers = []; // used for filtering crime markers
-  let hMarkers = []; // used for filtering home markers
-  let markers = []; // used for populating markers on the map
-  let filteredCrimes = [];
-  let filteredHomes = [];
-  // filters default to false so all crimes are shown
-  let crimeFilters = {Vandalism:false, Assault:false, theft_larceny:false, robbery:false, 
-                     disturbing_the_peace:false, motor_vehicle_theft:false, burglary:false, 
-                     weapons:false, sex_crimes:false, drugs_alcohol_violations:false, 
-                     arson:false, homicide:false, fraud:false, dui:false};
-            
+      let map;
+      const crimeData = {{ crime_data|tojson }};
+      const homeForSaleData = {{ homes_for_sale_data|tojson }};
+      let cMarkers = []; // used for filtering crime markers
+      let hMarkers = []; // used for filtering home markers
+      let markers = []; // used for populating markers on the map
+      let filteredCrimes = [];
+      let filteredHomes = [];
+      // filters default to false so all crimes are shown
+      let crimeFilters = {'Vandalism':false, 'Assault':false, 'Theft/Larceny':false, 
+                          'Robbery':false, 'Disturbing The Peace':false, 
+                          'Motor Vehicle Theft':false, 'Burglary':false, 
+                          'Weapons':false, 'Sex Crimes':false, 
+                          'Drugs/Alcohol Violations':false, 
+                          'Arson':false, 'Homicide':false, 'Fraud':false, 
+                          'Dui':false};
+                
 
-  // adds an event listener to the checkboxes looking for a change
-  // calls map_filter function. 
-  $('input[name=filter]').change(function (e) {
-   filterCrimes(this.id);
-  });
-
-
-  // toggles the value in the crimeFilters array.
-  // if value is false, it's changed to true and vice versa
-  // add all the crimeFilters that are false to cMarkers because
-  // want to keep the markers on the map that are in cMarkers.
-  // because there are many items that can be filtered, the crimeFilters
-  // step is necessary.
-  function filterCrimes(id_val) {
-    if (crimeFilters[id_val]) {
-      crimeFilters[id_val] = false
-      cMarkers.push(id_val);
-    } else {
-      crimeFilters[id_val] = true
-    }
-    filterData(crimeData, cMarkers);
-  }
+      // adds an event listener to the checkboxes looking for a change
+      // calls map_filter function. 
+      $('input[name=filter]').change(function (e) {
+       filterCrimes(this.id);
+      });
 
 
-  // adds event listener to the submit button for filtering homes by price
-  $('#submit').click(function (e) {
-    filterPrices(homeForSaleData);
-  });
+      // toggles the value in the crimeFilters array.
+      // if value is false, it's changed to true and vice versa
+      // add all the crimeFilters that are false to cMarkers because
+      // want to keep the markers on the map that are in cMarkers.
+      // because there are many items that can be filtered, the crimeFilters
+      // step is necessary.
+      function filterCrimes(id_val) {
+        if (crimeFilters[id_val]) {
+          crimeFilters[id_val] = false
+        } else {
+          crimeFilters[id_val] = true
+          cMarkers.push(id_val);
+        }
+        filterData(crimeData, cMarkers);
+      }
 
 
-  // Loop through homeForSaleData and check if house's price is 
-  // between the min and max prices entered by user
-  // populates hMarkers
-  function filterPrices(data) {
-    for (let house of data) {
-      if (house.price >= $('#min_price').val()) {
-        if (house.price <= $('#max_price').val()) {
-          hMarkers.push(house);
+      // adds event listener to the submit button for filtering homes by price
+      $('#submit').click(function (e) {
+        filterPrices(homeForSaleData);
+      });
+
+      //// I DONT THINK THIS IS WORKING
+      // Loop through homeForSaleData and check if house's price is 
+      // between the min and max prices entered by user
+      // populates hMarkers
+      function filterPrices(data) {
+        for (let house of data) {
+          if (house.price <= $('#min_price').val()) {
+            if (house.price >= $('#max_price').val()) {
+              hMarkers.push(house);
+            }
+          }
+        }
+        filterData(homeForSaleData, hMarkers);
+      }
+      
+
+      // Takes in the markers that have been added to the map and filters based on
+      // the filter data being passed in.
+      function filterData(data, filterData) {
+        if (filterData === cMarkers) {
+          filteredCrimes = data.filter(crime => !cMarkers.includes(crime.crime_type));
+          addfilteredMarkers();
+        } 
+        if (filterData === hMarkers) {
+          filteredHomes = data.filter(home => !hMarkers.includes(home.price));
+          addfilteredMarkers();    
         }
       }
-    }
-    filterData(homeForSaleData, hMarkers);
-  }
-  
-
-  // Takes in the markers that have been added to the map and filters based on
-  // the filter data being passed in.
-  function filterData(data, filterData) {
-    if (filterData === cMarkers) {
-      filteredCrimes = data.filter(crime => !cMarkers.includes(crime.crime_type));
-      addfilteredMarkers();
-    } 
-    if (filterData === hMarkers) {
-      filteredHomes = data.filter(home => !hMarkers.includes(home.price));
-      addfilteredMarkers();    
-    }
-  }
 
 
-  function addfilteredMarkers() {
-    deleteMarkers();
-    if (filteredCrimes && filteredHomes) {
-      addMarkers(filteredCrimes, "c");
-      addMarkers(filteredHomes, "h");
-    } else if (filteredCrimes) {
-      addMarkers(filteredCrimes, "c");
-      addMarkers(homeForSaleData, "h");
-    } else {
-      addMarkers(crimeData, "c");
-      addMarkers(filteredHomes, "h");
-    }
-  }
-
- 
-  function initMap() {
-
-    const mapCenter = {lat: {{ input_lat }}, lng: {{ input_lng }}};
-    
-    // instantiate a new map object with the input address
-    // as the center of the map.
-    map = new google.maps.Map(document.getElementById('map'), {
-      zoom: 16,
-      center: mapCenter
-    }); 
- 
-    // Add a marker for the center point of the map
-    let inputMarker = new google.maps.Marker({
-      position: mapCenter,
-      label: 'Test',
-      map: map
-    });
-
-    addMarkers(crimeData, "C");
-    addMarkers(homeForSaleData, "H");
-  }
-
-
-  function addMarkers(data, label) {
-    // note: data is an array of dictionaries
-    // loop over each item(dictionary) in data array
-    for (let i=0; i < data.length; i++) { 
-      // create a new marker object for each item(dictionary)
-      // using the lat/lng in the item for the position
-      let marker = new google.maps.Marker({
-        position: {lat: data[i]['lat'], lng: data[i]['lng']},
-        label: label,
-        map: map
-      });
-      // add the marker to the markers array in the global scope
-      markers.push(marker);
-
-      let infoWindowContent;
-
-      // if data is crime data, use this infoWindow content
-      if (data[0].case_num) {
-        infoWindowContent = `<div id="crimeInfo">
-          <ul style="list-style-type:none">
-          <li><b>Type of Crime:</b> ${data[i].crime_type}</li>
-          <li>Date and Time of Occurance: ${data[i].date_time}</li>
-          <li>Case Number: ${data[i].case_num}</li>
-          <li>Description of Crime: ${data[i].description}</li>
-          <li>Police Beat: ${data[i].police_beat}</li>
-          <li>Agency: Oakland Police Department</li>
-          </ul>
-          </div>`;
-      // else data is home data so use this infoWindow content    
-      } else {
-        infoWindowContent = `<div id="homeInfo">
-          <ul style="list-style-type:none">
-            <li><b>Address:</b> ${data[i].street_adrs} ${data[i].city}, ${data[i].state}</li>
-            <li><b>Neighborhood:</b> ${data[i].neighborhood}</li>
-            <li><b>Price:</b> $${data[i].price}</li>
-            <li><b>Days on the Market:</b> ${data[i].days_on_market}</li>
-            <li><b>Type of Property:</b> ${data[i].property_type}</li>
-            <li><b>Year Built:</b> ${data[i].year_built}</li>
-            <li><b>Square Footage:</b> ${data[i].sq_ft}</li>
-            <li><b>Price per Square Foot:</b> $${data[i].price_per_sqft}</li>
-            <li><b>Number of Bedrooms:</b> ${data[i].num_bed}</li>
-            <li><b>Number of Bathrooms:</b> ${data[i].num_bath}</li>
-            <li><b>Lot Size(ft):</b> ${data[i].lot_size}</li>
-            <li><b>HOA Dues per Month:</b> $${data[i].hoa_per_month}</li>
-            <li><b>MLS number:</b> ${data[i].mls_num} </li>
-          </ul>
-          </div>`;
+      function addfilteredMarkers() {
+        deleteMarkers();
+        if (filteredCrimes.length !=0 && filteredHomes.length != 0) {
+          console.log("both");
+          console.log("fc", filteredCrimes);
+          console.log("fh", filteredHomes);
+          console.log("cd", crimeData);
+          console.log("hfsd", homeForSaleData);
+          addMarkers(filteredCrimes, "c");
+          addMarkers(filteredHomes, "h");
+        } 
+        else if (filteredCrimes.length !=0) {
+          addMarkers(filteredCrimes, "c");
+          addMarkers(homeForSaleData, "h");
+        } 
+        else {
+          console.log("home");
+          addMarkers(crimeData, "c");
+          addMarkers(filteredHomes, "h");
+        }
       }
-      // create an infoWindow object for each marker
-      let infowindow = new google.maps.InfoWindow({
-        content: infoWindowContent
-      });
 
-      // add an event listener to each marker
-      marker.addListener('click', function() {
-       infowindow.open(map, marker);
-      });
-    }
-    // loop through markers array and set them all on the map.
-    setMapOnAll(map);
-  }
+     
+      function initMap() {
 
-    // Sets the map on all markers in the array.
-  function setMapOnAll(map) {
-    for (let i = 0; i < markers.length; i++) {
-      markers[i].setMap(map);
-    }
-  }
+        const mapCenter = {lat: {{ input_lat }}, lng: {{ input_lng }}};
+        
+        // instantiate a new map object with the input address
+        // as the center of the map.
+        map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 16,
+          center: mapCenter
+        }); 
+     
+        // Add a marker for the center point of the map
+        let inputMarker = new google.maps.Marker({
+          position: mapCenter,
+          label: 'Test',
+          map: map
+        });
 
-  // Removes the markers from the map, but keeps them in the array.
-  function clearMarkers() {
-    setMapOnAll(null);
-  }
+        addMarkers(crimeData, "C");
+        addMarkers(homeForSaleData, "H");
+      }
 
-  // Shows any markers currently in the array.
-  function showMarkers() {
-    setMapOnAll(map);
-  }
 
-  // Deletes all markers in the array by removing references to them.
-  function deleteMarkers() {
-    clearMarkers();
-    markers = [];
-  }
-  
+      function addMarkers(data, label) {
+        // note: data is an array of dictionaries
+        // loop over each item(dictionary) in data array
+        for (let i=0; i < data.length; i++) { 
+          // create a new marker object for each item(dictionary)
+          // using the lat/lng in the item for the position
+          let marker = new google.maps.Marker({
+            position: {lat: data[i]['lat'], lng: data[i]['lng']},
+            label: label,
+            map: map
+          });
+          // add the marker to the markers array in the global scope
+          markers.push(marker);
+
+          let infoWindowContent;
+
+          // if data is crime data, use this infoWindow content
+          if (data[0].case_num) {
+            infoWindowContent = `<div id="crimeInfo">
+              <ul style="list-style-type:none">
+              <li><b>Type of Crime:</b> ${data[i].crime_type}</li>
+              <li>Date and Time of Occurance: ${data[i].date_time}</li>
+              <li>Case Number: ${data[i].case_num}</li>
+              <li>Description of Crime: ${data[i].description}</li>
+              <li>Police Beat: ${data[i].police_beat}</li>
+              <li>Agency: Oakland Police Department</li>
+              </ul>
+              </div>`;
+          // else data is home data so use this infoWindow content    
+          } else {
+            infoWindowContent = `<div id="homeInfo">
+              <ul style="list-style-type:none">
+                <li><b>Address:</b> ${data[i].street_adrs} ${data[i].city}, ${data[i].state}</li>
+                <li><b>Neighborhood:</b> ${data[i].neighborhood}</li>
+                <li><b>Price:</b> $${data[i].price}</li>
+                <li><b>Days on the Market:</b> ${data[i].days_on_market}</li>
+                <li><b>Type of Property:</b> ${data[i].property_type}</li>
+                <li><b>Year Built:</b> ${data[i].year_built}</li>
+                <li><b>Square Footage:</b> ${data[i].sq_ft}</li>
+                <li><b>Price per Square Foot:</b> $${data[i].price_per_sqft}</li>
+                <li><b>Number of Bedrooms:</b> ${data[i].num_bed}</li>
+                <li><b>Number of Bathrooms:</b> ${data[i].num_bath}</li>
+                <li><b>Lot Size(ft):</b> ${data[i].lot_size}</li>
+                <li><b>HOA Dues per Month:</b> $${data[i].hoa_per_month}</li>
+                <li><b>MLS number:</b> ${data[i].mls_num} </li>
+              </ul>
+              </div>`;
+          }
+          // create an infoWindow object for each marker
+          let infowindow = new google.maps.InfoWindow({
+            content: infoWindowContent
+          });
+
+          // add an event listener to each marker
+          marker.addListener('click', function() {
+           infowindow.open(map, marker);
+          });
+        }
+        // loop through markers array and set them all on the map.
+        setMapOnAll(map);
+      }
+
+        // Sets the map on all markers in the array.
+      function setMapOnAll(map) {
+        for (let i = 0; i < markers.length; i++) {
+          markers[i].setMap(map);
+        }
+      }
+
+      // Removes the markers from the map, but keeps them in the array.
+      function clearMarkers() {
+        setMapOnAll(null);
+      }
+
+      // Shows any markers currently in the array.
+      function showMarkers() {
+        setMapOnAll(map);
+      }
+
+      // Deletes all markers in the array by removing references to them.
+      function deleteMarkers() {
+        clearMarkers();
+        markers = [];
+      }
+
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key={{ gkey }}&callback=initMap"
     async defer></script>
