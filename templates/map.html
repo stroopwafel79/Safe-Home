@@ -71,10 +71,14 @@
 <div id="home_filter">
   <p>Filter homes by price</p>
   <label for='minimum price'>Minimum Price: </label>
-  <input type="text" name="filter" id="min_price" class='home_price'>
+  <input type="text" name="hfilter" id="min_price" class='home_price'>
 
   <label for='maximum price'>Maximum Price: </label>
-  <input type="text" name="filter" id="max_price" class='home_price' checked>
+  <input type="text" name="hfilter" id="max_price" class='home_price'>
+
+  <label for='submit'></label>
+  <input type="submit" name="hfilter" id="submit" class='home_price'>
+
   
 </div>
 
@@ -91,7 +95,8 @@
   let map;
   const crimeData = {{ crime_data|tojson }};
   const homeForSaleData = {{ homes_for_sale_data|tojson }};
-  let cMarkers = []; // used for filtering markers
+  let cMarkers = []; // used for filtering crime markers
+  let hMarkers = []; // used for filtering home markers
   let markers = []; // used for populating markers on the map
 
   // filters default to false so all crimes are shown
@@ -117,9 +122,23 @@
     filterCrimeData(crimeData, cMarkers);
   }
 
-  
-
+  // Loop through homeForSaleData and check if house's price is 
+  // between the min and max prices entered by user
+  let filterPrices = function(data) {
+    for (let house of data) {
+      if (house.price >= $('#min_price').val()) {
+        if (house.price <= $('#max_price').val()) {
+          hMarkers.push(house);
+        }
+      }
+    }
+    clearFilteredMarkers(hMarkers, "H");
+  }
   ///////THIS IS WORKING
+  $('#submit').click(function (e) {
+    filterPrices(homeForSaleData);
+  })
+
   // adds an event listener to the checkboxes looking for a change
   // calls map_filter function. 
   $('input[name=filter]').change(function (e) {
