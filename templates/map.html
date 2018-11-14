@@ -95,8 +95,8 @@
       let map;
       const crimeData = {{ crime_data|tojson }};
       const homeForSaleData = {{ homes_for_sale_data|tojson }};
-      let cMarkers = []; // used for filtering crime markers
-      let hMarkers = []; // used for filtering home markers
+      let crimesToFilter = []; // used for filtering crime types
+      let homePricesToFilter = []; // used for filtering home prices
       let markers = []; // used for populating markers on the map
       let filteredCrimes = [];
       let filteredHomes = [];
@@ -119,8 +119,8 @@
 
       // toggles the value in the crimeFilters array.
       // if value is false, it's changed to true and vice versa
-      // add all the crimeFilters that are false to cMarkers because
-      // want to keep the markers on the map that are in cMarkers.
+      // add all the crimeFilters that are false to crimesToFilter because
+      // want to keep the markers on the map that are in crimesToFilter.
       // because there are many items that can be filtered, the crimeFilters
       // step is necessary.
       function filterCrimes(id_val) {
@@ -128,9 +128,9 @@
           crimeFilters[id_val] = false
         } else {
           crimeFilters[id_val] = true
-          cMarkers.push(id_val);
+          crimesToFilter.push(id_val);
         }
-        filterData(crimeData, cMarkers);
+        filterData(crimeData, crimesToFilter);
       }
 
 
@@ -139,32 +139,31 @@
         filterPrices(homeForSaleData);
       });
 
-      //// I DONT THINK THIS IS WORKING
       // Loop through homeForSaleData and check if house's price is 
       // between the min and max prices entered by user
-      // populates hMarkers
+      // populates homePricesToFilter
       function filterPrices(data) {
         for (let house of data) {
           if (house.price <= $('#min_price').val()) {
-            hMarkers.push(house.price);
+            homePricesToFilter.push(house.price);
           }
           if (house.price >= $('#max_price').val()) {
-            hMarkers.push(house.price);
+            homePricesToFilter.push(house.price);
           }
         }
-        filterData(homeForSaleData, hMarkers);
+        filterData(homeForSaleData, homePricesToFilter);
       }
       
 
       // Takes in the markers that have been added to the map and filters based on
       // the filter data being passed in.
       function filterData(data, filterData) {
-        if (filterData === cMarkers) {
-          filteredCrimes = data.filter(crime => !cMarkers.includes(crime.crime_type));
+        if (filterData === crimesToFilter) {
+          filteredCrimes = data.filter(crime => !crimesToFilter.includes(crime.crime_type));
           addfilteredMarkers();
         } 
-        if (filterData === hMarkers) {
-          filteredHomes = data.filter(home => !hMarkers.includes(home.price));
+        if (filterData === homePricesToFilter) {
+          filteredHomes = data.filter(home => !homePricesToFilter.includes(home.price));
           addfilteredMarkers();    
         }
       }
