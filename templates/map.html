@@ -90,34 +90,7 @@
                      weapons:false, sex_crimes:false, drugs_alcohol_violations:false, 
                      arson:false, homicide:false, fraud:false, dui:false}
 
-  // let crimeInfoWindowContent = `<div id="crimeInfo">
-  //     <ul style="list-style-type:none">
-  //     <li><b>Type of Crime:</b> ${crime.crime_type}</li>
-  //     <li>Date and Time of Occurance: ${crime.date_time}</li>
-  //     <li>Case Number: ${crime.case_num}</li>
-  //     <li>Description of Crime: ${crime.description}</li>
-  //     <li>Police Beat: ${crime.police_beat}</li>
-  //     <li>Agency: Oakland Police Department</li>
-  //     </ul>
-  //     </div>`;
 
-  // let homeInfoWindowContent = `<div id="homeInfo">
-  //     <ul style="list-style-type:none">
-  //       <li><b>Address:</b> ${home.street_adrs} ${home.city}, ${home.state}</li>
-  //       <li><b>Neighborhood:</b> ${home.neighborhood}</li>
-  //       <li><b>Price:</b> $${home.price}</li>
-  //       <li><b>Days on the Market:</b> ${home.days_on_market}</li>
-  //       <li><b>Type of Property:</b> ${home.property_type}</li>
-  //       <li><b>Year Built:</b> ${home.year_built}</li>
-  //       <li><b>Square Footage:</b> ${home.sq_ft}</li>
-  //       <li><b>Price per Square Foot:</b> $${home.price_per_sqft}</li>
-  //       <li><b>Number of Bedrooms:</b> ${home.num_bed}</li>
-  //       <li><b>Number of Bathrooms:</b> ${home.num_bath}</li>
-  //       <li><b>Lot Size(ft):</b> ${home.lot_size}</li>
-  //       <li><b>HOA Dues per Month:</b> $${home.hoa_per_month}</li>
-  //       <li><b>MLS number:</b> ${home.mls_num} </li>
-  //     </ul>
-  //     </div>`;
 
   //////////THIS IS WORKING                  
   // toggles the value in the crimeFilters array.
@@ -131,7 +104,6 @@
       cMarkers.push(id_val);
       
     }
-    console.log(cMarkers);
     filterCrimeData(crimeData, cMarkers);
   }
 
@@ -148,8 +120,7 @@
   // Filter the crimeData array to include an array of markers to EXCLUDE.
   function filterCrimeData (crimeData, cMarkers) {
     const results = crimeData.filter(crime => !cMarkers.includes(crime.crime_type));
-    console.log(results);
-    clearFilteredMarkers(results);
+    clearFilteredMarkers(results, "C");
 
     /// NOT WORKING!!!!
     // change this to set results to the markers I don't want 
@@ -157,9 +128,10 @@
     
   }
 
-  function clearFilteredMarkers(crimeData) {
+  function clearFilteredMarkers(data, label) {
     deleteMarkers();
-    addMarkers(crimeData, "c");
+    addMarkers(data, label);
+
   }
   
 
@@ -189,7 +161,6 @@
   function addMarkers(data, label) {
 
     for (let i=0; i < data.length; i++) {
-      console.log(data[i].crime_type);
       let marker = new google.maps.Marker({
         position: {lat: data[i]['lat'], lng: data[i]['lng']},
         label: label,
