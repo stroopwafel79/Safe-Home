@@ -142,7 +142,7 @@ def load_homes():
                                  city=home_lst[4],
                                  state=home_lst[5],
                                  zipcode=home_lst[6],
-                                 price=home_lst[7],
+                                 price=int(home_lst[7]),
                                  property_type=home_lst[2],
                                  neighborhood=home_lst[10],
                                  year_built=home_lst[13],

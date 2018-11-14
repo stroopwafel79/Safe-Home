@@ -22,7 +22,7 @@
 
 
 {% block content %}
-<div id="buttons">
+<div id="crime_buttons">
   
   <input type="checkbox" name="filter" id="Vandalism" class='chk-btn' checked>
   <label for='vandalism'>Vandalism</label>
@@ -66,6 +66,16 @@
   <input type="checkbox" name="filter" id="Dui" class='chk-btn' checked>
   <label for='dui'>DUI</label>
   <br>
+</div>
+
+<div id="home_filter">
+  <p>Filter homes by price</p>
+  <label for='minimum price'>Minimum Price: </label>
+  <input type="text" name="filter" id="min_price" class='home_price'>
+
+  <label for='maximum price'>Maximum Price: </label>
+  <input type="text" name="filter" id="max_price" class='home_price' checked>
+  
 </div>
 
   <!-- <form action="/">

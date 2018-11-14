@@ -74,7 +74,7 @@ class HomesForSale(db.Model):
 	city = db.Column(db.String(200), nullable=False)
 	state = db.Column(db.String(100), nullable=False)
 	zipcode = db.Column(db.String(30), nullable=False)
-	price = db.Column(db.String(100), nullable=False)
+	price = db.Column(db.Integer, nullable=False)
 	#zestimate = db.Column(db.Integer, nullable=False)
 	property_type = db.Column(db.String(200), nullable=False)
 	neighborhood = db.Column(db.String(200), nullable=False)
