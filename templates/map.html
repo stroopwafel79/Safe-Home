@@ -8,7 +8,7 @@
       /* Always set the map height explicitly to define the size of the div
        * element that contains the map. */
       #map {
-        height: 85%;
+        height: 80%;
       }
       /* Optional: Makes the sample page fill the window. */
       html, body {
@@ -17,7 +17,8 @@
         padding: 0;
       }
     </style>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.2.1/Chart.js'></script>
+  <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
 {% endblock %}
 
 
@@ -78,8 +79,9 @@
 
   <label for='submit'></label>
   <input type="submit" name="hfilter" id="submit" class='home_price'>
-
-  
+</div>
+<div class="chart">
+  <canvas id="crime_type_chart"></canvas>
 </div>
 
   <!-- <form action="/">
@@ -204,21 +206,30 @@
           map: map
         });
 
-        addMarkers(crimeData, "C");
-        addMarkers(homeForSaleData, "H");
+        addMarkers(crimeData);
+        addMarkers(homeForSaleData);
       }
 
 
-      function addMarkers(data, label) {
+      function addMarkers(data) {
         // note: data is an array of dictionaries
         // loop over each item(dictionary) in data array
         for (let i=0; i < data.length; i++) { 
+
+          let mapIcon;
+
+          if (data[0].case_num) {
+            mapIcon = "static/angry_emoji.png";
+          }
+          else {
+            mapIcon = "static/house_icon.png";
+          }
           // create a new marker object for each item(dictionary)
           // using the lat/lng in the item for the position
           let marker = new google.maps.Marker({
             position: {lat: data[i]['lat'], lng: data[i]['lng']},
-            label: label,
-            map: map
+            map: map,
+            icon: mapIcon
           });
           // add the marker to the markers array in the global scope
           markers.push(marker);
