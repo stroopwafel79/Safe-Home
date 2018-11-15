@@ -17,6 +17,8 @@
         padding: 0;
       }
     </style>
+
+  <script defer src="https://use.fontawesome.com/releases/v5.5.0/js/all.js" integrity="sha384-GqVMZRt5Gn7tB9D9q7ONtcp4gtHIUEW/yG7h98J7IpE3kpi+srfFyyB/04OV6pG0" crossorigin="anonymous"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 {% endblock %}
 
@@ -108,7 +110,6 @@
                           'Drugs/Alcohol Violations':false, 
                           'Arson':false, 'Homicide':false, 'Fraud':false, 
                           'Dui':false};
-                
 
       // adds an event listener to the checkboxes looking for a change
       // calls map_filter function. 
@@ -172,16 +173,16 @@
       function addfilteredMarkers() {
         deleteMarkers();
         if (filteredCrimes.length !=0 && filteredHomes.length != 0) {
-          addMarkers(filteredCrimes, "c");
-          addMarkers(filteredHomes, "h");
+          addMarkers(filteredCrimes, "C");
+          addMarkers(filteredHomes, "H");
         } 
         else if (filteredCrimes.length !=0) {
-          addMarkers(filteredCrimes, "c");
-          addMarkers(homeForSaleData, "h");
+          addMarkers(filteredCrimes, "C");
+          addMarkers(homeForSaleData, "H");
         } 
         else {
-          addMarkers(crimeData, "c");
-          addMarkers(filteredHomes, "h");
+          addMarkers(crimeData, "C");
+          addMarkers(filteredHomes, "H");
         }
       }
 
@@ -212,21 +213,23 @@
       function addMarkers(data, label) {
         // note: data is an array of dictionaries
         // loop over each item(dictionary) in data array
+        let marker;
+        let infoWindowContent;
+        let infoWindow;
         for (let i=0; i < data.length; i++) { 
           // create a new marker object for each item(dictionary)
           // using the lat/lng in the item for the position
-          let marker = new google.maps.Marker({
-            position: {lat: data[i]['lat'], lng: data[i]['lng']},
-            label: label,
-            map: map
-          });
-          // add the marker to the markers array in the global scope
-          markers.push(marker);
-
-          let infoWindowContent;
-
-          // if data is crime data, use this infoWindow content
+      
           if (data[0].case_num) {
+            marker = new google.maps.Marker({
+              position: {lat: data[i]['lat'], lng: data[i]['lng']},
+              map: map,
+              icon: '/static/angry_emoji.png'
+            });
+            // add the marker to the markers array in the global scope
+            markers.push(marker);
+
+            // if data is crime data, use this infoWindow content
             infoWindowContent = `<div id="crimeInfo">
               <ul style="list-style-type:none">
               <li><b>Type of Crime:</b> ${data[i].crime_type}</li>
@@ -237,8 +240,27 @@
               <li>Agency: Oakland Police Department</li>
               </ul>
               </div>`;
-          // else data is home data so use this infoWindow content    
-          } else {
+
+            infoWindow = new google.maps.InfoWindow({
+              content: infoWindowContent
+            });
+
+          // add an event listener to each marker
+            marker.addListener('click', function() {
+              infoWindow.open(map, marker);
+            });
+          }     
+            // else data is home data so use this infoWindow content    
+ 
+          else {
+            marker = new google.maps.Marker({
+              position: {lat: data[i]['lat'], lng: data[i]['lng']},
+              label: "H",
+              map: map,
+            
+            });
+            // add the marker to the markers array in the global scope
+            markers.push(marker);
             infoWindowContent = `<div id="homeInfo">
               <ul style="list-style-type:none">
                 <li><b>Address:</b> ${data[i].street_adrs} ${data[i].city}, ${data[i].state}</li>
@@ -256,16 +278,17 @@
                 <li><b>MLS number:</b> ${data[i].mls_num} </li>
               </ul>
               </div>`;
-          }
-          // create an infoWindow object for each marker
-          let infowindow = new google.maps.InfoWindow({
-            content: infoWindowContent
-          });
+          
+            // create an infoWindow object for each marker
+            infoWindow = new google.maps.InfoWindow({
+              content: infoWindowContent
+            });
 
-          // add an event listener to each marker
-          marker.addListener('click', function() {
-           infowindow.open(map, marker);
-          });
+            // add an event listener to each marker
+            marker.addListener('click', function() {
+             infoWindow.open(map, marker);
+            });
+          }
         }
         // loop through markers array and set them all on the map.
         setMapOnAll(map);
@@ -294,6 +317,28 @@
         markers = [];
       }
 
+  //     var icons = {
+  //     assault: {
+  //     name: 'Assault',
+  //     icon: 'static/images/yellow_MarkerA.png'
+  //   },
+  //   robbery: {
+  //     name: 'Robbery',
+  //     icon: 'static/images/brown_MarkerR.png'
+  //   },
+  //   kidnapping: {
+  //     name: 'Kidnapping',
+  //     icon: 'static/images/purple_MarkerK.png'
+  //   },
+  //   sex: {
+  //     name: 'Sex Crimes',
+  //     icon: 'static/images/blue_MarkerS.png'
+  //   },
+  //   other: {
+  //     name: 'Other',
+  //     icon: 'static/images/red_MarkerO.png',
+  //   }
+  // };
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key={{ gkey }}&callback=initMap"
     async defer></script>
