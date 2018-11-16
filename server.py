@@ -6,7 +6,8 @@ from flask import (Flask, render_template, redirect, request, flash,
 from model import connect_to_db
 from flask_debugtoolbar import DebugToolbarExtension
 from module import (get_gkey, get_crimedata_by_latlong_range,
-					get_homedata_by_latlong_range)
+					get_homedata_by_latlong_range,
+					get_crimetype_chart_data)
 from pprint import pprint
 import googlemaps
 
@@ -56,13 +57,21 @@ def get_gmap():
 	# get lat/lng (as float) of input address from geocode results
 	input_lat = geocode_result[0]["geometry"]["location"]["lat"]
 	input_lng = geocode_result[0]["geometry"]["location"]["lng"]
+
+	crime_data = get_crimedata_by_latlong_range(input_lat, input_lng)
+	crime_chart_data = get_crimetype_chart_data(crime_data)
+	print("\n\n\n\nCCCCCCCCCCHHHHHHHHH")
+	print(crime_chart_data
+		)
+
 	
 	return render_template(
 						   "map.html",
 						   gkey=get_gkey(),
 						   input_lat=input_lat,
 						   input_lng=input_lng,
-						   crime_data=get_crimedata_by_latlong_range(input_lat, input_lng),
+						   crime_data=crime_data,
+						   crime_chart_data=crime_chart_data,
 						   homes_for_sale_data=get_homedata_by_latlong_range(input_lat, input_lng)
 	 					   )
 

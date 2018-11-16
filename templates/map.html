@@ -23,73 +23,69 @@
 
 
 {% block content %}
-<div id="crime_buttons">
-  
-  <input type="checkbox" name="filter" id="Vandalism" class='chk-btn' checked>
-  <label for='vandalism'>Vandalism</label>
-  
-  <input type="checkbox" name="filter" id="Assault" class='chk-btn' checked>
-  <label for='assault'>Assault</label>
-  
-  <input type="checkbox" name="filter" id="Theft/Larceny" class='chk-btn' checked>
-  <label for='theft larceny'>Theft/Larceny</label>
-
-  <input type="checkbox" name="filter" id="Robbery" class='chk-btn' checked>
-  <label for='robbery'>Robbery</label>
-
-  <input type="checkbox" name="filter" id="Disturbing The Peace" class='chk-btn' checked>
-  <label for='disturbing the peace'>Disturbing the Peace</label>
-
-  <input type="checkbox" name="filter" id="Motor Vehicle Theft" class='chk-btn' checked>
-  <label for='motor vehicle theft'>Motor Vehicle Theft</label>
-
-  <input type="checkbox" name="filter" id="Burglary" class='chk-btn' checked>
-  <label for='burglary'>Burglary</label>
-
-  <input type="checkbox" name="filter" id="Weapons" class='chk-btn' checked>
-  <label for='weapons'>Weapons</label>
-
-  <input type="checkbox" name="filter" id="Sex Crimes" class='chk-btn' checked>
-  <label for='sex crimes'>Sex Crimes</label>
-
-  <input type="checkbox" name="filter" id="Drugs/Alcohol Violations" class='chk-btn' checked>
-  <label for='drugs and alcohol violations'>Drugs/Alcohol Violations</label>
-
-  <input type="checkbox" name="filter" id="Arson" class='chk-btn' checked>
-  <label for='arson'>Arson</label>
+  <div id="crime_buttons">
     
-  <input type="checkbox" name="filter" id="Homicide" class='chk-btn' checked>
-  <label for='homicide'>Homicide</label>
+    <input type="checkbox" name="filter" id="Vandalism" class='chk-btn' checked>
+    <label for='vandalism'>Vandalism</label>
+    
+    <input type="checkbox" name="filter" id="Assault" class='chk-btn' checked>
+    <label for='assault'>Assault</label>
+    
+    <input type="checkbox" name="filter" id="Theft/Larceny" class='chk-btn' checked>
+    <label for='theft larceny'>Theft/Larceny</label>
 
-  <input type="checkbox" name="filter" id="Fraud" class='chk-btn' checked>
-  <label for='fraud'>Fraud</label>
+    <input type="checkbox" name="filter" id="Robbery" class='chk-btn' checked>
+    <label for='robbery'>Robbery</label>
 
-  <input type="checkbox" name="filter" id="Dui" class='chk-btn' checked>
-  <label for='dui'>DUI</label>
-  <br>
-</div>
+    <input type="checkbox" name="filter" id="Disturbing The Peace" class='chk-btn' checked>
+    <label for='disturbing the peace'>Disturbing the Peace</label>
 
-<div id="home_filter">
-  <p>Filter homes by price</p>
-  <label for='minimum price'>Minimum Price: </label>
-  <input type="text" name="hfilter" id="min_price" class='home_price'>
+    <input type="checkbox" name="filter" id="Motor Vehicle Theft" class='chk-btn' checked>
+    <label for='motor vehicle theft'>Motor Vehicle Theft</label>
 
-  <label for='maximum price'>Maximum Price: </label>
-  <input type="text" name="hfilter" id="max_price" class='home_price'>
+    <input type="checkbox" name="filter" id="Burglary" class='chk-btn' checked>
+    <label for='burglary'>Burglary</label>
 
-  <label for='submit'></label>
-  <input type="submit" name="hfilter" id="submit" class='home_price'>
-</div>
-<div class="chart">
-  <canvas id="crime_type_chart"></canvas>
-</div>
+    <input type="checkbox" name="filter" id="Weapons" class='chk-btn' checked>
+    <label for='weapons'>Weapons</label>
 
-  <!-- <form action="/">
-    <div id="floating-panel">
-        <input id="address" type="textbox" title="Address to Geocode">
-        <input type="button" value="submit" onclick="codeAddress()">
-    </div>
-  </form> -->
+    <input type="checkbox" name="filter" id="Sex Crimes" class='chk-btn' checked>
+    <label for='sex crimes'>Sex Crimes</label>
+
+    <input type="checkbox" name="filter" id="Drugs/Alcohol Violations" class='chk-btn' checked>
+    <label for='drugs and alcohol violations'>Drugs/Alcohol Violations</label>
+
+    <input type="checkbox" name="filter" id="Arson" class='chk-btn' checked>
+    <label for='arson'>Arson</label>
+      
+    <input type="checkbox" name="filter" id="Homicide" class='chk-btn' checked>
+    <label for='homicide'>Homicide</label>
+
+    <input type="checkbox" name="filter" id="Fraud" class='chk-btn' checked>
+    <label for='fraud'>Fraud</label>
+
+    <input type="checkbox" name="filter" id="Dui" class='chk-btn' checked>
+    <label for='dui'>DUI</label>
+    <br>
+  </div>
+
+  <div id="home_filter">
+    <p>Filter homes by price</p>
+    <label for='minimum price'>Minimum Price: </label>
+    <input type="text" name="hfilter" id="min_price" class='home_price'>
+
+    <label for='maximum price'>Maximum Price: </label>
+    <input type="text" name="hfilter" id="max_price" class='home_price'>
+
+    <label for='submit'></label>
+    <input type="submit" name="hfilter" id="submit" class='home_price'>
+  </div>
+
+  <div class="chart">
+    <canvas id="crime_type_chart"></canvas>
+  </div>
+
+  
 
   <div id="map"></div> <!-- reserves a spot for the map -->
     <script>
@@ -97,6 +93,7 @@
       let map;
       const crimeData = {{ crime_data|tojson }};
       const homeForSaleData = {{ homes_for_sale_data|tojson }};
+      const crimeChartData = {{ crime_chart_data|tojson }};
       let crimesToFilter = []; // used for filtering crime types
       let homePricesToFilter = []; // used for filtering home prices
       let markers = []; // used for populating markers on the map
@@ -174,16 +171,16 @@
       function addfilteredMarkers() {
         deleteMarkers();
         if (filteredCrimes.length !=0 && filteredHomes.length != 0) {
-          addMarkers(filteredCrimes, "c");
-          addMarkers(filteredHomes, "h");
+          addMarkers(filteredCrimes);
+          addMarkers(filteredHomes);
         } 
         else if (filteredCrimes.length !=0) {
-          addMarkers(filteredCrimes, "c");
-          addMarkers(homeForSaleData, "h");
+          addMarkers(filteredCrimes);
+          addMarkers(homeForSaleData);
         } 
         else {
-          addMarkers(crimeData, "c");
-          addMarkers(filteredHomes, "h");
+          addMarkers(crimeData);
+          addMarkers(filteredHomes);
         }
       }
 
@@ -304,6 +301,11 @@
         clearMarkers();
         markers = [];
       }
+ 
+      
+      // create a chart of crime_types
+      const chart = document.getElementById("crime_type_chart").getContext('2d');
+
 
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key={{ gkey }}&callback=initMap"
