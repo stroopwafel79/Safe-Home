@@ -104,8 +104,10 @@ def get_homedata_by_latlong_range(input_lat, input_lng):
     return homedata_in_range
 
 def get_crimetype_chart_data(data):
-    """Get data to display on chart on website"""
-  # for each iteration, item =  {
+    """Take in crime data (list of dicts) and create a 
+       new dict of crime type: # crimes."""
+
+     # for each iteration, item =  {
      #  "lat": crime.address.latitude, 
      #  "lng": crime.address.longitude,
      #  "crime_type": Vandalism
@@ -123,8 +125,20 @@ def get_crimetype_chart_data(data):
             crimetype_dict[item["crime_type"]] += 1
         else:
             crimetype_dict[item["crime_type"]] = 1
+
+    return crimetype_dict
+
+def get_crimetype_chart_labels(cdata):
+    """Take dictionary of crime type: # crimes and turn it into
+    labels and data for the chart"""
+
+    labels = []
+    data = []
+    for k,v in cdata.items():
+        labels.append(k)
+        data.append(v)
             
-    return crimetype_dict   
+    return {"labels": labels, "data": data}     
 
         
 
