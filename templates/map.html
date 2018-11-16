@@ -2,20 +2,24 @@
 
 {% block head %}
   {% block title %}Google Map{% endblock %}
-  <meta name="viewport" content="initial-scale=1.0">
-    <meta charset="utf-8">
+  <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
     <style>
       /* Always set the map height explicitly to define the size of the div
        * element that contains the map. */
-      #map {
-        height: 80%;
+      /*#map {
+        height: 60%;
       }
-      /* Optional: Makes the sample page fill the window. */
+       Optional: Makes the sample page fill the window. 
       html, body {
-        height: 100%;
+        height: 60%;
         margin: 0;
         padding: 0;
-      }
+      }*/
     </style>
   <script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.2.1/Chart.js'></script>
   <script src='https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js'></script>
@@ -23,71 +27,76 @@
 
 
 {% block content %}
-  <div id="crime_buttons">
-    
-    <input type="checkbox" name="filter" id="Vandalism" class='chk-btn' checked>
-    <label for='vandalism'>Vandalism</label>
-    
-    <input type="checkbox" name="filter" id="Assault" class='chk-btn' checked>
-    <label for='assault'>Assault</label>
-    
-    <input type="checkbox" name="filter" id="Theft/Larceny" class='chk-btn' checked>
-    <label for='theft larceny'>Theft/Larceny</label>
 
-    <input type="checkbox" name="filter" id="Robbery" class='chk-btn' checked>
-    <label for='robbery'>Robbery</label>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-10" id="map"></div> <!-- reserves a spot for the map -->
+    <div class="col-2">
+        <div id="crime_buttons">
+          
+          <input type="checkbox" name="filter" id="Vandalism" class='chk-btn' checked>
+          <label for='vandalism'>Vandalism</label>
+          
+          <input type="checkbox" name="filter" id="Assault" class='chk-btn' checked>
+          <label for='assault'>Assault</label>
+          
+          <input type="checkbox" name="filter" id="Theft/Larceny" class='chk-btn' checked>
+          <label for='theft larceny'>Theft/Larceny</label>
 
-    <input type="checkbox" name="filter" id="Disturbing The Peace" class='chk-btn' checked>
-    <label for='disturbing the peace'>Disturbing the Peace</label>
+          <input type="checkbox" name="filter" id="Robbery" class='chk-btn' checked>
+          <label for='robbery'>Robbery</label>
 
-    <input type="checkbox" name="filter" id="Motor Vehicle Theft" class='chk-btn' checked>
-    <label for='motor vehicle theft'>Motor Vehicle Theft</label>
+          <input type="checkbox" name="filter" id="Disturbing The Peace" class='chk-btn' checked>
+          <label for='disturbing the peace'>Disturbing the Peace</label>
 
-    <input type="checkbox" name="filter" id="Burglary" class='chk-btn' checked>
-    <label for='burglary'>Burglary</label>
+          <input type="checkbox" name="filter" id="Motor Vehicle Theft" class='chk-btn' checked>
+          <label for='motor vehicle theft'>Motor Vehicle Theft</label>
 
-    <input type="checkbox" name="filter" id="Weapons" class='chk-btn' checked>
-    <label for='weapons'>Weapons</label>
+          <input type="checkbox" name="filter" id="Burglary" class='chk-btn' checked>
+          <label for='burglary'>Burglary</label>
 
-    <input type="checkbox" name="filter" id="Sex Crimes" class='chk-btn' checked>
-    <label for='sex crimes'>Sex Crimes</label>
+          <input type="checkbox" name="filter" id="Weapons" class='chk-btn' checked>
+          <label for='weapons'>Weapons</label>
 
-    <input type="checkbox" name="filter" id="Drugs/Alcohol Violations" class='chk-btn' checked>
-    <label for='drugs and alcohol violations'>Drugs/Alcohol Violations</label>
+          <input type="checkbox" name="filter" id="Sex Crimes" class='chk-btn' checked>
+          <label for='sex crimes'>Sex Crimes</label>
 
-    <input type="checkbox" name="filter" id="Arson" class='chk-btn' checked>
-    <label for='arson'>Arson</label>
-      
-    <input type="checkbox" name="filter" id="Homicide" class='chk-btn' checked>
-    <label for='homicide'>Homicide</label>
+          <input type="checkbox" name="filter" id="Drugs/Alcohol Violations" class='chk-btn' checked>
+          <label for='drugs and alcohol violations'>Drugs/Alcohol Violations</label>
 
-    <input type="checkbox" name="filter" id="Fraud" class='chk-btn' checked>
-    <label for='fraud'>Fraud</label>
+          <input type="checkbox" name="filter" id="Arson" class='chk-btn' checked>
+          <label for='arson'>Arson</label>
+            
+          <input type="checkbox" name="filter" id="Homicide" class='chk-btn' checked>
+          <label for='homicide'>Homicide</label>
 
-    <input type="checkbox" name="filter" id="Dui" class='chk-btn' checked>
-    <label for='dui'>DUI</label>
-    <br>
-  </div>
+          <input type="checkbox" name="filter" id="Fraud" class='chk-btn' checked>
+          <label for='fraud'>Fraud</label>
 
-  <div id="home_filter">
-    <p>Filter homes by price</p>
-    <label for='minimum price'>Minimum Price: </label>
-    <input type="text" name="hfilter" id="min_price" class='home_price'>
+          <input type="checkbox" name="filter" id="Dui" class='chk-btn' checked>
+          <label for='dui'>DUI</label>
+          <br>
+        </div>
 
-    <label for='maximum price'>Maximum Price: </label>
-    <input type="text" name="hfilter" id="max_price" class='home_price'>
+        <div id="home_filter">
+          <p>Filter homes by price</p>
+          <label for='minimum price'>Minimum Price: </label>
+          <input type="text" name="hfilter" id="min_price" class='home_price'>
 
-    <label for='submit'></label>
-    <input type="submit" name="hfilter" id="submit" class='home_price'>
-  </div>
+          <label for='maximum price'>Maximum Price: </label>
+          <input type="text" name="hfilter" id="max_price" class='home_price'>
 
-  <div class="chart">
-    <canvas id="crime_type_chart"></canvas>
-  </div>
-
-  
-
-  <div id="map"></div> <!-- reserves a spot for the map -->
+          <label for='submit'></label>
+          <input type="submit" name="hfilter" id="submit" class='home_price'>
+        </div>
+    </div>
+    <div class="row" id="chart">
+      <div class="col-12">
+        <canvas id="crime_type_chart"></canvas>
+      </div>
+    </div> 
+  </div>       
+</div>
     <script>
       "use strict";
       let map;
@@ -205,6 +214,7 @@
 
         addMarkers(crimeData);
         addMarkers(homeForSaleData);
+        makeCrimeChart(crimeChartData);
       }
 
 
@@ -352,10 +362,13 @@
       
 
       
-      makeCrimeChart(crimeChartData);
+      
 
 
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key={{ gkey }}&callback=initMap"
-    async defer></script>
+    async defer></script> 
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 {% endblock %}
