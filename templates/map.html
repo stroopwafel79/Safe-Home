@@ -91,7 +91,7 @@
         </div>
     </div>
     <div class="row" id="chart">
-      <div class="col-12">
+      <div class="col">
         <canvas id="crime_type_chart"></canvas>
       </div>
     </div> 
@@ -327,7 +327,6 @@
               data: {
                   labels: data.labels,
                   datasets: [{
-                      label: 'Number of Crime per type',
                       data: data.data,
                       backgroundColor: [
                           'rgba(255, 99, 132, 0.2)',
@@ -349,6 +348,10 @@
                   }]
               },
               options: {
+                  title: {
+                      display: true,
+                      text: 'Number of Crimes per Type'
+                  },
                   scales: {
                       yAxes: [{
                           ticks: {
