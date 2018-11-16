@@ -138,7 +138,36 @@ def get_crimetype_chart_labels(cdata):
         labels.append(k)
         data.append(v)
             
-    return {"labels": labels, "data": data}     
+    return {"labels": labels, "data": data} 
+
+# def make_chart_dict(data):
+#     """Take dict of labels: crimetype, data: #crimes and turn it into
+#        a format for Chart.js"""
+
+#     #data coming in will look like this:
+#     # data = {'labels': ['Vandalism', 'Assault', 'Motor Vehicle Theft', 
+#               # 'Theft/Larceny', 'Burglary', 'Robbery', 'Disturbing The Peace', 
+#               # 'Dui', 'Weapons', 'Fraud'], 
+#               # 'data': [19, 26, 27, 94, 8, 7, 7, 2, 2, 5]}    
+
+#     chart_dict = {
+#                   "labels": data["labels"],
+#                   "datasets": [
+#                               "data": data["data"],
+#                               "backgroundColor": [
+#                                   "#FF6384",
+#                                   "#36A2EB",
+#                                   "#FFCE56"
+#                                   ],
+#                               "hoverBackgroundColor": [
+#                                   "#FF6384",
+#                                   "#36A2EB",
+#                                   "#FFCE56"
+#                                   ]
+#                               ]
+#                   }
+                  
+#     return chart_dict
 
         
 

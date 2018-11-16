@@ -68,9 +68,21 @@ def get_gmap():
                            input_lat=input_lat,
                            input_lng=input_lng,
                            crime_data=crime_data,
-                           crime_chart_labels=get_crimetype_chart_labels(crime_chart_data),
+                           chart_dict=get_crimetype_chart_labels(crime_chart_data),
                            homes_for_sale_data=get_homedata_by_latlong_range(input_lat, input_lng)
                            )
+
+#####Fiddling with AJAX resume if there's time
+# @app.route("/crime-chart.json")
+# def get_crimetypes_data(crime_data): # how get crime data here?
+#     """Take in crimedata filtered by lat/lng range, gleen info 
+#        needed for table, and return dict in format for Chart.js"""
+#     crime_chart_data = get_crimetype_chart_data(crime_data)
+#     crime_chart_labels = get_crimetype_chart_labels(crime_chart_data)
+#     chart_dict = make_chart_dict(crime_chart_data)
+
+#     return jsonify(chart_dict)
+
 
 ######################################################################
 if __name__ == '__main__':

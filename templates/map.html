@@ -93,7 +93,7 @@
       let map;
       const crimeData = {{ crime_data|tojson }};
       const homeForSaleData = {{ homes_for_sale_data|tojson }};
-      const crimeChartData = {{ crime_chart_labels|tojson }};
+      const crimeChartData = {{ chart_dict|tojson }};
       let crimesToFilter = []; // used for filtering crime types
       let homePricesToFilter = []; // used for filtering home prices
       let markers = []; // used for populating markers on the map
@@ -302,25 +302,57 @@
         markers = [];
       }
  
+      
       function makeCrimeChart(data) {
-        // create a chart of crime_types
 
-        // data coming in will look like this:
-        // d = {'Vandalism': 19, 'Assault': 26, 'Motor Vehicle Theft': 27, 'Theft/Larceny': 94, 
-        //      'Burglary': 8, 'Robbery': 7, 'Disturbing The Peace': 7, 'Dui': 2, 
-        //      'Weapons': 2, 'Fraud': 5}
+      // data coming in will look like this:
+      // data = {'labels': ['Vandalism', 'Assault', 'Motor Vehicle Theft', 
+      //         'Theft/Larceny', 'Burglary', 'Robbery', 'Disturbing The Peace', 
+      //         'Dui', 'Weapons', 'Fraud'], 
+      //         'data': [19, 26, 27, 94, 8, 7, 7, 2, 2, 5]}   
+        const context = $("#crime_type_chart");
 
-        const context = $("#crime_type_chart")
-
-        
-        let labels = []
-        let data = []
-
-
-
+        const crimeChart = new Chart(context, {
+              type: 'bar',
+              data: {
+                  labels: data.labels,
+                  datasets: [{
+                      label: 'Number of Crime per type',
+                      data: data.data,
+                      backgroundColor: [
+                          'rgba(255, 99, 132, 0.2)',
+                          'rgba(54, 162, 235, 0.2)',
+                          'rgba(255, 206, 86, 0.2)',
+                          'rgba(75, 192, 192, 0.2)',
+                          'rgba(153, 102, 255, 0.2)',
+                          'rgba(255, 159, 64, 0.2)'
+                      ],
+                      borderColor: [
+                          'rgba(255,99,132,1)',
+                          'rgba(54, 162, 235, 1)',
+                          'rgba(255, 206, 86, 1)',
+                          'rgba(75, 192, 192, 1)',
+                          'rgba(153, 102, 255, 1)',
+                          'rgba(255, 159, 64, 1)'
+                      ],
+                      borderWidth: 1
+                  }]
+              },
+              options: {
+                  scales: {
+                      yAxes: [{
+                          ticks: {
+                              beginAtZero:true
+                          }
+                      }]
+                  }
+              }
+          });
       }
       
 
+      
+      makeCrimeChart(crimeChartData);
 
 
     </script>
