@@ -30,8 +30,8 @@
 
 <div class="container-fluid">
   <div class="row">
-    <div class="col-10" id="map"></div> <!-- reserves a spot for the map -->
-    <div class="col-2">
+    <div class="col-9" id="map"></div> <!-- reserves a spot for the map -->
+    <div class="col-3">
         <div id="crime_buttons">
           
           <input type="checkbox" name="filter" id="Vandalism" class='chk-btn' checked>
@@ -47,10 +47,10 @@
           <label for='robbery'>Robbery</label>
 
           <input type="checkbox" name="filter" id="Disturbing The Peace" class='chk-btn' checked>
-          <label for='disturbing the peace'>Disturbing the Peace</label>
+          <label for='disturbing the peace'>Disturb the Peace</label>
 
           <input type="checkbox" name="filter" id="Motor Vehicle Theft" class='chk-btn' checked>
-          <label for='motor vehicle theft'>Motor Vehicle Theft</label>
+          <label for='motor vehicle theft'>Auto Theft</label>
 
           <input type="checkbox" name="filter" id="Burglary" class='chk-btn' checked>
           <label for='burglary'>Burglary</label>
@@ -62,7 +62,7 @@
           <label for='sex crimes'>Sex Crimes</label>
 
           <input type="checkbox" name="filter" id="Drugs/Alcohol Violations" class='chk-btn' checked>
-          <label for='drugs and alcohol violations'>Drugs/Alcohol Violations</label>
+          <label for='drugs and alcohol violations'>Drugs/Alcohol</label>
 
           <input type="checkbox" name="filter" id="Arson" class='chk-btn' checked>
           <label for='arson'>Arson</label>
@@ -92,7 +92,7 @@
     </div>
     <div class="row" id="chart">
       <div class="col">
-        <canvas id="crime_type_chart"></canvas>
+        <canvas id="crime_type_chart" width="1000" height="200"></canvas>
       </div>
     </div> 
   </div>       

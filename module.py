@@ -135,8 +135,25 @@ def get_crimetype_chart_labels(cdata):
     labels = []
     data = []
     for k,v in cdata.items():
-        labels.append(k)
-        data.append(v)
+        if k == "Motor Vehicle Theft":
+            k = "Auto Theft"
+            labels.append(k)
+            data.append(v)
+        elif k == "Theft/Larceny":
+            k = "Theft"
+            labels.append(k)
+            data.append(v)
+        elif k == "Disturbing The Peace":
+            k = "Dist Peace"
+            labels.append(k)
+            data.append(v)
+        elif k == "Drugs/Alcohol Violations":
+            k = "Drugs/Alcohol"
+            labels.append(k)
+            data.append(v)
+        else:
+            labels.append(k)
+            data.append(v)
             
     return {"labels": labels, "data": data} 
 
@@ -166,7 +183,7 @@ def get_crimetype_chart_labels(cdata):
 #                                   ]
 #                               ]
 #                   }
-                  
+
 #     return chart_dict
 
         
