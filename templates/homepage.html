@@ -3,13 +3,28 @@
 {% block title %}Homepage{% endblock %}
 
 {% block content %}
-	<form action="/map">
-		Please enter an address in Oakland
-		<div>
-		  Street address:<input type="text" name="address">
+	<div class="container-fluid">
+		<div class="row-fluid" id="top-pic" style="height:80%">
+			<div class="col">
+				<div>
+					<h3>Welcome to Safe@Home</h3>
+					<p>Safe@Home makes it easy to view crime and homes for sale in a specified area.
+					   Enter and address in Oakland to start.</p>
+				</div>
+			</div>
 		</div>
-		<div>
-		   <input type="submit">
+		<div class="row-fluid" style="height:20%">
+			<div class="col">
+				<form action="/map">
+					Please enter an address in Oakland
+					<div>
+					  Street address:<input type="text" name="address">
+					</div>
+					<div>
+					   <button type="submit" class="btn btn-primary btn-sm">Submit</button>
+					</div>
+				</form>
+			</div>
 		</div>
-	</form>
+	</div>
 {% endblock %}

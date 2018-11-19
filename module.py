@@ -24,10 +24,10 @@ def get_latlong_range(input_lat, input_lng):
         address entered in the homepage.
     """
     return {
-            "max_lat": input_lat + 0.004,
-            "min_lat": input_lat - 0.004,
-            "max_lng": input_lng + 0.012,
-            "min_lng": input_lng - 0.012
+            "max_lat": input_lat + 0.006,
+            "min_lat": input_lat - 0.006,
+            "max_lng": input_lng + 0.016,
+            "min_lng": input_lng - 0.016
            }
 
 def get_crimedata_by_latlong_range(input_lat, input_lng):
