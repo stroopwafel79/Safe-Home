@@ -1,7 +1,4 @@
-.form-check, #home_filter {
-	color: black;
-	font-size: 11px;
-}
+
 
 #map {
     width: : 100%;
@@ -15,4 +12,16 @@
 
 #hsubmit, #submit {
 	size: 10%;
+}
+
+#filters {
+	background-color: #D5CECE;
+	font-size: 15px;
+
+}
+
+#crime_type_chart {
+	width: 100%;
+	font-size: 15px;
+	color: black;
 }

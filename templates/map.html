@@ -25,7 +25,7 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-10" id="map"></div> <!-- reserves a spot for the map -->
-      <div class="col-2">
+      <div class="col-2" id="filters">
           
         <div class="form-check">
 
@@ -102,16 +102,16 @@
               <div class="price-filter">
                 <label for='submit'></label>
                 <button type="submit" class="btn btn-primary btn-sm">Submit</button>
-                
+
               </div>
           </div>
       </div>
-      <div class="row" id="chart">
+    </div>
+    <div class="row" id="chart">
         <div class="col">
-          <canvas id="crime_type_chart" height="500" width="1000"></canvas>
+          <canvas id="crime_type_chart"></canvas>
         </div>
-      </div> 
-    </div>       
+    </div>        
   </div>
 </body>
     <script>
@@ -346,33 +346,22 @@
                   datasets: [{
                       data: data.data,
                       backgroundColor: [
-                          'rgba(255, 99, 132, 0.2)',
-                          'rgba(54, 162, 235, 0.2)',
-                          'rgba(255, 206, 86, 0.2)',
-                          'rgba(75, 192, 192, 0.2)',
-                          'rgba(153, 102, 255, 0.2)',
-                          'rgba(255, 159, 64, 0.2)',
-                          'rgba(255, 99, 132, 0.2)',
-                          'rgba(54, 162, 235, 0.2)',
-                          'rgba(255, 206, 86, 0.2)',
-                          'rgba(75, 192, 192, 0.2)',
-                          'rgba(153, 102, 255, 0.2)',
-                          'rgba(255, 159, 64, 0.2)'
+                          '#A7414A',
+                          '#282726',
+                          '#6A8A82',
+                          '#A37C27',
+                          '#563838',
+                          '#A7414A',
+                          '#282726',
+                          '#6A8A82',
+                          '#A37C27',
+                          '#563838',
+                          '#A7414A',
+                          '#282726',
+                          '#6A8A82',
+                          '#A37C27',
                       ],
-                      borderColor: [
-                          'rgba(255,99,132,1)',
-                          'rgba(54, 162, 235, 1)',
-                          'rgba(255, 206, 86, 1)',
-                          'rgba(75, 192, 192, 1)',
-                          'rgba(153, 102, 255, 1)',
-                          'rgba(255, 159, 64, 1)',
-                          'rgba(255,99,132,1)',
-                          'rgba(54, 162, 235, 1)',
-                          'rgba(255, 206, 86, 1)',
-                          'rgba(75, 192, 192, 1)',
-                          'rgba(153, 102, 255, 1)',
-                          'rgba(255, 159, 64, 1)'
-                      ],
+                      
                       borderWidth: 1
                   }]
               },
