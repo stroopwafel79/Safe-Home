@@ -3,22 +3,24 @@
 {% block title %}Homepage{% endblock %}
 
 {% block content %}
-<div class="container-fluid">
-	<div class="row-fluid" id="top-pic">
-		<div class="col">
+<div class="container-fluid" id="outer-container">
+	<div class="container-fluid" id="top-pic">
+		<div class="row-fluid">
 			<div id="title">
 				<h3>Safe@Home</h3>
 			</div>
 		</div>
 	</div>
-	<div class="row-fluid">
-		<div class="col">
+	<div class="container-fluid" id="bottom-content">
+		<div class="row-fluid" id="bottom">
 			<form action="/map">
+				<div>
 				Please enter an address in Oakland
-				<div>
-				  Street address:<input type="text" name="address">
 				</div>
-				<div>
+				<div id="input">
+				  Street address: <input type="text" name="address">
+				</div>
+				<div id="homepage-submit">
 				   <button type="submit" class="btn btn-primary btn-sm">Submit</button>
 				</div>
 			</form>
