@@ -1,4 +1,4 @@
-html, body, #outer-container {
+html, body, #outer-container, #map-container, #map-row {
 	width: 100%;
 	height: 100%;
 }
@@ -44,7 +44,8 @@ html, body, #outer-container {
 }
 
 #map {
-    width: : 100%;
+    width: 100%;
+    padding: 0px;
       }
 
 #hsubmit, #submit {
@@ -52,9 +53,10 @@ html, body, #outer-container {
 }
 
 #filters {
-	background-color: #D5CECE;
+	background-color: #6A8A82;
 	font-size: 14px;
 	justify-content: left;
+	padding-top: 10px;
 
 }
 
@@ -65,6 +67,7 @@ html, body, #outer-container {
 }
 
 #home_filter {
-	padding-top: 25px;
-	text-align: center;
+	padding-top: 10px;
+	text-align: left;
+	padding-left: 16px;
 }
