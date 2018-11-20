@@ -247,7 +247,8 @@
           let mapIcon;
 
           if (data[0].case_num) {
-            mapIcon = 'static/Cruiser-Black-NS-11.png';
+            mapIcon = {url: "static/angry-crime.svg",
+                       scaledSize: new google.maps.Size(25,25)};
           }
           else {
             mapIcon = {url: "static/home-solid.svg",
