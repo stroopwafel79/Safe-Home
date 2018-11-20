@@ -1,14 +1,23 @@
+#top-pic {
+	min-height: 500px;
+	height: 80%;
+	background: url("tribune_bldg.jpg");
+	background-repeat:no-repeat;
+    background-size:cover;
 
+}
+
+#title {
+	padding-left: 175px;
+	padding-top: 20px;
+	font-size: 250px;
+	font-weight: bold;
+	color: red;
+}
 
 #map {
     width: : 100%;
       }
-
-#top-pic {
-	height: 100%;
-	background: url("tribune_bldg.jpg");
-
-}
 
 #hsubmit, #submit {
 	size: 10%;
@@ -16,12 +25,18 @@
 
 #filters {
 	background-color: #D5CECE;
-	font-size: 15px;
+	font-size: 14px;
+	justify-content: left;
 
 }
 
 #crime_type_chart {
 	width: 100%;
-	font-size: 15px;
+	font-size: 12px;
 	color: black;
+}
+
+#home_filter {
+	padding-top: 25px;
+	text-align: center;
 }
