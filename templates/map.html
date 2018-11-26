@@ -229,7 +229,6 @@
         // Add a marker for the center point of the map
         let inputMarker = new google.maps.Marker({
           position: mapCenter,
-          label: 'Test',
           map: map
         });
 
@@ -271,12 +270,12 @@
           if (data[0].case_num) {
             infoWindowContent = `<div id="crimeInfo">
               <ul style="list-style-type:none">
-              <li><b>Type of Crime:</b> ${data[i].crime_type}</li>
-              <li>Date and Time of Occurance: ${data[i].date_time}</li>
-              <li>Case Number: ${data[i].case_num}</li>
-              <li>Description of Crime: ${data[i].description}</li>
-              <li>Police Beat: ${data[i].police_beat}</li>
-              <li>Agency: Oakland Police Department</li>
+              <li><b>Type of Crime:</b>  ${data[i].crime_type}</li>
+              <li><b>Date and Time of Occurance:</b>  ${data[i].date_time}</li>
+              <li><b>Case Number:</b>  ${data[i].case_num}</li>
+              <li><b>Description of Crime:</b>  ${data[i].description}</li>
+              <li><b>Police Beat:</b>  ${data[i].police_beat}</li>
+              <li><b>Agency:</b>  Oakland Police Department</li>
               </ul>
               </div>`;
           // else data is home data so use this infoWindow content    
@@ -294,7 +293,6 @@
                 <li><b>Number of Bedrooms:</b> ${data[i].num_bed}</li>
                 <li><b>Number of Bathrooms:</b> ${data[i].num_bath}</li>
                 <li><b>Lot Size(ft):</b> ${data[i].lot_size}</li>
-                <li><b>HOA Dues per Month:</b> $${data[i].hoa_per_month}</li>
                 <li><b>MLS number:</b> ${data[i].mls_num} </li>
               </ul>
               </div>`;
