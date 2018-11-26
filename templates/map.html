@@ -349,6 +349,7 @@
               data: {
                   labels: data.labels,
                   datasets: [{
+                      label: null,
                       data: data.data,
                       backgroundColor: [
                           '#A7414A',
@@ -371,6 +372,7 @@
                   }]
               },
               options: {
+                  legend: { display: false },
                   title: {
                       display: true,
                       text: 'Number of Crimes per Type'

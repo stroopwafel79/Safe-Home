@@ -6,6 +6,7 @@ html, body, #outer-container, #map-container, #map-row {
 	margin-right: 0px;
 	margin-top: 0px;
 	background-color: #6A8A82;
+	font-family: Arial, Helvetica, sans-serif;
 }
 
 #top-pic {
