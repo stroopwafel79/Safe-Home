@@ -1,4 +1,4 @@
-# HB_project
+# Safe@Home
 This app will take an address from the user and mark that as the center point on a map.
 A query will be made to the postgreSQL database to get both details on the crimes committed
 and homes for sale in a predefined area around the input address. Both crimes and homes for 
