@@ -50,6 +50,9 @@ html, body, #outer-container, #map-container, #map-row {
     padding: 0px;
     margin-top: 0px;
       }
+#crimeInfo, #homeInfo {
+	font-size: 16px;
+}
 
 #hsubmit, #submit {
 	size: 10%;
@@ -57,7 +60,7 @@ html, body, #outer-container, #map-container, #map-row {
 
 #filters {
 	background-color: #6A8A82;
-	font-size: 14px;
+	font-size: 15px;
 	justify-content: left;
 	padding-top: 10px;
 
