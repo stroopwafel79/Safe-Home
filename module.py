@@ -4,6 +4,7 @@
 from model import CrimeType, Crime, Address, HomesForSale
 from os import environ # to access environ.get("zillow_key")
 import requests
+import unittest
 from pprint import pprint
 from xmljson import BadgerFish
 from xml.etree.ElementTree import fromstring
@@ -186,5 +187,8 @@ def get_crimetype_chart_labels(cdata):
 
 #     return chart_dict
 
-        
+
+if __name__ == '__main__':
+  unittest.main() 
+
 
