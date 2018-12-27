@@ -5,7 +5,7 @@ from flask import (Flask, render_template, redirect, request, flash,
                    session, url_for, jsonify)
 from model import connect_to_db
 from flask_debugtoolbar import DebugToolbarExtension
-from module import (get_gkey, get_crimedata_by_latlong_range,
+from module import (get_api_key, get_crimedata_by_latlong_range,
                     get_homedata_by_latlong_range,
                     get_crimetype_chart_data,
                     get_crimetype_chart_labels)
@@ -50,7 +50,7 @@ def get_gmap():
 
 
     # create a google maps object
-    gmaps = googlemaps.Client(key=get_gkey())
+    gmaps = googlemaps.Client(key=get_api_key("GKEY"))
 
     # Geocoding an address
     geocode_result = gmaps.geocode(address)
@@ -64,7 +64,8 @@ def get_gmap():
     
     return render_template(
                            "map.html",
-                           gkey=get_gkey(),
+                           gkey=get_api_key("GKEY"),
+                           tkey=get_api_key("TKEY"),
                            input_lat=input_lat,
                            input_lng=input_lng,
                            crime_data=crime_data,
@@ -83,12 +84,13 @@ def get_gmap():
 
 #     return jsonify(chart_dict)
 
-@app.route("/phone")
-def get_phone_number:
-  """ 
-  Get user's phone number if they click the link to get the 
-  info in the info widow texted to their phone
-  """
+# @app.route("/phone")
+# def get_phone_number:
+#   """ 
+#   Get user's phone number if they click the link to get the 
+#   info in the info widow texted to their phone
+#   """
+#   pass
 
 
 ######################################################################
