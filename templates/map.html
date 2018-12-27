@@ -292,6 +292,8 @@
                 <li><b>Number of Bathrooms:</b> ${data[i].num_bath}</li>
                 <li><b>Lot Size(ft):</b> ${data[i].lot_size}</li>
                 <li><b>MLS number:</b> ${data[i].mls_num} </li>
+                <li><label for='sms'></label>
+                  <button type="submit" class="btn btn-primary btn-sm" id="sms-btn">Text info to me</button> </li>
               </ul>
               </div>`;
           }
@@ -300,7 +302,8 @@
             content: infoWindowContent
           });
 
-          // add an event listener to each marker
+          // add an event listener to each marker so
+          // an infowindow is opened when the marker is clicked
           marker.addListener('click', function() {
            infowindow.open(map, marker);
           });
