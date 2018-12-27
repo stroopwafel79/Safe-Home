@@ -14,11 +14,11 @@ from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy() 
 
 
-def get_gkey():
-    """Get the Google Maps API secret key"""
+def get_api_key(api_key):
+    """Get API secret key"""
 
-    gkey = environ.get("GKEY")
-    return gkey
+    key = environ.get(api_key)
+    return key
 
 def get_latlong_range(input_lat, input_lng):
     """ Get a range of latitudes and longitudes based on the lat and long of the 
