@@ -83,6 +83,13 @@ def get_gmap():
 
 #     return jsonify(chart_dict)
 
+@app.route("/phone")
+def get_phone_number:
+  """ 
+  Get user's phone number if they click the link to get the 
+  info in the info widow texted to their phone
+  """
+
 
 ######################################################################
 if __name__ == '__main__':
