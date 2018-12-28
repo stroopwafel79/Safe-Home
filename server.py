@@ -69,9 +69,12 @@ def get_gmap():
     #                           'Disturbing The Peace': 3, 'Burglary': 10}
     crime_chart_data = get_crimetype_chart_data(crime_data)
     
+    # get phone number from input and send text if exists
     phone_num = request.args.get("phone")
     if phone_num:
       send_sms(phone_num, crime_chart_data)
+    # TODO use regex to check for valid phone number
+      #((\(\d{3}\) ?)|(\d{3}-))?\d{3}-\d{4}
     
     return render_template(
                            "map.html",
@@ -102,38 +105,22 @@ def send_sms(phone_num, data):
   """ 
   Send sms via Twilio to phone number. incoming data is in JSON format.
   """
-  
-  #######Test code 1
-  #phone_num = request.args.get("phone")
-  # crime_sms_data = request.args.get("data")
+  # Code from Twilio to send text
+  ##################
+  # TODO get data to send properly. It's truncating after first key
+  account_sid = get_api_key("TKEY")
+  auth_token = get_api_key("TAUTHTOKEN")
+  client = Client(account_sid, auth_token)
 
-  #((\(\d{3}\) ?)|(\d{3}-))?\d{3}-\d{4}
-  print("/n/n/nPPPPPPPPPPPPPP")
-  print(phone_num)
-  
-  print("/n/n/nDDDDDDDDDDDDDD")
-  print(data)
-  # print("/n/n/n/nCCCCCCDDDDDD")
-  # print(crime_sms_data)
-  # return "1"
-
-  ######Actual code to send text
-  # account_sid = get_api_key("TKEY")
-  # auth_token = get_api_key("TAUTHTOKEN")
-  # client = Client(account_sid, auth_token)
-
-  # message = client.messages.create(
-  #                                  from_='+14083594778',
-  #                                  body={'Robbery': 13, 'Theft/Larceny': 86, 
-  #                                        'Motor Vehicle Theft': 20, 'Dui': 3, 
-  #                                        'Assault': 29, 'Vandalism': 25, 'Fraud': 3, 
-  #                                        'Disturbing The Peace': 3, 'Burglary': 10},
-  #                                  to='+15105520442'
-  #                                 )
+  message = client.messages.create(
+                                   from_='+14083594778',
+                                   body=data,
+                                   to=phone_num
+                                  )
                                   
 
-  # print(message.sid)
-  return 
+  print(message.sid)
+ 
 
 ######################################################################
 if __name__ == '__main__':
