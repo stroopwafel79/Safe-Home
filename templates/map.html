@@ -320,10 +320,12 @@
         const client = require('twilio')(accountSid, authToken);
 
         client.messages
-              .create({from: '+15017122661', body: 'body', to: '+15105520442'})
+              .create({from: '+14083594778', body: 'H&P twilio', to: '+15105520442'})
               .then(message => console.log(message.sid))
               .done(); 
       }
+
+      twilioTest();
 
       // Sets the map on all markers in the array.
       function setMapOnAll(map) {
