@@ -28,8 +28,7 @@
       <div class="col-2" id="filters">
           
         <div class="form-check">
-
-          <h5>Filter Crime Types</h5>
+          <h5>Filter Crimes</h5>
             <div class="form-check">
               <input type="checkbox" name="filter" id="Vandalism" class='form-check-input' checked>
               <label for='vandalism'>Vandalism</label>
@@ -87,7 +86,21 @@
               <input type="checkbox" name="filter" id="Dui" class='form-check-input' checked>
               <label for='dui'>DUI</label>
             </div>
-          </div>
+
+        <div id="sms">
+            <h7>Enter Phone Number for Crime Stats via Text</h7>
+              <form>
+                <div class="form-group row">
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control form-control-sm" id="phone" placeholder="Phone number">
+                  </div>
+                </div>
+              </form>
+              <div class="price-filter">
+                <label for='submit'></label>
+                <button type="submit" class="btn btn-primary btn-sm" id="sms-submit">Submit</button>
+              </div>
+        </div>
 
           <div id="home_filter">
             <h5>Filter homes</h5>
@@ -109,9 +122,6 @@
               </div>
           </div>
       </div>
-    </div>
-    <div class="row" id="phone">
-      <a href="/phone">Click to send sms</a>
     </div>
     <div class="row" id="chart">
         <div class="col">
