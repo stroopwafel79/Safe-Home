@@ -89,17 +89,17 @@
 
         <div id="sms">
             <h7>Enter Phone Number for Crime Stats via Text</h7>
-              <form>
+              <form action="/phone">
                 <div class="form-group row">
                   <div class="col-sm-10">
                     <input type="text" class="form-control form-control-sm" id="phone" placeholder="Phone number" name="phone">
                   </div>
                 </div>
+                <div class="price-filter">
+                  <label for='submit'></label>
+                  <button type="submit" class="btn btn-primary btn-sm" id="sms-submit">Submit</button>
+                </div>
               </form>
-              <div class="price-filter">
-                <label for='submit'></label>
-                <button type="submit" class="btn btn-primary btn-sm" id="sms-submit">Submit</button>
-              </div>
         </div>
 
           <div id="home_filter">
@@ -176,9 +176,37 @@
 
       // adds event listener to phone number submit button
       $('submit').click(function (e) {
-        // I want this to send the phone number to the back end to use
+        // I want this to send the phone number and the sms data
+        // to the back end to use
          
       });
+
+
+      // This function only exists to avoid creating global variables
+    function sendSMS() {
+      $('#sms-submit').on('submit', evt => {
+        evt.preventDefault();
+
+        // Get user input from a form
+        const formData = {
+          phone: $('#phone').val(),
+          data: smsData
+        };
+
+        // Send formData to the server (becomes a query string)
+        $.get('/phone', formData, (results) => {
+
+          // Remember, you can use console.dir to debug!
+          // console.dir(results); 
+
+          // Display results from the server
+          alert(`Phone#: ${results.phone}`);
+          alert(`crime data: ${results.data}`);
+        });
+      });
+    }
+
+    sendSMS();
 
 
       // adds event listener to the submit button for filtering homes by price

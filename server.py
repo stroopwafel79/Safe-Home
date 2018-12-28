@@ -39,6 +39,7 @@ def show_homepage():
 
     return render_template("homepage.html")
 
+
 @app.route("/map")
 def get_gmap():
     """ 
@@ -94,6 +95,7 @@ def get_gmap():
 
 #     return jsonify(chart_dict)
 
+
 @app.route("/phone")
 def send_sms():
   """ 
@@ -101,45 +103,32 @@ def send_sms():
   info in the info widow texted to their phone, then send an
   sms message via Twilio
   """
-  # phone_num = request.args.get("phone")
   
-  # account_sid = get_api_key("TKEY")
-  # auth_token = get_api_key("TAUTHTOKEN")
-  # client = Client(account_sid, auth_token)
+  #######Test code 1
+  # phone_num = request.args.get("phone")
+  # crime_sms_data = request.args.get("data")
+  # print("/n/n/nPPPPPPPPPPPPPP")
+  # print(phone_num)
+  # print("/n/n/n/nCCCCCCDDDDDD")
+  # print(crime_sms_data)
+  # return "1"
 
-  # message = client.messages.create(
-  #                                  from_='+14083594778',
-  #                                  body='H&P python test 3000',
-  #                                  to=phone_num
-  #                                 )
+  ######Actual code to send text
+  account_sid = get_api_key("TKEY")
+  auth_token = get_api_key("TAUTHTOKEN")
+  client = Client(account_sid, auth_token)
+
+  message = client.messages.create(
+                                   from_='+14083594778',
+                                   body={'Robbery': 13, 'Theft/Larceny': 86, 
+                                         'Motor Vehicle Theft': 20, 'Dui': 3, 
+                                         'Assault': 29, 'Vandalism': 25, 'Fraud': 3, 
+                                         'Disturbing The Peace': 3, 'Burglary': 10},
+                                   to='+15105520442'
+                                  )
                                   
 
-  # print(message.sid)
-
-
-  print("AAAAAAAAAAAAHAAHHAAHAHAHHHAHAHAAHAHHAHAHAHAH")
-  return "Message successfully sent"
-
-# def send_sms():
-#   """Send sms to specified phone number via Twilio"""
-#   # Download the helper library from https://www.twilio.com/docs/python/install
-
-
-
-#   # Your Account Sid and Auth Token from twilio.com/console
-#   account_sid = get_api_key("TKEY")
-#   auth_token = get_api_key("TAUTHTOKEN")
-#   client = Client(account_sid, auth_token)
-
-#   message = client.messages.create(
-#                                 from_='+14083594778',
-#                                 body='H&P python test',
-#                                 to=get_phone_number()
-#                             )
-
-#   print(message.sid)
-
-send_sms()
+  print(message.sid)
 
 ######################################################################
 if __name__ == '__main__':
