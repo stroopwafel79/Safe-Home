@@ -187,6 +187,14 @@ def get_crimetype_chart_labels(cdata):
 
 #     return chart_dict
 
+def format_phone_num(phone_num):
+
+    formatted_phone_num = "+1"
+    phone_num_lst = list(phone_num)
+    for num in phone_num_lst:
+        if num.isdigit():
+            formatted_phone_num += num
+    return formatted_phone_num
 
 if __name__ == '__main__':
   unittest.main() 

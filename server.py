@@ -107,6 +107,8 @@ def send_sms():
   #######Test code 1
   phone_num = request.args.get("phone")
   # crime_sms_data = request.args.get("data")
+
+  #((\(\d{3}\) ?)|(\d{3}-))?\d{3}-\d{4}
   print("/n/n/nPPPPPPPPPPPPPP")
   print(phone_num)
   # print("/n/n/n/nCCCCCCDDDDDD")
@@ -130,7 +132,7 @@ def send_sms():
 
   # print(message.sid)
   return "Message successfuly sent"
-  
+
 ######################################################################
 if __name__ == '__main__':
     # We have to set debug=True here, since it has to be True at the

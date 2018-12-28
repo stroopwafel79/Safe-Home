@@ -95,11 +95,11 @@
                     <input type="text" class="form-control form-control-sm" id="phone" placeholder="Phone number" name="phone">
                   </div>
                 </div>
+                <div class="price-filter">
+                  <label for='submit'></label>
+                  <button type="submit" class="btn btn-primary btn-sm" id="sms-submit">Submit</button>
+                </div>
               </form>
-              <div class="price-filter">
-                <label for='submit'></label>
-                <button type="submit" class="btn btn-primary btn-sm" id="sms-submit">Submit</button>
-              </div>
         </div>
 
           <div id="home_filter">
@@ -185,20 +185,28 @@
       
       // Event listener on submit button for phone number works
       $('#sms-submit').click(function (e) {
-          console.log("FUUCCCKK")
-          //sendSMS();
+          sendSMS();
           //evt.preventDefault();
       });
 
+      // // Event listener calling sendSMS works
       // function sendSMS() {
-      //   // Get user input from a form
+      //   console.log("still");
+      
+      // // Get user input from a form - this works
       //   const formData = {
       //     phone: $('#phone').val(),
       //   };
+      //   console.log(formData);
+      
 
       //   // Send formData to the server (becomes a query string)
+      //   // THIS IS THE PROBLEM PIECE OF CODE
       //   $.get('/phone', formData, (results) => {
+      //     console.log("sending data")
+      //   });
 
+      // }
       //     // Remember, you can use console.dir to debug!
       //     // console.dir(results); 
 
