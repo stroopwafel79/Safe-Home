@@ -95,11 +95,11 @@
                     <input type="text" class="form-control form-control-sm" id="phone" placeholder="Phone number" name="phone">
                   </div>
                 </div>
-                <div class="price-filter">
-                  <label for='submit'></label>
-                  <button type="submit" class="btn btn-primary btn-sm" id="sms-submit">Submit</button>
-                </div>
               </form>
+              <div class="price-filter">
+                <label for='submit'></label>
+                <button type="submit" class="btn btn-primary btn-sm" id="sms-submit">Submit</button>
+              </div>
         </div>
 
           <div id="home_filter">
@@ -182,32 +182,32 @@
       // });
 
 
-      // This function only exists to avoid creating global variables
-    function sendSMS() {
-      $('#sms-submit').on('submit', evt => {
-        evt.preventDefault();
-
-        // Get user input from a form
-        const formData = {
-          phone: $('#phone').val(),
-        };
-
-        // Send formData to the server (becomes a query string)
-        $.get('/phone', formData, (results) => {
-
-          // Remember, you can use console.dir to debug!
-          // console.dir(results); 
-
-          // Display results from the server
-          alert(`Phone#: ${results.phone}`);
-          #alert(`crime data: ${results.data}`);
-        });
+      
+      // Event listener on submit button for phone number works
+      $('#sms-submit').click(function (e) {
+          console.log("FUUCCCKK")
+          //sendSMS();
+          //evt.preventDefault();
       });
-    }
 
-    sendSMS();
+      // function sendSMS() {
+      //   // Get user input from a form
+      //   const formData = {
+      //     phone: $('#phone').val(),
+      //   };
 
+      //   // Send formData to the server (becomes a query string)
+      //   $.get('/phone', formData, (results) => {
 
+      //     // Remember, you can use console.dir to debug!
+      //     // console.dir(results); 
+
+      //     // Display results from the server
+      //     //alert(`Phone#: ${results.phone}`);
+      //     //alert(`crime data: ${results.data}`);
+      //   });
+      // }
+  
       // adds event listener to the submit button for filtering homes by price
       $('#submit').click(function (e) {
         filterPrices(homeForSaleData);
