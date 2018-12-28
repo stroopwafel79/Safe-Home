@@ -174,12 +174,12 @@
         filterData(crimeData, crimesToFilter);
       }
 
-      // adds event listener to phone number submit button
-      $('submit').click(function (e) {
-        // I want this to send the phone number and the sms data
-        // to the back end to use
+      // // adds event listener to phone number submit button
+      // $('submit').click(function (e) {
+      //   // I want this to send the phone number and the sms data
+      //   // to the back end to use
          
-      });
+      // });
 
 
       // This function only exists to avoid creating global variables
@@ -190,7 +190,6 @@
         // Get user input from a form
         const formData = {
           phone: $('#phone').val(),
-          data: smsData
         };
 
         // Send formData to the server (becomes a query string)
@@ -201,7 +200,7 @@
 
           // Display results from the server
           alert(`Phone#: ${results.phone}`);
-          alert(`crime data: ${results.data}`);
+          #alert(`crime data: ${results.data}`);
         });
       });
     }

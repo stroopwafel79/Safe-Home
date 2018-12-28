@@ -105,31 +105,31 @@ def send_sms():
   """
   
   #######Test code 1
-  # phone_num = request.args.get("phone")
+  phone_num = request.args.get("phone")
   # crime_sms_data = request.args.get("data")
-  # print("/n/n/nPPPPPPPPPPPPPP")
-  # print(phone_num)
+  print("/n/n/nPPPPPPPPPPPPPP")
+  print(phone_num)
   # print("/n/n/n/nCCCCCCDDDDDD")
   # print(crime_sms_data)
   # return "1"
 
   ######Actual code to send text
-  account_sid = get_api_key("TKEY")
-  auth_token = get_api_key("TAUTHTOKEN")
-  client = Client(account_sid, auth_token)
+  # account_sid = get_api_key("TKEY")
+  # auth_token = get_api_key("TAUTHTOKEN")
+  # client = Client(account_sid, auth_token)
 
-  message = client.messages.create(
-                                   from_='+14083594778',
-                                   body={'Robbery': 13, 'Theft/Larceny': 86, 
-                                         'Motor Vehicle Theft': 20, 'Dui': 3, 
-                                         'Assault': 29, 'Vandalism': 25, 'Fraud': 3, 
-                                         'Disturbing The Peace': 3, 'Burglary': 10},
-                                   to='+15105520442'
-                                  )
+  # message = client.messages.create(
+  #                                  from_='+14083594778',
+  #                                  body={'Robbery': 13, 'Theft/Larceny': 86, 
+  #                                        'Motor Vehicle Theft': 20, 'Dui': 3, 
+  #                                        'Assault': 29, 'Vandalism': 25, 'Fraud': 3, 
+  #                                        'Disturbing The Peace': 3, 'Burglary': 10},
+  #                                  to='+15105520442'
+  #                                 )
                                   
 
-  print(message.sid)
-
+  # print(message.sid)
+  return "Message successfuly sent"
 ######################################################################
 if __name__ == '__main__':
     # We have to set debug=True here, since it has to be True at the
