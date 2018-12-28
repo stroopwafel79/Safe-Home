@@ -66,6 +66,7 @@ def get_gmap():
                            "map.html",
                            gkey=get_api_key("GKEY"),
                            tkey=get_api_key("TKEY"),
+                           t_auth_token=get_api_key("TAUTHTOKEN"),
                            input_lat=input_lat,
                            input_lng=input_lng,
                            crime_data=crime_data,

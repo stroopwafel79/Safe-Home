@@ -312,7 +312,20 @@
         setMapOnAll(map);
       }
 
-        // Sets the map on all markers in the array.
+      function twilioTest() {
+        // Download the helper library from https://www.twilio.com/docs/node/install
+        // Your Account Sid and Auth Token from twilio.com/console
+        const accountSid = {{ tkey }};
+        const authToken = {{ t_auth_token }};
+        const client = require('twilio')(accountSid, authToken);
+
+        client.messages
+              .create({from: '+15017122661', body: 'body', to: '+15105520442'})
+              .then(message => console.log(message.sid))
+              .done(); 
+      }
+
+      // Sets the map on all markers in the array.
       function setMapOnAll(map) {
         for (let i = 0; i < markers.length; i++) {
           markers[i].setMap(map);
