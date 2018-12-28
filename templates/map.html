@@ -312,20 +312,20 @@
         setMapOnAll(map);
       }
 
-      function twilioTest() {
-        // Download the helper library from https://www.twilio.com/docs/node/install
-        // Your Account Sid and Auth Token from twilio.com/console
-        const accountSid = {{ tkey }};
-        const authToken = {{ t_auth_token }};
-        const client = require('twilio')(accountSid, authToken);
+      // function twilioTest() {
+      //   // Download the helper library from https://www.twilio.com/docs/node/install
+      //   // Your Account Sid and Auth Token from twilio.com/console
+      //   const accountSid = '{{ tkey }}';
+      //   const authToken = '{{ t_auth_token }}';
+      //   const client = require('twilio')(accountSid, authToken);
 
-        client.messages
-              .create({from: '+14083594778', body: 'H&P twilio', to: '+15105520442'})
-              .then(message => console.log(message.sid))
-              .done(); 
-      }
+      //   client.messages
+      //         .create({from: '+14083594778', body: 'H&P twilio', to: '+15105520442'})
+      //         .then(message => console.log(message.sid))
+      //         .done(); 
+      // }
 
-      twilioTest();
+      // twilioTest();
 
       // Sets the map on all markers in the array.
       function setMapOnAll(map) {
