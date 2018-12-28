@@ -87,7 +87,7 @@
               <label for='dui'>DUI</label>
             </div>
 
-        <div id="sms">
+        <!-- <div id="sms">
             <h7>Enter Phone Number for Crime Stats via Text</h7>
               <form action="/phone">
                 <div class="form-group row">
@@ -100,7 +100,7 @@
                   <button type="submit" class="btn btn-primary btn-sm" id="sms-submit">Submit</button>
                 </div>
               </form>
-        </div>
+        </div> -->
 
           <div id="home_filter">
             <h5>Filter homes</h5>
@@ -135,7 +135,6 @@
       const crimeData = {{ crime_data|tojson }};
       const homeForSaleData = {{ homes_for_sale_data|tojson }};
       const crimeChartData = {{ chart_dict|tojson }};
-      const smsData = {{ sms_data|tojson }};
       let crimesToFilter = []; // used for filtering crime types
       let homePricesToFilter = []; // used for filtering home prices
       let markers = []; // used for populating markers on the map

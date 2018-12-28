@@ -54,7 +54,7 @@ html, body, #outer-container, #map-container, #map-row {
 	font-size: 16px;
 }
 
-#hsubmit, #submit, #sms-submit {
+#hsubmit, #submit {
 	size: 10%;
 }
 

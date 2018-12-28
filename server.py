@@ -8,7 +8,8 @@ from flask_debugtoolbar import DebugToolbarExtension
 from module import (get_api_key, get_crimedata_by_latlong_range,
                     get_homedata_by_latlong_range,
                     get_crimetype_chart_data,
-                    get_crimetype_chart_labels)
+                    get_crimetype_chart_labels,
+                    format_phone_num)
 from pprint import pprint
 import googlemaps
 
@@ -43,14 +44,12 @@ def show_homepage():
 @app.route("/map")
 def get_gmap():
     """ 
-        Get google map with centerpoint as input address 
-        and crimes populated in view window
+      Get google map with centerpoint as input address 
+      and crimes populated in view window
     """
     # get the address from homepage input
     street_adrs = request.args.get("address")
     address = " ".join([street_adrs, "Oakland, CA"])
-
-
 
     # create a google maps object
     gmaps = googlemaps.Client(key=get_api_key("GKEY"))
@@ -70,6 +69,9 @@ def get_gmap():
     #                           'Disturbing The Peace': 3, 'Burglary': 10}
     crime_chart_data = get_crimetype_chart_data(crime_data)
     
+    phone_num = request.args.get("phone")
+    if phone_num:
+      send_sms(phone_num, crime_chart_data)
     
     return render_template(
                            "map.html",
@@ -80,7 +82,6 @@ def get_gmap():
                            input_lng=input_lng,
                            crime_data=crime_data,
                            chart_dict=get_crimetype_chart_labels(crime_chart_data),
-                           sms_data=crime_chart_data,
                            homes_for_sale_data=get_homedata_by_latlong_range(input_lat, input_lng)
                            )
 
@@ -96,21 +97,22 @@ def get_gmap():
 #     return jsonify(chart_dict)
 
 
-@app.route("/phone")
-def send_sms():
+#@app.route("/phone")
+def send_sms(phone_num, data):
   """ 
-  Get user's phone number if they click the link to get the 
-  info in the info widow texted to their phone, then send an
-  sms message via Twilio
+  Send sms via Twilio to phone number. incoming data is in JSON format.
   """
   
   #######Test code 1
-  phone_num = request.args.get("phone")
+  #phone_num = request.args.get("phone")
   # crime_sms_data = request.args.get("data")
 
   #((\(\d{3}\) ?)|(\d{3}-))?\d{3}-\d{4}
   print("/n/n/nPPPPPPPPPPPPPP")
   print(phone_num)
+  
+  print("/n/n/nDDDDDDDDDDDDDD")
+  print(data)
   # print("/n/n/n/nCCCCCCDDDDDD")
   # print(crime_sms_data)
   # return "1"
@@ -131,7 +133,7 @@ def send_sms():
                                   
 
   # print(message.sid)
-  return "Message successfuly sent"
+  return 
 
 ######################################################################
 if __name__ == '__main__':
