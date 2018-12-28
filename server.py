@@ -62,7 +62,13 @@ def get_gmap():
     input_lng = geocode_result[0]["geometry"]["location"]["lng"]
 
     crime_data = get_crimedata_by_latlong_range(input_lat, input_lng)
+
+    # crime_chart_data example {'Robbery': 13, 'Theft/Larceny': 86, 
+    #                           'Motor Vehicle Theft': 20, 'Dui': 3, 
+    #                           'Assault': 29, 'Vandalism': 25, 'Fraud': 3, 
+    #                           'Disturbing The Peace': 3, 'Burglary': 10}
     crime_chart_data = get_crimetype_chart_data(crime_data)
+    
     
     return render_template(
                            "map.html",
@@ -73,6 +79,7 @@ def get_gmap():
                            input_lng=input_lng,
                            crime_data=crime_data,
                            chart_dict=get_crimetype_chart_labels(crime_chart_data),
+                           sms_data=crime_chart_data,
                            homes_for_sale_data=get_homedata_by_latlong_range(input_lat, input_lng)
                            )
 
@@ -108,6 +115,8 @@ def send_sms():
                                   
 
   # print(message.sid)
+
+
   print("AAAAAAAAAAAAHAAHHAAHAHAHHHAHAHAAHAHHAHAHAHAH")
   return "Message successfully sent"
 

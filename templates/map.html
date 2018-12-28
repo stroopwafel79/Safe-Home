@@ -92,7 +92,7 @@
               <form>
                 <div class="form-group row">
                   <div class="col-sm-10">
-                    <input type="text" class="form-control form-control-sm" id="phone" placeholder="Phone number">
+                    <input type="text" class="form-control form-control-sm" id="phone" placeholder="Phone number" name="phone">
                   </div>
                 </div>
               </form>
@@ -135,6 +135,7 @@
       const crimeData = {{ crime_data|tojson }};
       const homeForSaleData = {{ homes_for_sale_data|tojson }};
       const crimeChartData = {{ chart_dict|tojson }};
+      const smsData = {{ sms_data|tojson }};
       let crimesToFilter = []; // used for filtering crime types
       let homePricesToFilter = []; // used for filtering home prices
       let markers = []; // used for populating markers on the map
@@ -172,6 +173,12 @@
         }
         filterData(crimeData, crimesToFilter);
       }
+
+      // adds event listener to phone number submit button
+      $('submit').click(function (e) {
+        // I want this to send the phone number to the back end to use
+         
+      });
 
 
       // adds event listener to the submit button for filtering homes by price
