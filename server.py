@@ -12,6 +12,8 @@ from module import (get_api_key, get_crimedata_by_latlong_range,
 from pprint import pprint
 import googlemaps
 
+from twilio.rest import Client
+
 from flask_sqlalchemy import SQLAlchemy 
 
 # This is the connection to the PostgreSQL database; we're getting
@@ -85,14 +87,50 @@ def get_gmap():
 
 #     return jsonify(chart_dict)
 
-# @app.route("/phone")
-# def get_phone_number:
-#   """ 
-#   Get user's phone number if they click the link to get the 
-#   info in the info widow texted to their phone
-#   """
-#   pass
+@app.route("/phone")
+def send_sms():
+  """ 
+  Get user's phone number if they click the link to get the 
+  info in the info widow texted to their phone, then send an
+  sms message via Twilio
+  """
+  # phone_num = request.args.get("phone")
+  
+  # account_sid = get_api_key("TKEY")
+  # auth_token = get_api_key("TAUTHTOKEN")
+  # client = Client(account_sid, auth_token)
 
+  # message = client.messages.create(
+  #                                  from_='+14083594778',
+  #                                  body='H&P python test 3000',
+  #                                  to=phone_num
+  #                                 )
+                                  
+
+  # print(message.sid)
+  print("AAAAAAAAAAAAHAAHHAAHAHAHHHAHAHAAHAHHAHAHAHAH")
+  return "Message successfully sent"
+
+# def send_sms():
+#   """Send sms to specified phone number via Twilio"""
+#   # Download the helper library from https://www.twilio.com/docs/python/install
+
+
+
+#   # Your Account Sid and Auth Token from twilio.com/console
+#   account_sid = get_api_key("TKEY")
+#   auth_token = get_api_key("TAUTHTOKEN")
+#   client = Client(account_sid, auth_token)
+
+#   message = client.messages.create(
+#                                 from_='+14083594778',
+#                                 body='H&P python test',
+#                                 to=get_phone_number()
+#                             )
+
+#   print(message.sid)
+
+send_sms()
 
 ######################################################################
 if __name__ == '__main__':
@@ -107,5 +145,5 @@ if __name__ == '__main__':
     # Use the DebugToolbar
     #DebugToolbarExtension(app)
 
-
     app.run(port=5000, host='0.0.0.0')
+
