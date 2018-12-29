@@ -12,7 +12,7 @@ from module import (get_api_key, get_crimedata_by_latlong_range,
                     format_phone_num)
 from pprint import pprint
 import googlemaps
-
+import random
 from twilio.rest import Client
 from twilio.twiml.messaging_response import MessagingResponse
 
@@ -139,7 +139,7 @@ def sms_reply():
     resp = MessagingResponse()
 
     # Add a message
-    resp.message("The Robots are coming! Head for the hills!")
+    resp.message(random.choice(oak_facts))
 
     return str(resp)
 
