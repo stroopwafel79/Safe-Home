@@ -13,23 +13,28 @@
 	</div>
 	<div class="container-fluid" id="bottom-content">
 		<div class="row-fluid" id="bottom">
+			
 			<form action="/map">
-				<div>
-				Please enter an address in Oakland
-				</div>
-				<div id="input">
-				  Street address: <input type="text" name="address">
-				</div>
-				<div>
-				To receive a text message with crime stats surrounding 
-				the entered address, please enter a phone number with area code.
-				</div>
-					<div id="input">
-					  Phone number: <input type="text" name="phone">
+				<div class="col-6" id="enter-address">
+					<div>
+					Please enter an address in Oakland
 					</div>
-				<div>
-				To receive random Oakland facts via text message, text "Oakland" to
-				408-359-4778.
+					<div id="input">
+					  Street address: <input type="text" name="address">
+					</div>
+				</div>
+				<div class="col-6" id="enter-phone">
+					<div>
+					To receive a text message with crime stats surrounding 
+					the entered address, please enter a phone number with area code.
+					</div>
+						<div id="input">
+						  Phone number: <input type="text" name="phone">
+						</div>
+					<div>
+					To receive random Oakland facts via text message, text "Oakland" to
+					408-359-4778.
+					</div>
 				</div>
 				<div id="homepage-submit">
 				   <button type="submit" class="btn btn-primary btn-sm">Submit</button>
