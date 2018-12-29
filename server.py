@@ -134,7 +134,7 @@ def sms_reply():
     fact4 = "Disneyland was inspired by Oakland’s Fairyland."
     fact5 = "Oakland has its own redwoods - Redwood Regional Park"
     oak_facts = [fact1, fact2, fact3, fact4, fact5]
-    
+
     # Start our TwiML response
     resp = MessagingResponse()
 
