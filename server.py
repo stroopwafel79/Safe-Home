@@ -9,11 +9,11 @@ from module import (get_api_key, get_crimedata_by_latlong_range,
                     get_homedata_by_latlong_range,
                     get_crimetype_chart_data,
                     get_crimetype_chart_labels,
-                    format_phone_num)
+                    send_sms)
 from pprint import pprint
 import googlemaps
 import random
-from twilio.rest import Client
+
 from twilio.twiml.messaging_response import MessagingResponse
 
 from flask_sqlalchemy import SQLAlchemy 
@@ -99,29 +99,6 @@ def get_gmap():
 #     chart_dict = make_chart_dict(crime_chart_data)
 
 #     return jsonify(chart_dict)
-
-
-#@app.route("/phone")
-def send_sms(phone_num, data):
-  """ 
-  Send sms via Twilio to phone number. incoming data is in JSON format.
-  """
-  # Code from Twilio to send text
-  ##################
-  # TODO get data to send properly. It's truncating after first key
-  account_sid = get_api_key("TKEY")
-  auth_token = get_api_key("TAUTHTOKEN")
-  client = Client(account_sid, auth_token)
-
-  message = client.messages.create(
-                                   from_='+14083594778',
-                                   body=data,
-                                   to=phone_num
-                                  )
-                                  
-
-  print(message.sid)
-
 
 
 @app.route("/sms", methods=['GET', 'POST'])

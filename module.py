@@ -9,6 +9,7 @@ from pprint import pprint
 from xmljson import BadgerFish
 from xml.etree.ElementTree import fromstring
 bf = BadgerFish(dict_type=dict)
+from twilio.rest import Client
 
 from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy() 
@@ -188,13 +189,50 @@ def get_crimetype_chart_labels(cdata):
 #     return chart_dict
 
 def format_phone_num(phone_num):
+  """Format's and input phone number into correct format for Twilio
+     ex: +15433455555"""
 
-    formatted_phone_num = "+1"
-    phone_num_lst = list(phone_num)
-    for num in phone_num_lst:
-        if num.isdigit():
-            formatted_phone_num += num
-    return formatted_phone_num
+  formatted_phone_num = "+1"
+  phone_num_lst = list(phone_num)
+  for num in phone_num_lst:
+      if num.isdigit():
+          formatted_phone_num += num
+  return formatted_phone_num
+
+def dict_to_string(data):
+  """Turns a dictionary into a string for proper formatting to send in
+     body of sms via Twilio"""
+
+  string = ""
+  for k, v in data.items():
+    string += f"{k}:{v}, "
+
+  return string
+
+
+def send_sms(phone_num, data):
+  """ 
+  Send sms via Twilio to phone number. incoming data is in JSON format.
+  """
+  # Code from Twilio to send text
+  ##################
+  # Turns data from a dict to a string as Twilio truncates body if a dict
+  # is sent.
+  data_as_string = dict_to_string(data)
+
+  account_sid = get_api_key("TKEY")
+  auth_token = get_api_key("TAUTHTOKEN")
+  client = Client(account_sid, auth_token)
+
+  message = client.messages.create(
+                                   from_='+14083594778',
+                                   body=data_as_string[:-2],
+                                   to=format_phone_num(phone_num)
+                                  )
+                                  
+  print("/n/n/n/nDDDDDDDDD")
+  print(data)
+  print(message.sid)
 
 if __name__ == '__main__':
   unittest.main() 
