@@ -14,6 +14,7 @@ from pprint import pprint
 import googlemaps
 
 from twilio.rest import Client
+from twilio.twiml.messaging_response import MessagingResponse
 
 from flask_sqlalchemy import SQLAlchemy 
 
@@ -120,6 +121,28 @@ def send_sms(phone_num, data):
                                   
 
   print(message.sid)
+
+
+
+@app.route("/sms", methods=['GET', 'POST'])
+def sms_reply():
+    """Respond to incoming calls with a simple text message."""
+    
+    fact1 = "Oakland's Lake Merritt is a natural saltwater lake with its own Oak-ness Monster"
+    fact2 = "Oakland is one of the most diverse cities in the US."
+    fact3 = "One of Oakland’s most popular parks is a cemetery - Mountain View Cemetery"
+    fact4 = "Disneyland was inspired by Oakland’s Fairyland."
+    fact5 = "Oakland has its own redwoods - Redwood Regional Park"
+    oak_facts = [fact1, fact2, fact3, fact4, fact5]
+    
+    # Start our TwiML response
+    resp = MessagingResponse()
+
+    # Add a message
+    resp.message("The Robots are coming! Head for the hills!")
+
+    return str(resp)
+
  
 
 ######################################################################
