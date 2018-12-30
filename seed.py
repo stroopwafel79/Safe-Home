@@ -28,7 +28,7 @@ def load_crimes():
     ################################ 
     
     # Read crime file and import data
-    with open("CrimeWatch_Maps_Past_90-Days_12-30-18") as f:
+    with open("seed_data/CrimeWatch_Maps_Past_90-Days_12-30-18.tsv") as f:
         # ignore header row
         next(f)
 
