@@ -1,4 +1,4 @@
-html, body, #outer-container, #map-container, #map-row, #chart {
+html, body, #outer-container, #map-container, #map-row {
 	width: 100%;
 	height: 100%;
 	padding: 0px;
@@ -11,7 +11,7 @@ html, body, #outer-container, #map-container, #map-row, #chart {
 
 #top-pic {
 	min-height: 500px;
-	height: 70%;
+	height: 60%;
 	background: url("tribune_bldg.jpg");
 	background-repeat:no-repeat;
     background-size:cover;
@@ -21,7 +21,7 @@ html, body, #outer-container, #map-container, #map-row, #chart {
 
 #title {
 	padding-left: 300px;
-	padding-top: 20px;
+	padding-top: 60px;
 	font-size: 70px;
 	font-weight: bold;
 	color: #A61515;
@@ -29,7 +29,7 @@ html, body, #outer-container, #map-container, #map-row, #chart {
 
 #bottom-content {
 	background-color: #6A8A82;
-	height: 30%;
+	height: 40%;
 	width: 100%;
 	padding: 0px;
 }
@@ -47,6 +47,7 @@ html, body, #outer-container, #map-container, #map-row, #chart {
 
 #map {
     width: 100%;
+    height: 100%;
     padding: 0px;
     margin-top: 0px;
       }
@@ -66,7 +67,7 @@ html, body, #outer-container, #map-container, #map-row, #chart {
 
 }
 
-#crime_type_chart {
+#crime_type_chart, #chart {
 	width: 100%;
 	font-size: 12px;
 	color: black;
