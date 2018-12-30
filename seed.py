@@ -119,7 +119,7 @@ def load_homes():
     """Load homes for sale in Oakland"""
 
     # Read crime file and import data
-    with open("seed_data/redfin_11-6-18.csv") as f:
+    with open("seed_data/redfin_12-30-18.csv") as f:
         # ignore header row
         next(f)
 
