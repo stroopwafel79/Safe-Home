@@ -3,6 +3,8 @@ from jinja2 import StrictUndefined
 
 from flask import (Flask, render_template, redirect, request, flash,
                    session, url_for, jsonify)
+from flask_sqlalchemy import SQLAlchemy
+
 from model import connect_to_db
 from flask_debugtoolbar import DebugToolbarExtension
 from module import (get_api_key, get_crimedata_by_latlong_range,
@@ -15,9 +17,7 @@ import googlemaps
 import random
 
 from twilio.twiml.messaging_response import MessagingResponse
-
-from flask_sqlalchemy import SQLAlchemy 
-
+ 
 # This is the connection to the PostgreSQL database; we're getting
 # this through the Flask-SQLAlchemy helper library. On this, we can find
 # the "session" object, where we do most of our interactions (committing, etc.)
